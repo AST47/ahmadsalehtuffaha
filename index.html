@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ahmad Saleh Tuffaha — Business Development</title>
+<meta name="description" content="Business development consultant in Istanbul. Systems, workflow design, and CRM implementation that turn operational chaos into precise, high-performing processes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1a1a18;--ink-soft:#5a5a55;--ink-ghost:#a0a09a;
+  --cream:#f5f2eb;--line:#d8d4cc;--white:#ffffff;
+  --edu:#c0392b;--human:#2471a3;--biz:#1e8449;
+  --edu-sector:#8b5e34;--trans:#b7950b;
+  --font-body:'DM Sans',sans-serif;
+  --font-display:'Playfair Display',serif;
+  --fs-base:16px;
+  --wa:#1e8449;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+html[dir="rtl"] body{direction:rtl;}
+body{font-family:var(--font-body);background:var(--white);color:var(--ink);font-size:var(--fs-base);line-height:1.6;overflow-x:hidden;}
+img{max-width:100%;display:block;}
+a{color:inherit;}
+.wrap{max-width:960px;margin:0 auto;padding:0 clamp(1.25rem,4vw,2rem);}
+section{position:relative;}
+
+/* progress spine — echoes the timeline motif from the personal portfolio */
+.spine{position:fixed;top:0;left:0;width:3px;height:100%;background:var(--line);z-index:60;}
+html[dir="rtl"] .spine{left:auto;right:0;}
+.spine-fill{width:100%;height:0%;background:var(--edu);transition:height .08s linear;}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:50;background:rgba(245,242,235,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);}
+.topbar-inner{max-width:960px;margin:0 auto;padding:.85rem clamp(1.25rem,4vw,2rem);display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+.brand-mono{font-family:var(--font-display);font-weight:700;font-size:1.05rem;letter-spacing:.04em;}
+.brand-mono span{color:var(--edu);}
+.lang-switch{display:inline-flex;align-items:center;gap:4px;padding:3px;border:1px solid var(--line);border-radius:999px;background:var(--white);direction:ltr;}
+.lang-btn{appearance:none;border:0;background:transparent;color:var(--ink-soft);font-family:var(--font-body);font-size:.62rem;line-height:1;text-transform:uppercase;letter-spacing:.08em;border-radius:999px;padding:7px 11px;cursor:pointer;transition:background .18s ease,color .18s ease;}
+.lang-btn.active{background:var(--ink);color:var(--white);}
+.lang-btn:focus-visible{outline:2px solid var(--edu);outline-offset:2px;}
+
+/* reveal-on-scroll */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.in-view{opacity:1;transform:translateY(0);}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none;}html{scroll-behavior:auto;}}
+
+/* eyebrow */
+.eyebrow{font-size:.68rem;letter-spacing:.25em;text-transform:uppercase;color:var(--edu);font-weight:600;margin-bottom:.9rem;}
+
+/* HERO */
+.hero{background:var(--white);padding:clamp(4.5rem,10vw,7rem) 0 clamp(3rem,7vw,5rem);text-align:left;border-bottom:1px solid var(--line);position:relative;overflow:hidden;}
+html[dir="rtl"] .hero{text-align:right;}
+.hero::before{content:'';position:absolute;top:-100px;right:-100px;width:460px;height:460px;border-radius:50%;background:radial-gradient(circle,rgba(192,57,43,.08) 0%,transparent 70%);pointer-events:none;}
+html[dir="rtl"] .hero::before{right:auto;left:-100px;}
+
+#about{overflow:hidden;}
+#about::before{content:'';position:absolute;top:-60px;left:-120px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(30,132,73,.07) 0%,transparent 70%);pointer-events:none;}
+html[dir="rtl"] #about::before{left:auto;right:-120px;}
+
+#services{overflow:hidden;}
+#services::before{content:'';position:absolute;bottom:-80px;right:-100px;width:440px;height:440px;border-radius:50%;background:radial-gradient(circle,rgba(36,113,163,.07) 0%,transparent 70%);pointer-events:none;}
+html[dir="rtl"] #services::before{right:auto;left:-100px;}
+
+#work{overflow:hidden;}
+#work::before{content:'';position:absolute;top:-60px;left:-100px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(183,149,11,.08) 0%,transparent 70%);pointer-events:none;}
+html[dir="rtl"] #work::before{left:auto;right:-100px;}
+.hero-tagline{font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:1.6rem;font-weight:600;}
+.hero-name{font-family:var(--font-display);font-size:clamp(2.4rem,7vw,4.6rem);line-height:1.02;color:var(--ink);margin-bottom:1.4rem;max-width:16ch;}
+.hero-line{font-size:clamp(1.02rem,2.1vw,1.28rem);color:var(--ink-soft);max-width:44ch;line-height:1.65;border-left:2px solid var(--edu);padding-left:1.1rem;margin-bottom:2.4rem;}
+html[dir="rtl"] .hero-line{border-left:0;border-right:2px solid var(--edu);padding-left:0;padding-right:1.1rem;}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:.9rem;}
+
+.btn{display:inline-flex;align-items:center;gap:.55rem;font-family:var(--font-body);font-weight:600;font-size:.85rem;padding:.9rem 1.6rem;border-radius:4px;cursor:pointer;border:1px solid transparent;transition:transform .15s ease,box-shadow .15s ease,background .15s ease;text-decoration:none;}
+.btn:hover{transform:translateY(-1px);}
+.btn-primary{background:var(--wa);color:var(--white);}
+.btn-primary:hover{box-shadow:0 6px 18px rgba(30,132,73,.28);}
+.btn-secondary{background:transparent;color:var(--ink);border-color:var(--ink);}
+.btn-secondary:hover{background:var(--ink);color:var(--white);}
+.btn svg{width:18px;height:18px;flex-shrink:0;}
+
+/* section rhythm */
+.section{padding:clamp(3.5rem,8vw,6rem) 0;}
+.section-cream{background:var(--cream);}
+.section-head{max-width:640px;margin-bottom:clamp(2rem,5vw,3rem);}
+.section-title{font-family:var(--font-display);font-size:clamp(1.7rem,3.6vw,2.5rem);font-weight:700;line-height:1.2;}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,3.5rem);align-items:start;}
+@media (max-width:720px){.about-grid{grid-template-columns:1fr;}}
+.about-block p{color:var(--ink-soft);font-size:.98rem;line-height:1.8;}
+.about-block h3{font-family:var(--font-display);font-size:1.15rem;margin-bottom:.7rem;color:var(--ink);}
+
+/* SERVICES */
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+@media (max-width:820px){.services-grid{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:540px){.services-grid{grid-template-columns:1fr;}}
+.service-card{background:var(--white);padding:clamp(1.5rem,3vw,2.1rem);}
+.service-icon{width:30px;height:30px;color:var(--ink);margin-bottom:1rem;}
+.service-icon svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;}
+.service-title{font-family:var(--font-display);font-size:1.08rem;font-weight:700;margin-bottom:.6rem;color:var(--ink);}
+.service-desc{font-size:.86rem;color:var(--ink-soft);line-height:1.65;}
+
+/* CASE STUDIES */
+.cs-intro{color:var(--ink-soft);font-size:.98rem;margin-top:-1rem;margin-bottom:2rem;}
+.proj-grid{display:grid;grid-template-columns:1fr;gap:1.4rem;}
+.proj-card{background:var(--white);border:1px solid var(--line);border-top:3px solid var(--biz);padding:clamp(1.4rem,3vw,2rem);}
+.proj-cat{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--biz);margin-bottom:.5rem;}
+.proj-title{font-family:var(--font-display);font-size:1.28rem;font-weight:700;margin-bottom:1.1rem;line-height:1.3;}
+.proj-blocks{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.1rem;}
+@media (max-width:720px){.proj-blocks{grid-template-columns:1fr;}}
+.proj-block{border-left:2px solid var(--line);padding-left:.85rem;}
+html[dir="rtl"] .proj-block{border-left:0;border-right:2px solid var(--line);padding-left:0;padding-right:.85rem;}
+.proj-block-label{display:block;font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--ink-ghost);margin-bottom:.35rem;}
+.proj-block-text{font-size:.85rem;color:var(--ink-soft);line-height:1.6;}
+.proj-tools{display:flex;flex-wrap:wrap;gap:6px;}
+.proj-tool{font-size:.68rem;padding:3px 10px;border:1px solid var(--line);border-radius:999px;color:var(--ink-soft);}
+
+/* CONTACT */
+.contact{background:var(--ink);color:var(--cream);}
+.contact .eyebrow{color:#e07a68;}
+.contact .section-title{color:var(--white);}
+.contact-sub{color:#c9c7c0;max-width:52ch;margin-bottom:2.2rem;font-size:.98rem;line-height:1.7;}
+.contact-direct{display:flex;flex-direction:column;gap:1.1rem;align-items:flex-start;}
+html[dir="rtl"] .contact-direct{align-items:flex-end;}
+.wa-big{font-size:.98rem;padding:1.1rem 2.1rem;}
+
+/* FOOTER */
+footer{background:var(--white);border-top:1px solid var(--line);padding:1.8rem 0;}
+.footer-inner{display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;align-items:center;font-size:.78rem;color:var(--ink-ghost);}
+.footer-inner a{text-decoration:none;color:var(--ink-soft);border-bottom:1px solid var(--line);padding-bottom:1px;}
+.footer-inner a:hover{color:var(--edu);border-color:var(--edu);}
+</style>
+</head>
+<body>
+
+<div class="spine" aria-hidden="true"><div class="spine-fill" id="spineFill"></div></div>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-mono">AST <span>&middot;</span> <span id="brandTag">Business Development</span></div>
+    <div class="lang-switch" role="group" aria-label="Language">
+      <button class="lang-btn active" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="ar">AR</button>
+      <button class="lang-btn" data-lang="tr">TR</button>
+    </div>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="wrap">
+    <p class="hero-tagline" data-i18n="tagline">Business Developer</p>
+    <h1 class="hero-name" data-i18n="name">Ahmad Saleh Tuffaha</h1>
+    <p class="hero-line" data-i18n="heroLine">I turn operational chaos into precise, high-performing systems — so your business runs on process, not guesswork.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" id="waHero" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1s-.5-.1-.7.1-.8 1-.9 1.2-.3.2-.6.1a7.7 7.7 0 0 1-2.3-1.4 8.6 8.6 0 0 1-1.6-2c-.2-.3 0-.5.1-.6l.4-.5.3-.4a.6.6 0 0 0 0-.5c-.1-.1-.7-1.6-.9-2.2-.2-.5-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4A3.4 3.4 0 0 0 6 9.6a5.9 5.9 0 0 0 1.3 3.2 13.5 13.5 0 0 0 5.2 4.6c.7.3 1.3.5 1.7.6a4.1 4.1 0 0 0 1.9.1 3.1 3.1 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.1-.3-.2-.6-.3z"/><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 20.2 12 8.2 8.2 0 0 1 12 20.2z"/></svg>
+        <span data-i18n="ctaWhatsapp">Message on WhatsApp</span>
+      </a>
+      <a class="btn btn-secondary" href="#services" data-i18n="ctaServices">See how I work</a>
+    </div>
+  </div>
+</section>
+
+<section class="section reveal" id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow" data-i18n="aboutEyebrow">What this means</p>
+      <h2 class="section-title" data-i18n="aboutTitle">What is business development, exactly?</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-block">
+        <p data-i18n="aboutBizText">Business development isn't just sales. It's the discipline of finding the right opportunities, building the right relationships, and designing the systems that let that growth hold — instead of collapsing into short-term wins and long-term chaos.</p>
+      </div>
+      <div class="about-block">
+        <p data-i18n="aboutBioText">With 20+ years across business development, operations, and cross-sector consulting, I work directly with companies — as an outside eye that builds what's missing and fixes what's breaking, one system at a time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-cream reveal" id="services">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow" data-i18n="servicesEyebrow">Where I help</p>
+      <h2 class="section-title" data-i18n="servicesTitle">Services</h2>
+    </div>
+    <div class="services-grid" id="servicesGrid"></div>
+  </div>
+</section>
+
+<section class="section reveal" id="work">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow" data-i18n="csEyebrow">Proof, not promises</p>
+      <h2 class="section-title" data-i18n="csTitle">Recent client work</h2>
+      <p class="cs-intro" data-i18n="csIntro">Three systems built and delivered for real operational problems.</p>
+    </div>
+    <div class="proj-grid" id="projGrid"></div>
+  </div>
+</section>
+
+<section class="section contact reveal" id="contact">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow" data-i18n="contactEyebrow">Let's talk</p>
+      <h2 class="section-title" data-i18n="contactTitle">Have an operational problem worth solving?</h2>
+      <p class="contact-sub" data-i18n="contactSub">Send a message directly on WhatsApp, or write a few lines below and I'll get it as a WhatsApp message.</p>
+    </div>
+    <div class="contact-direct contact-direct-solo">
+      <a class="btn btn-primary wa-big" id="waContact" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.9-2-1s-.5-.1-.7.1-.8 1-.9 1.2-.3.2-.6.1a7.7 7.7 0 0 1-2.3-1.4 8.6 8.6 0 0 1-1.6-2c-.2-.3 0-.5.1-.6l.4-.5.3-.4a.6.6 0 0 0 0-.5c-.1-.1-.7-1.6-.9-2.2-.2-.5-.5-.5-.7-.5h-.6a1.1 1.1 0 0 0-.8.4A3.4 3.4 0 0 0 6 9.6a5.9 5.9 0 0 0 1.3 3.2 13.5 13.5 0 0 0 5.2 4.6c.7.3 1.3.5 1.7.6a4.1 4.1 0 0 0 1.9.1 3.1 3.1 0 0 0 2-1.4 2.5 2.5 0 0 0 .2-1.4c-.1-.1-.3-.2-.6-.3z"/><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 20.2 12 8.2 8.2 0 0 1 12 20.2z"/></svg>
+        <span data-i18n="ctaWhatsapp">Message on WhatsApp</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span data-i18n="footerText">&copy; 2026 Ahmad Saleh Tuffaha — Business Development</span>
+    <a href="https://ast47.github.io/ahmadsalehtuffaha" data-i18n="backToPortfolio">Full career portfolio &rarr;</a>
+  </div>
+</footer>
+
+<script>
+/* ======= CONFIGURE THIS ======= */
+var WHATSAPP_NUMBER = "905525407377";
+/* =============================== */
+
+var currentLang = 'en';
+
+var I18N = {
+  en:{
+    tagline:'Business Developer',
+    name:'Ahmad Saleh Tuffaha',
+    heroLine:"I turn operational chaos into precise, high-performing systems — so your business runs on process, not guesswork.",
+    ctaWhatsapp:'Message on WhatsApp',
+    ctaServices:'See how I work',
+    aboutEyebrow:'What this means',
+    aboutTitle:'What is business development, exactly?',
+    aboutBizText:"Business development isn't just sales. It's the discipline of finding the right opportunities, building the right relationships, and designing the systems that let that growth hold — instead of collapsing into short-term wins and long-term chaos.",
+    aboutBioText:"With 20+ years across business development, operations, and cross-sector consulting, I work directly with companies — as an outside eye that builds what's missing and fixes what's breaking, one system at a time.",
+    servicesEyebrow:'Where I help',
+    servicesTitle:'Services',
+    csEyebrow:'Proof, not promises',
+    csTitle:'Recent client work',
+    csIntro:'Three systems built and delivered for real operational problems.',
+    contactEyebrow:"Let's talk",
+    contactTitle:'Have an operational problem worth solving?',
+    contactSub:"Send a message directly on WhatsApp — that's the fastest way to reach me right now.",
+    footerText:'\u00A9 2026 Ahmad Saleh Tuffaha \u2014 Business Development',
+    backToPortfolio:'Full career portfolio \u2192',
+    brandTag:'Business Development',
+    waMsgDefault:"Hi Ahmad, I'd like to talk about a project.",
+    projChallenge:'Challenge', projSolution:'Solution', projImpact:'Impact',
+    services:[
+      {t:'Business Development & Growth', d:'Finding and building the right commercial relationships and opportunities for sustainable growth.'},
+      {t:'Systems & Workflow Design', d:'Redesigning how work actually moves through your company, from intake to delivery.'},
+      {t:'Efficiency Improvement', d:'Identifying where time and effort are being lost, and closing the gap.'},
+      {t:'Waste Reduction', d:'Cutting redundant steps, duplicate data entry, and manual work that no longer needs to be manual.'},
+      {t:'CRM Implementation', d:"Building and customizing client-tracking systems that match how your team actually works."},
+      {t:'Operational Advisory', d:'Diagnosing weak points in how a business runs, and handing over practical, workable fixes.'}
+    ]
+  },
+  ar:{
+    tagline:'مطوّر أعمال',
+    name:'أحمد صالح تفاحة',
+    heroLine:'أحوّل الفوضى التشغيلية إلى أنظمة دقيقة عالية الكفاءة — ليشتغل عملك بنظام واضح، لا بالتخمين.',
+    ctaWhatsapp:'راسلني على واتساب',
+    ctaServices:'شوف كيف بشتغل',
+    aboutEyebrow:'شو يعني هالشي',
+    aboutTitle:'شو يعني تطوير الأعمال بالضبط؟',
+    aboutBizText:'تطوير الأعمال مش بس مبيعات. هو إيجاد الفرص الصح، وبناء العلاقات الصح، وتصميم الأنظمة يلي بتخلي هاد النمو يستمر — بدل ما يتحول لمكاسب سريعة وفوضى طويلة الأمد.',
+    aboutBioText:'بخبرة تزيد عن 20 عاماً بتطوير الأعمال والعمليات والاستشارات عبر قطاعات مختلفة، بشتغل مباشرة مع الشركات — كعين خارجية بتبني يلي ناقص وبتصلّح يلي عم يتعطل، نظام نظام.',
+    servicesEyebrow:'وين بساعد',
+    servicesTitle:'الخدمات',
+    csEyebrow:'دليل، مش وعود',
+    csTitle:'شغل حديث مع عملاء',
+    csIntro:'ثلاث أنظمة بنيتها وسلّمتها لحل مشاكل تشغيلية حقيقية.',
+    contactEyebrow:'خلينا نحكي',
+    contactTitle:'عندك مشكلة تشغيلية تستاهل حل؟',
+    contactSub:'راسلني مباشرة عبر واتساب — هاي أسرع طريقة توصلني فيها هلق.',
+    footerText:'جميع الحقوق محفوظة \u00A9 2026 أحمد صالح تفاحة — تطوير الأعمال',
+    backToPortfolio:'البورتفوليو المهني الكامل \u2190',
+    brandTag:'تطوير الأعمال',
+    waMsgDefault:'مرحبا أحمد، حابب/ة أحكي معك عن مشروع.',
+    projChallenge:'التحدي', projSolution:'الحل', projImpact:'الأثر',
+    services:[
+      {t:'تطوير الأعمال والنمو', d:'إيجاد وبناء العلاقات والفرص التجارية الصح لنمو مستدام.'},
+      {t:'تصميم الأنظمة وسير العمل', d:'إعادة تصميم كيف بيتحرك الشغل فعلياً جوا شركتك، من أول استلام الطلب لحد التسليم.'},
+      {t:'رفع الكفاءة', d:'تحديد أماكن ضياع الوقت والجهد، وسد الفجوة.'},
+      {t:'تقليل الهدر', d:'قطع الخطوات المكررة وإدخال البيانات المزدوج والشغل اليدوي يلي ما عاد لازم يضل يدوي.'},
+      {t:'تطبيق أنظمة CRM', d:'بناء وتخصيص أنظمة متابعة العملاء لتطابق طريقة شغل فريقك فعلياً.'},
+      {t:'الاستشارات التشغيلية', d:'تشخيص نقاط الضعف بطريقة عمل الشركة، وتسليم حلول عملية وقابلة للتنفيذ.'}
+    ]
+  },
+  tr:{
+    tagline:'İş Geliştirici',
+    name:'Ahmad Saleh Tuffaha',
+    heroLine:"Operasyonel karmaşayı hassas, yüksek verimli sistemlere dönüştürüyorum — işletmeniz tahminle değil, süreçle çalışsın.",
+    ctaWhatsapp:"WhatsApp'tan Yazın",
+    ctaServices:'Nasıl Çalıştığımı Görün',
+    aboutEyebrow:'Bunun anlamı',
+    aboutTitle:'İş geliştirme tam olarak nedir?',
+    aboutBizText:'İş geliştirme yalnızca satış değildir. Doğru fırsatları bulmak, doğru ilişkileri kurmak ve bu büyümenin kısa vadeli kazançlara ve uzun vadeli kaosa dönüşmeden kalıcı olmasını sağlayacak sistemleri tasarlamaktır.',
+    aboutBioText:'İş geliştirme, operasyon ve çok sektörlü danışmanlık alanlarında 20 yılı aşkın deneyimle, şirketlerle doğrudan çalışıyorum — eksik olanı kuran ve aksayanı düzelten dışarıdan bir göz olarak, sistem sistem.',
+    servicesEyebrow:'Nerede yardımcı olurum',
+    servicesTitle:'Hizmetler',
+    csEyebrow:'Vaat değil, kanıt',
+    csTitle:'Güncel müşteri çalışmaları',
+    csIntro:'Gerçek operasyonel sorunlar için kurulmuş ve teslim edilmiş üç sistem.',
+    contactEyebrow:'Konuşalım',
+    contactTitle:'Çözülmeyi hak eden operasyonel bir sorununuz mu var?',
+    contactSub:"Doğrudan WhatsApp'tan yazın — şu an size ulaşmanın en hızlı yolu bu.",
+    footerText:'\u00A9 2026 Ahmad Saleh Tuffaha \u2014 İş Geliştirme',
+    backToPortfolio:'Tam kariyer portföyü \u2192',
+    brandTag:'İş Geliştirme',
+    waMsgDefault:'Merhaba Ahmad, bir proje hakkında konuşmak istiyorum.',
+    projChallenge:'Zorluk', projSolution:'Çözüm', projImpact:'Etki',
+    services:[
+      {t:'İş Geliştirme ve Büyüme', d:'Sürdürülebilir büyüme için doğru ticari ilişkileri ve fırsatları bulmak ve kurmak.'},
+      {t:'Sistem ve İş Akışı Tasarımı', d:'İşin şirketinizde gerçekte nasıl ilerlediğini, talepten teslimata yeniden tasarlamak.'},
+      {t:'Verimlilik Artışı', d:'Zaman ve emeğin nerede kaybedildiğini tespit edip bu açığı kapatmak.'},
+      {t:'İsraf Azaltma', d:'Gereksiz adımları, tekrarlanan veri girişini ve artık elle yapılmasına gerek kalmayan işleri ortadan kaldırmak.'},
+      {t:'CRM Uygulaması', d:'Ekibinizin gerçekte nasıl çalıştığına uyan müşteri takip sistemleri kurmak ve özelleştirmek.'},
+      {t:'Operasyonel Danışmanlık', d:'Bir işletmenin işleyişindeki zayıf noktaları teşhis edip uygulanabilir, pratik çözümler sunmak.'}
+    ]
+  }
+};
+
+/* Case studies reused verbatim from the personal portfolio (ast47.github.io/ahmadsalehtuffaha) */
+var PROJECTS=[
+  {color:'var(--biz)',
+    en:{cat:'Operational Systems & Compliance',
+      title:'Automating Staff Legal Documentation for a 60+ Employee Company',
+      challenge:'A 60+ employee medical tourism firm faced high risk from manually tracking staff legal paperwork, causing delays and compliance gaps.',
+      solution:'Built a custom database to centralize staff records, verify document completeness, and automate expiry alerts — ensuring 100% data accuracy.',
+      impact:'Eliminated documentation bottlenecks and turned a high-risk manual process into a reliable, automated system.',
+      tools:['Notion','Database Design','Compliance Tracking']},
+    ar:{cat:'الأنظمة التشغيلية والامتثال',
+      title:'أتمتة متابعة الأوراق القانونية لفريق العمل في شركة يعمل بها أكثر من 60 موظفاً',
+      challenge:'واجهت شركة سياحة علاجية يعمل بها أكثر من 60 موظفاً مخاطر تشغيلية عالية بسبب المتابعة اليدوية للأوراق القانونية لفريق العمل، ما أدى إلى تأخيرات وثغرات قانونية.',
+      solution:'بنيت قاعدة بيانات مخصصة لمركزة أوراق فريق العمل، والتحقق من اكتمالها، وأتمتة تنبيهات انتهاء صلاحيتها، مع ضمان دقة البيانات بنسبة 100%.',
+      impact:'أزلت اختناقات المتابعة وحوّلت عملية يدوية عالية المخاطر إلى نظام آلي موثوق.',
+      tools:['Notion','تصميم قواعد البيانات','متابعة الأوراق القانونية']},
+    tr:{cat:'Operasyonel Sistemler ve Uyumluluk',
+      title:"60'tan Fazla Çalışanı Olan Bir Şirkette Personel Evraklarını Otomatikleştirme",
+      challenge:"60'tan fazla çalışanı olan bir sağlık turizmi firması, personel evraklarının elle takip edilmesinden kaynaklanan yüksek riskle karşı karşıyaydı; bu da gecikmelere ve uyumluluk eksikliklerine yol açıyordu.",
+      solution:'Personel kayıtlarını merkezileştiren, belgelerin eksiksizliğini doğrulayan ve son kullanma tarihi uyarılarını otomatikleştiren özel bir veritabanı geliştirdim — %100 veri doğruluğu sağlayarak.',
+      impact:'Belge takibindeki tıkanıklıkları ortadan kaldırarak yüksek riskli, elle yürütülen bir süreci güvenilir, otomatik bir sisteme dönüştürdüm.',
+      tools:['Notion','Veritabanı Tasarımı','Uyumluluk Takibi']}},
+  {color:'var(--human)',
+    en:{cat:'CRM Implementation & Workflow',
+      title:'Building a Single Source of Truth for Client Bookings',
+      challenge:'A travel agency struggled with fragmented client data and manual booking tracking, leading to lost follow-ups and no visibility into client history.',
+      solution:'Implemented and customized Bitrix24, tailoring interfaces, pipelines, and status cards to the exact flow of a travel client — from inquiry to trip completion.',
+      impact:'Established a single source of truth for client journeys, enabling instant access to history and consistently personalized service.',
+      tools:['Bitrix24','CRM Design','Workflow Automation']},
+    ar:{cat:'تطبيق أنظمة CRM وتنظيم سير العمل',
+      title:'بناء مصدر موحّد وموثوق لحجوزات العملاء',
+      challenge:'عانت وكالة سياحة من تشتت بيانات العملاء والتتبع اليدوي للحجوزات، ما أدى لضياع المتابعات وغياب أي رؤية واضحة لتاريخ العميل.',
+      solution:'طبّقت نظام Bitrix24 وخصّصته بالكامل، وصممت الواجهات ومسارات العمل وبطاقات الحالة لتطابق رحلة عميل السياحة تماماً — من أول استفسار وحتى انتهاء الرحلة.',
+      impact:'أسّست مصدراً موحّداً وموثوقاً لرحلة كل عميل، ما مكّن الفريق من الوصول الفوري للتاريخ الكامل وتقديم خدمة شخصية ثابتة الجودة.',
+      tools:['Bitrix24','تصميم أنظمة CRM','أتمتة سير العمل']},
+    tr:{cat:'CRM Uygulaması ve İş Akışı',
+      title:'Müşteri Rezervasyonları İçin Tek ve Güvenilir Bir Kaynak Oluşturma',
+      challenge:'Bir seyahat acentesi, dağınık müşteri verileri ve elle takip edilen rezervasyonlar yüzünden zorlanıyor, bu da takiplerin kaybolmasına ve müşteri geçmişine dair görünürlük eksikliğine yol açıyordu.',
+      solution:"Bitrix24'ü kurup özelleştirdim; arayüzleri, iş akışlarını ve durum kartlarını bir seyahat müşterisinin yolculuğuna — talep anından seyahatin tamamlanmasına kadar — birebir uyacak şekilde tasarladım.",
+      impact:'Müşteri yolculukları için tek ve güvenilir bir kaynak oluşturdum; bu sayede geçmişe anında erişim ve tutarlı, kişiselleştirilmiş hizmet mümkün oldu.',
+      tools:['Bitrix24','CRM Tasarımı','İş Akışı Otomasyonu']}},
+  {color:'var(--trans)',
+    en:{cat:'Financial Consolidation & Reporting',
+      title:'Automating Real-Time Financials Across Three Disconnected Files',
+      challenge:"A travel agency tracked clients, suppliers, and partners across three separate Excel files, each updated and cross-referenced by hand — despite being digital, the process remained entirely manual, with no real-time view of the company's overall financial position.",
+      solution:'Rebuilt the system using PivotTables to automatically pull and consolidate data from all three files into a single, unified interface.',
+      impact:'Turned a fully manual, three-file process into a fully automated, real-time system — giving instant, one-click visibility into the complete financial picture.',
+      tools:['Excel (Advanced)','PivotTables','Financial Consolidation']},
+    ar:{cat:'التوحيد المالي والتقارير',
+      title:'أتمتة البيانات المالية اللحظية عبر ثلاثة ملفات منفصلة',
+      challenge:'كانت وكالة سياحة تتابع العملاء والموردين والشركاء عبر ثلاثة ملفات إكسل منفصلة، يتم تحديثها ومطابقتها يدوياً — ورغم كونها رقمية، بقيت العملية يدوية بالكامل، بدون أي رؤية لحظية للوضع المالي العام للشركة.',
+      solution:'أعدت بناء النظام باستخدام PivotTables لسحب البيانات من الملفات الثلاثة كلها ودمجها تلقائياً في واجهة موحّدة واحدة.',
+      impact:'حوّلت عملية يدوية بالكامل موزعة على ثلاثة ملفات إلى نظام آلي بالكامل يعمل بشكل لحظي — يمنح رؤية فورية وبضغطة واحدة للوضع المالي الكامل.',
+      tools:['Excel (متقدم)','PivotTables','التوحيد المالي']},
+    tr:{cat:'Finansal Konsolidasyon ve Raporlama',
+      title:'Birbirinden Bağımsız Üç Dosya Genelinde Gerçek Zamanlı Finansal Otomasyon',
+      challenge:'Bir seyahat acentesi; müşterileri, tedarikçileri ve iş ortaklarını, her biri elle güncellenip karşılaştırılan üç ayrı Excel dosyası üzerinden takip ediyordu — dijital olmasına rağmen süreç tamamen elle yürütülüyor, şirketin genel mali durumuna dair gerçek zamanlı bir görünürlük bulunmuyordu.',
+      solution:"Üç dosyadaki verileri otomatik olarak çekip tek bir ortak arayüzde birleştiren sistemi PivotTable'lar kullanarak yeniden kurdum.",
+      impact:'Tamamen elle yürütülen, üç dosyaya dağılmış bir süreci; tam otomatik, gerçek zamanlı bir sisteme dönüştürdüm — tam finansal tabloya anında ve tek tıkla erişim sağladım.',
+      tools:['Excel (İleri Düzey)','PivotTable','Finansal Konsolidasyon']}}
+];
+
+/* line-style icons, matched by index to the services array (same order across languages) */
+var SERVICE_ICONS = [
+  '<svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>', // growth
+  '<svg viewBox="0 0 24 24"><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M5 8v3a3 3 0 0 0 3 3h1M19 8v3a3 3 0 0 0-3 3h-1M12 16v-2"/></svg>', // systems
+  '<svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 13l3.5-4M9 4h6"/></svg>', // efficiency (gauge)
+  '<svg viewBox="0 0 24 24"><path d="M4 5h16l-6 8v6l-4 2v-8L4 5z"/></svg>', // waste reduction (funnel)
+  '<svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M16 4.2a3 3 0 0 1 0 5.6M19 20c0-2.5-1.6-4.6-3.8-5.5"/></svg>', // CRM
+  '<svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M9 12l2 2 4-5"/></svg>' // advisory (clipboard-check)
+];
+
+function t(key){ return (I18N[currentLang] && I18N[currentLang][key] !== undefined) ? I18N[currentLang][key] : I18N.en[key]; }
+
+function renderServices(){
+  var grid = document.getElementById('servicesGrid');
+  grid.innerHTML = '';
+  t('services').forEach(function(s, i){
+    var el = document.createElement('div');
+    el.className = 'service-card';
+    var icon = SERVICE_ICONS[i] || '';
+    el.innerHTML = '<div class="service-icon">'+icon+'</div><h3 class="service-title">'+s.t+'</h3><p class="service-desc">'+s.d+'</p>';
+    grid.appendChild(el);
+  });
+}
+
+function renderProjects(){
+  var grid = document.getElementById('projGrid');
+  grid.innerHTML = '';
+  PROJECTS.forEach(function(p){
+    var d = p[currentLang] || p.en;
+    var el = document.createElement('div');
+    el.className = 'proj-card';
+    el.style.borderTopColor = p.color;
+    el.innerHTML =
+      '<p class="proj-cat" style="color:'+p.color+'">'+d.cat+'</p>'+
+      '<p class="proj-title">'+d.title+'</p>'+
+      '<div class="proj-blocks">'+
+        '<div class="proj-block"><span class="proj-block-label">'+t('projChallenge')+'</span><span class="proj-block-text">'+d.challenge+'</span></div>'+
+        '<div class="proj-block"><span class="proj-block-label">'+t('projSolution')+'</span><span class="proj-block-text">'+d.solution+'</span></div>'+
+        '<div class="proj-block"><span class="proj-block-label">'+t('projImpact')+'</span><span class="proj-block-text">'+d.impact+'</span></div>'+
+      '</div>'+
+      '<div class="proj-tools">'+d.tools.map(function(x){return '<span class="proj-tool">'+x+'</span>';}).join('')+'</div>';
+    grid.appendChild(el);
+  });
+}
+
+function updateWaLinks(defaultText){
+  var url = 'https://wa.me/'+WHATSAPP_NUMBER+'?text='+encodeURIComponent(defaultText);
+  document.getElementById('waHero').href = url;
+  document.getElementById('waContact').href = url;
+}
+
+function applyLang(lang){
+  currentLang = lang;
+  document.documentElement.lang = lang;
+  document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var key = el.getAttribute('data-i18n');
+    var val = t(key);
+    if (val !== undefined) el.innerHTML = val;
+  });
+
+  document.querySelectorAll('.lang-btn').forEach(function(b){
+    b.classList.toggle('active', b.getAttribute('data-lang') === lang);
+  });
+
+  renderServices();
+  renderProjects();
+  updateWaLinks(t('waMsgDefault'));
+}
+
+document.querySelectorAll('.lang-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){ applyLang(btn.getAttribute('data-lang')); });
+});
+
+/* scroll reveal */
+var observer = new IntersectionObserver(function(entries){
+  entries.forEach(function(entry){
+    if (entry.isIntersecting){
+      entry.target.classList.add('in-view');
+      observer.unobserve(entry.target);
+    }
+  });
+}, {threshold: 0.12});
+document.querySelectorAll('.reveal').forEach(function(el){ observer.observe(el); });
+
+/* scroll progress spine */
+var spineFill = document.getElementById('spineFill');
+function updateSpine(){
+  var h = document.documentElement;
+  var scrolled = h.scrollTop;
+  var height = h.scrollHeight - h.clientHeight;
+  var pct = height > 0 ? (scrolled / height) * 100 : 0;
+  spineFill.style.height = pct + '%';
+}
+window.addEventListener('scroll', updateSpine, {passive:true});
+
+applyLang('en');
+updateSpine();
+</script>
+</body>
+</html>
