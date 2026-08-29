@@ -232,6 +232,21 @@ function applyTranslations(lang){
   });
 }
 
+function formatDate(code, lang){
+  // Expects a 6-digit YYMMDD code (e.g. "260827"). Anything else is shown as-is.
+  if(!/^\d{6}$/.test(String(code))) return code || "";
+  const yy = code.slice(0,2), mm = parseInt(code.slice(2,4),10)-1, dd = parseInt(code.slice(4,6),10);
+  const year = 2000 + parseInt(yy,10);
+  const months = {
+    ar: ["كانون الثاني","شباط","آذار","نيسان","أيار","حزيران","تموز","آب","أيلول","تشرين الأول","تشرين الثاني","كانون الأول"],
+    en: ["January","February","March","April","May","June","July","August","September","October","November","December"],
+    tr: ["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"]
+  };
+  const monthName = (months[lang] || months.en)[mm];
+  if(lang === "en") return `${monthName} ${dd}, ${year}`;
+  return `${dd} ${monthName} ${year}`;
+}
+
 function renderItems(lang){
   const grid = document.getElementById("item-grid");
   grid.innerHTML = "";
@@ -259,7 +274,7 @@ function renderItems(lang){
           <svg class="item-ext" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
         </div>
         <p class="item-blurb">${(item.blurb && (item.blurb[lang] || item.blurb.ar)) || ""}</p>
-        <span class="item-date">${item.date || ""}</span>
+        <span class="item-date">${formatDate(item.date, lang)}</span>
       </div>`;
     a.addEventListener("mousemove", e=>{
       const r = a.getBoundingClientRect();
