@@ -381,26 +381,32 @@ footer{
       </a>
 
       <!-- Side projects -->
-      <div class="dest-card reveal" id="mouse-card-projects">
+      <a class="dest-card reveal" href="projects.html">
         <div class="dest-card-top">
           <span class="dest-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m8 9-3 3 3 3M16 9l3 3-3 3M13 6l-2 12"/></svg>
           </span>
           <span class="dest-name" data-i18n="dest.projects.name">مشاريع جانبية</span>
         </div>
-        <div class="sub-grid" id="projects-grid"></div>
-      </div>
+        <span class="dest-link">
+          <span data-i18n="dest.projects.cta">تصفح المشاريع</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        </span>
+      </a>
 
       <!-- Articles -->
-      <div class="dest-card reveal" id="mouse-card-articles">
+      <a class="dest-card reveal" href="articles.html">
         <div class="dest-card-top">
           <span class="dest-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>
           </span>
           <span class="dest-name" data-i18n="dest.articles.name">مقالات</span>
         </div>
-        <div id="articles-list"></div>
-      </div>
+        <span class="dest-link">
+          <span data-i18n="dest.articles.cta">قراءة المقالات</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        </span>
+      </a>
 
     </div>
   </section>
@@ -467,18 +473,6 @@ footer{
    CONTENT — edit these arrays/objects to update the page
    ============================================================ */
 
-// Side projects: add/remove objects freely. "initials" shows until
-// you replace it with a real logo image (swap the div for an <img>).
-const PROJECTS = [
-  // { name: "اسم المشروع", url: "https://...", initials: "AB" },
-];
-
-// Articles: add your LinkedIn posts here as you publish them.
-// Newest first. Each needs a title and the LinkedIn post URL.
-const ARTICLES = [
-  // { title: "عنوان المقال", url: "https://www.linkedin.com/..." },
-];
-
 // Certifications & training — kept in English since these are official
 // credential titles from the issuing platforms, regardless of site language.
 const CERTIFICATIONS = [
@@ -522,12 +516,9 @@ const translations = {
     "dest.portfolio.desc": "السيرة المهنية الكاملة: الخبرات، الشهادات، والمهارات بالتفصيل.",
     "dest.portfolio.cta": "زيارة البورتفوليو",
     "dest.projects.name": "مشاريع جانبية",
-    "dest.projects.desc": "أدوات وتجارب صغيرة، كل وحدة إلها رابطها الخاص.",
-    "dest.projects.empty": "قريباً — أول مشروع جاي.",
+    "dest.projects.cta": "تصفح المشاريع",
     "dest.articles.name": "مقالات",
-    "dest.articles.desc": "أحدث ما كتبته على لينكدإن.",
-    "dest.articles.empty": "لسا ما في مقالات منشورة — تابعني عالينكدإن.",
-    "dest.articles.readmore": "اقرأ على لينكدإن",
+    "dest.articles.cta": "قراءة المقالات",
     "contact.label": "تواصل",
     "contact.q1": "هل أنت بحاجة لنظام عمل؟",
     "contact.q2": "هل تعاني من الهدر في الوقت والجهد؟",
@@ -557,12 +548,9 @@ const translations = {
     "dest.portfolio.desc": "The complete professional story: experience, certifications, and skills in detail.",
     "dest.portfolio.cta": "Visit the portfolio",
     "dest.projects.name": "Side projects",
-    "dest.projects.desc": "Small tools and experiments, each with its own link.",
-    "dest.projects.empty": "Coming soon — first project on the way.",
+    "dest.projects.cta": "Browse the projects",
     "dest.articles.name": "Articles",
-    "dest.articles.desc": "Recent writing on LinkedIn.",
-    "dest.articles.empty": "No articles published yet — follow along on LinkedIn.",
-    "dest.articles.readmore": "Read on LinkedIn",
+    "dest.articles.cta": "Read the articles",
     "contact.label": "Contact",
     "contact.q1": "Need a system for how your business runs?",
     "contact.q2": "Losing time and effort to inefficiency?",
@@ -592,12 +580,9 @@ const translations = {
     "dest.portfolio.desc": "Deneyim, sertifikalar ve yetkinliklerin tamamı.",
     "dest.portfolio.cta": "Portfolyoyu görüntüle",
     "dest.projects.name": "Yan projeler",
-    "dest.projects.desc": "Küçük araçlar ve denemeler, her birinin kendi linki var.",
-    "dest.projects.empty": "Yakında — ilk proje yolda.",
+    "dest.projects.cta": "Projelere göz at",
     "dest.articles.name": "Yazılar",
-    "dest.articles.desc": "LinkedIn'deki son yazılar.",
-    "dest.articles.empty": "Henüz yayınlanmış yazı yok — LinkedIn'den takip edebilirsin.",
-    "dest.articles.readmore": "LinkedIn'de oku",
+    "dest.articles.cta": "Yazıları oku",
     "contact.label": "İletişim",
     "contact.q1": "İşinize bir sisteme mi ihtiyacınız var?",
     "contact.q2": "Zaman ve emek kaybı mı yaşıyorsunuz?",
@@ -626,45 +611,6 @@ function applyTranslations(lang){
   });
   document.querySelectorAll(".lang-switch button").forEach(btn=>{
     btn.classList.toggle("active", btn.dataset.lang === lang);
-  });
-}
-
-function renderProjects(lang){
-  const grid = document.getElementById("projects-grid");
-  grid.innerHTML = "";
-  if(PROJECTS.length === 0){
-    const p = document.createElement("p");
-    p.className = "article-empty";
-    p.textContent = translations[lang]["dest.projects.empty"];
-    grid.appendChild(p);
-    return;
-  }
-  PROJECTS.forEach(proj=>{
-    const a = document.createElement("a");
-    a.href = proj.url; a.target = "_blank"; a.rel = "noopener";
-    a.className = "sub-item";
-    a.innerHTML = `<span class="sub-logo">${(proj.initials||proj.name.slice(0,2)).toUpperCase()}</span><span>${proj.name}</span>`;
-    grid.appendChild(a);
-  });
-}
-
-function renderArticles(lang){
-  const list = document.getElementById("articles-list");
-  list.innerHTML = "";
-  if(ARTICLES.length === 0){
-    const p = document.createElement("p");
-    p.className = "article-empty";
-    p.textContent = translations[lang]["dest.articles.empty"];
-    list.appendChild(p);
-    return;
-  }
-  ARTICLES.forEach(art=>{
-    const a = document.createElement("a");
-    a.href = art.url; a.target = "_blank"; a.rel = "noopener";
-    a.className = "article-row";
-    a.innerHTML = `<span class="article-title">${art.title}</span>
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>`;
-    list.appendChild(a);
   });
 }
 
@@ -742,8 +688,6 @@ function renderMarquees(lang){
 function setLanguage(lang){
   currentLang = lang;
   applyTranslations(lang);
-  renderProjects(lang);
-  renderArticles(lang);
   renderMarquees(lang);
   startTypewriter(lang);
 }
