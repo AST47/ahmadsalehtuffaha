@@ -400,10 +400,10 @@ footer{
           <span class="dest-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>
           </span>
-          <span class="dest-name" data-i18n="dest.articles.name">مقالات</span>
+          <span class="dest-name" data-i18n="dest.articles.name">خواطر وتجارب</span>
         </div>
         <span class="dest-link">
-          <span data-i18n="dest.articles.cta">قراءة المقالات</span>
+          <span data-i18n="dest.articles.cta">قراءة الخواطر</span>
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
         </span>
       </a>
@@ -517,8 +517,8 @@ const translations = {
     "dest.portfolio.cta": "زيارة البورتفوليو",
     "dest.projects.name": "مشاريع جانبية",
     "dest.projects.cta": "تصفح المشاريع",
-    "dest.articles.name": "مقالات",
-    "dest.articles.cta": "قراءة المقالات",
+    "dest.articles.name": "خواطر وتجارب",
+    "dest.articles.cta": "قراءة الخواطر",
     "contact.label": "تواصل",
     "contact.q1": "هل أنت بحاجة لنظام عمل؟",
     "contact.q2": "هل تعاني من الهدر في الوقت والجهد؟",
@@ -549,8 +549,8 @@ const translations = {
     "dest.portfolio.cta": "Visit the portfolio",
     "dest.projects.name": "Side projects",
     "dest.projects.cta": "Browse the projects",
-    "dest.articles.name": "Articles",
-    "dest.articles.cta": "Read the articles",
+    "dest.articles.name": "Reflections & Experiences",
+    "dest.articles.cta": "Read the reflections",
     "contact.label": "Contact",
     "contact.q1": "Need a system for how your business runs?",
     "contact.q2": "Losing time and effort to inefficiency?",
@@ -581,8 +581,8 @@ const translations = {
     "dest.portfolio.cta": "Portfolyoyu görüntüle",
     "dest.projects.name": "Yan projeler",
     "dest.projects.cta": "Projelere göz at",
-    "dest.articles.name": "Yazılar",
-    "dest.articles.cta": "Yazıları oku",
+    "dest.articles.name": "Düşünceler ve Deneyimler",
+    "dest.articles.cta": "Düşünceleri oku",
     "contact.label": "İletişim",
     "contact.q1": "İşinize bir sisteme mi ihtiyacınız var?",
     "contact.q2": "Zaman ve emek kaybı mı yaşıyorsunuz?",
@@ -687,6 +687,7 @@ function renderMarquees(lang){
 
 function setLanguage(lang){
   currentLang = lang;
+  localStorage.setItem("site-lang", lang);
   applyTranslations(lang);
   renderMarquees(lang);
   startTypewriter(lang);
@@ -716,7 +717,8 @@ function revealOnScroll(){
 window.addEventListener("scroll", revealOnScroll);
 window.addEventListener("resize", revealOnScroll);
 
-setLanguage("ar");
+const savedLang = localStorage.getItem("site-lang");
+setLanguage(translations[savedLang] ? savedLang : "ar");
 revealOnScroll();
 </script>
 </body>

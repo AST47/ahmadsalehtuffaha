@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<title>Ahmad Saleh Tuffaha — Articles</title>
-<meta name="description" content="Articles by Ahmad Saleh Tuffaha.">
+<title>Ahmad Saleh Tuffaha — Reflections & Experiences</title>
+<meta name="description" content="Reflections and experiences by Ahmad Saleh Tuffaha.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&family=Lora:wght@400;600;700&display=swap" rel="stylesheet">
@@ -75,20 +75,25 @@ section{max-width:var(--maxw);margin:0 auto;padding:26px 24px 70px;}
 .item-card{
   position:relative;overflow:hidden;
   background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
-  padding:22px;transition:border-color .3s, transform .2s;
+  transition:border-color .3s, transform .2s;
 }
 .item-card:hover{border-color:var(--accent);transform:translateY(-2px);}
 .item-card::before{
   content:'';position:absolute;inset:0;pointer-events:none;opacity:0;
   background:radial-gradient(360px circle at var(--mx,50%) var(--my,50%), var(--accent-wash), transparent 45%);
-  transition:opacity .4s;
+  transition:opacity .4s;z-index:0;
 }
 .item-card:hover::before{opacity:1;}
+.item-body{padding:22px;position:relative;z-index:1;}
+.item-cover{width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--cream);border-bottom:1px solid var(--line);}
+.item-cover img{width:100%;height:100%;object-fit:cover;display:block;}
 .item-top{display:flex;align-items:center;gap:12px;margin-bottom:10px;position:relative;z-index:1;}
+.item-ext{width:14px;height:14px;stroke:var(--ink-ghost);flex-shrink:0;margin-inline-start:auto;transition:stroke .2s;}
+.item-card:hover .item-ext{stroke:var(--accent);}
 .item-emoji{width:38px;height:38px;border-radius:9px;background:var(--cream);border:1px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:18px;}
 .item-title{font-size:17px;font-weight:800;position:relative;z-index:1;}
 html[lang="en"] .item-title, html[lang="tr"] .item-title{font-weight:700;}
-.item-date{font-size:12.5px;color:var(--ink-ghost);font-weight:600;margin-inline-start:auto;position:relative;z-index:1;}
+.item-date{font-size:12px;color:var(--ink-ghost);font-weight:600;margin-top:12px;display:block;position:relative;z-index:1;}
 .item-blurb{font-size:14px;color:var(--ink-soft);position:relative;z-index:1;}
 
 .empty-state{
@@ -129,7 +134,7 @@ footer{border-top:1px solid var(--line);padding:34px 24px;max-width:var(--maxw);
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
       <span data-i18n="back">عودة للرئيسية</span>
     </a>
-    <h1 class="page-title" data-i18n="page.title">مشاريع جانبية</h1>
+    <h1 class="page-title" data-i18n="page.title">خواطر وتجارب</h1>
   </div>
 
   <section>
@@ -153,10 +158,35 @@ footer{border-top:1px solid var(--line);padding:34px 24px;max-width:var(--maxw);
    and a title/blurb per language (LinkedIn posts are usually
    written in one language — feel free to repeat the same text
    in all three fields if you don't want to re-write it per language).
+
+   IMAGE (optional): add an "image" field with a direct link to the
+   picture and it'll show as a cover photo instead of the emoji icon.
+   Two ways to get that link:
+   1) On the LinkedIn post, right-click the image → "Copy image address".
+      Fast, but LinkedIn's image links can occasionally expire.
+   2) Download the image, put it in an "images" folder next to this
+      file, and use a relative path like "images/my-post.jpg".
+      More reliable long-term, since it doesn't depend on LinkedIn.
    ============================================================ */
 const ITEMS = [
+  {
+    emoji: "💡",
+    date: "260827",
+    url: "https://www.linkedin.com/posts/ahmad-saleh-tuffaha_systemsintegration-operationalexcellence-activity-7498660803173048320-U_Zc",
+    title: {
+      ar: "السبب الحقيقي وراء \"اختفاء\" عشرات الأخطاء شهرياً في شركة لوجستية",
+      en: "The real reason dozens of monthly errors \"disappeared\" at a logistics company",
+      tr: "Bir lojistik şirketinde onlarca aylık hatanın \"kaybolmasının\" gerçek nedeni"
+    },
+    blurb: {
+      ar: "لا تبحث عن بشر خارقين لإصلاح نظام متهالك؛ ابنِ نظاماً ذكياً يجعل الخطأ مستحيلاً.",
+      en: "Don't look for superhuman staff to fix a broken system; build a smart system that makes the error impossible.",
+      tr: "Bozuk bir sistemi düzeltmek için kahraman insanlar arama; hatayı imkansız kılan akıllı bir sistem kur."
+    }
+  },
   // {
   //   emoji: "📝",
+  //   image: "images/my-post.jpg", // optional — omit to use the emoji instead
   //   date: "يناير 2026",
   //   url: "https://www.linkedin.com/posts/your-post-url",
   //   title: { ar: "عنوان المقال", en: "Article title", tr: "Makale başlığı" },
@@ -169,8 +199,8 @@ const translations = {
     "nav.name": "أحمد صالح تفاحة",
     "nav.role": "مطوّر أعمال",
     "back": "عودة للرئيسية",
-    "page.title": "مقالات",
-    "empty": "لسا ما في مقالات منشورة — تابعني عالينكدإن.",
+    "page.title": "خواطر وتجارب",
+    "empty": "لسا ما في خواطر منشورة — تابعني عالينكدإن.",
     "footer.copy": "© 2026 أحمد صالح تفاحة — جميع الحقوق محفوظة",
     "footer.home": "الرئيسية",
   },
@@ -178,8 +208,8 @@ const translations = {
     "nav.name": "Ahmad Saleh Tuffaha",
     "nav.role": "Business Developer",
     "back": "Back to home",
-    "page.title": "Articles",
-    "empty": "No articles published yet — follow along on LinkedIn.",
+    "page.title": "Reflections & Experiences",
+    "empty": "No reflections published yet — follow along on LinkedIn.",
     "footer.copy": "© 2026 Ahmad Saleh Tuffaha — All rights reserved",
     "footer.home": "Home",
   },
@@ -187,8 +217,8 @@ const translations = {
     "nav.name": "Ahmad Saleh Tuffaha",
     "nav.role": "İş Geliştirme Uzmanı",
     "back": "Ana sayfaya dön",
-    "page.title": "Yazılar",
-    "empty": "Henüz yayınlanmış yazı yok — LinkedIn'den takip edebilirsin.",
+    "page.title": "Düşünceler ve Deneyimler",
+    "empty": "Henüz paylaşılmış bir düşünce yok — LinkedIn'den takip edebilirsin.",
     "footer.copy": "© 2026 Ahmad Saleh Tuffaha — Tüm hakları saklıdır",
     "footer.home": "Ana sayfa",
   }
@@ -221,13 +251,21 @@ function renderItems(lang){
     const a = document.createElement("a");
     a.href = item.url; a.target = "_blank"; a.rel = "noopener";
     a.className = "item-card";
+    const cover = item.image
+      ? `<div class="item-cover"><img src="${item.image}" alt="" loading="lazy"></div>`
+      : "";
+    const icon = item.image ? "" : `<span class="item-emoji">${item.emoji || "🔗"}</span>`;
     a.innerHTML = `
-      <div class="item-top">
-        <span class="item-emoji">${item.emoji || "🔗"}</span>
-        <span class="item-title">${item.title[lang] || item.title.ar}</span>
+      ${cover}
+      <div class="item-body">
+        <div class="item-top">
+          ${icon}
+          <span class="item-title">${item.title[lang] || item.title.ar}</span>
+          <svg class="item-ext" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        </div>
+        <p class="item-blurb">${(item.blurb && (item.blurb[lang] || item.blurb.ar)) || ""}</p>
         <span class="item-date">${item.date || ""}</span>
-      </div>
-      <p class="item-blurb">${(item.blurb && (item.blurb[lang] || item.blurb.ar)) || ""}</p>`;
+      </div>`;
     a.addEventListener("mousemove", e=>{
       const r = a.getBoundingClientRect();
       a.style.setProperty("--mx", (e.clientX - r.left) + "px");
@@ -238,6 +276,7 @@ function renderItems(lang){
 }
 
 function setLanguage(lang){
+  localStorage.setItem("site-lang", lang);
   applyTranslations(lang);
   renderItems(lang);
 }
@@ -246,7 +285,8 @@ document.querySelectorAll(".lang-switch button").forEach(btn=>{
   btn.addEventListener("click", ()=> setLanguage(btn.dataset.lang));
 });
 
-setLanguage("ar");
+const savedLang = localStorage.getItem("site-lang");
+setLanguage(translations[savedLang] ? savedLang : "ar");
 </script>
 </body>
 </html>
