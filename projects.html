@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<title>Ahmad Saleh Tuffaha — Side Projects</title>
-<meta name="description" content="Side projects by Ahmad Saleh Tuffaha.">
+<title>Ahmad Saleh Tuffaha — Projects</title>
+<meta name="description" content="Real case studies and side projects by Ahmad Saleh Tuffaha.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&family=Lora:wght@400;600;700&display=swap" rel="stylesheet">
@@ -101,6 +101,29 @@ html[lang="en"] .item-title, html[lang="tr"] .item-title{font-weight:700;}
   border:1px dashed var(--line);border-radius:var(--radius);
 }
 
+/* ---------- case studies (spacious, no card box) ---------- */
+.case-list{display:flex;flex-direction:column;gap:44px;margin-bottom:50px;}
+.case-block{border-top:3px solid var(--accent);padding-top:26px;}
+.case-top{display:flex;flex-direction:column;gap:20px;margin-bottom:26px;}
+@media(min-width:480px){.case-top{flex-direction:row;align-items:center;gap:24px;}}
+.case-badge{
+  width:128px;height:128px;border-radius:20px;background:var(--white);border:1px solid var(--line);
+  flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.case-badge .num{font-size:38px;font-weight:800;color:var(--accent);line-height:1;}
+.case-badge .lbl{font-size:11.5px;font-weight:700;color:var(--accent);margin-top:6px;text-align:center;line-height:1.3;padding:0 10px;}
+.case-category{font-size:12.5px;font-weight:700;color:var(--ink-soft);margin-bottom:6px;}
+.case-title{font-size:19px;font-weight:800;line-height:1.4;}
+html[lang="en"] .case-title, html[lang="tr"] .case-title{font-weight:700;}
+.case-grid{display:grid;grid-template-columns:1fr;gap:22px;}
+@media(min-width:560px){.case-grid{grid-template-columns:1fr 1fr;gap:26px 40px;}}
+.case-grid h4{font-size:14.5px;font-weight:800;color:var(--accent);margin-bottom:8px;}
+html[lang="en"] .case-grid h4, html[lang="tr"] .case-grid h4{font-weight:700;}
+.case-grid p{font-size:14px;line-height:1.85;color:var(--ink);}
+.case-grid .case-tools p{color:var(--ink-soft);}
+
+.sub-heading{font-size:13px;font-weight:700;color:var(--ink-soft);margin-bottom:18px;padding-top:6px;border-top:1px solid var(--line);}
+
 /* ---------- footer ---------- */
 footer{border-top:1px solid var(--line);padding:34px 24px;max-width:var(--maxw);margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;}
 .foot-socials{display:flex;gap:16px;}
@@ -134,10 +157,12 @@ footer{border-top:1px solid var(--line);padding:34px 24px;max-width:var(--maxw);
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
       <span data-i18n="back">عودة للرئيسية</span>
     </a>
-    <h1 class="page-title" data-i18n="page.title">مشاريع جانبية</h1>
+    <h1 class="page-title" data-i18n="page.title">مشاريع عملت عليها</h1>
   </div>
 
   <section>
+    <div class="case-list" id="case-list"></div>
+    <p class="sub-heading" data-i18n="subheading.projects">أعمال أخرى</p>
     <div class="item-grid" id="item-grid"></div>
   </section>
 </main>
@@ -157,6 +182,103 @@ footer{border-top:1px solid var(--line);padding:34px 24px;max-width:var(--maxw);
    Each item needs: emoji (or swap for a logo <img> in the render fn),
    date (any short display string), a url, and a title/blurb per language.
    ============================================================ */
+/* ============================================================
+   CASE STUDIES — real client work. Add more the same way.
+   badgeNum/badgeLabel show in the corner badge instead of an icon.
+   ============================================================ */
+const CASES = [
+  {
+    badgeNum: "36%↓",
+    badgeLabel: { ar: "أخطاء أقل", en: "fewer errors", tr: "daha az hata" },
+    category: { ar: "الأنظمة التشغيلية والامتثال", en: "Operations & Compliance", tr: "Operasyonlar ve Uyum" },
+    title: {
+      ar: "أتمتة متابعة الأوراق القانونية لفريق العمل في شركة يعمل بها أكثر من 60 موظفاً",
+      en: "Automating legal-paperwork follow-up for a team of 60+ employees",
+      tr: "60'tan fazla çalışanı olan bir ekip için hukuki evrak takibinin otomasyonu"
+    },
+    challenge: {
+      ar: "واجهت شركة سياحة علاجية يعمل بها أكثر من 60 موظفاً مخاطر تشغيلية عالية بسبب المتابعة اليدوية للأوراق القانونية لفريق العمل، ما أدى إلى تأخيرات وثغرات قانونية.",
+      en: "A medical tourism company with 60+ employees faced high operational risk from manually tracking the team's legal paperwork, causing delays and legal gaps.",
+      tr: "60'tan fazla çalışanı olan bir medikal turizm şirketi, ekibin hukuki evraklarının elle takip edilmesi yüzünden yüksek operasyonel riskle karşılaştı; bu da gecikmelere ve yasal boşluklara yol açtı."
+    },
+    solution: {
+      ar: "بنيت قاعدة بيانات مخصصة لمركزة أوراق فريق العمل، والتحقق من اكتمالها، وأتمتة تنبيهات انتهاء صلاحيتها، مع ضمان دقة البيانات بنسبة 100%.",
+      en: "I built a dedicated database to centralize the team's paperwork, verify completeness, and automate expiry alerts — with 100% data accuracy.",
+      tr: "Ekibin evraklarını merkezileştiren, eksiksizliğini doğrulayan ve son geçerlilik uyarılarını otomatikleştiren özel bir veritabanı kurdum — %100 veri doğruluğuyla."
+    },
+    impact: {
+      ar: "أزالت اختناقات المتابعة وحوّلت عملية يدوية عالية المخاطر إلى نظام آلي موثوق.",
+      en: "Removed the follow-up bottleneck and turned a high-risk manual process into a reliable automated system.",
+      tr: "Takip darboğazını ortadan kaldırdı ve yüksek riskli manuel bir süreci güvenilir, otomatik bir sisteme dönüştürdü."
+    },
+    tools: {
+      ar: "متابعة الأوراق القانونية، تصميم قواعد البيانات، Notion",
+      en: "Legal paperwork tracking, database design, Notion",
+      tr: "Hukuki evrak takibi, veritabanı tasarımı, Notion"
+    }
+  },
+  {
+    badgeNum: "72%↑",
+    badgeLabel: { ar: "وصول أسرع للبيانات", en: "faster data access", tr: "daha hızlı veri erişimi" },
+    category: { ar: "تطبيق أنظمة CRM وتنظيم سير العمل", en: "CRM Implementation & Workflow", tr: "CRM Uygulaması ve İş Akışı" },
+    title: {
+      ar: "بناء مصدر موحّد وموثوق لحجوزات العملاء",
+      en: "Building a single, reliable source for customer bookings",
+      tr: "Müşteri rezervasyonları için tek ve güvenilir bir kaynak kurmak"
+    },
+    challenge: {
+      ar: "عانت وكالة سياحة من تشتت بيانات العملاء والتتبع اليدوي للحجوزات، ما أدى لضياع المتابعات وغياب أي رؤية واضحة لتاريخ العميل.",
+      en: "A tourism agency struggled with scattered customer data and manual booking tracking, losing follow-ups and any clear view of customer history.",
+      tr: "Müşteri verileri dağınık, manuel rezervasyon takibi müşteri geçmişine net bir görüş sağlamıyordu."
+    },
+    solution: {
+      ar: "طبّقت نظام Bitrix24 وخصّصته بالكامل، وصممت الواجهات ومسارات العمل وبطاقات الحالة لتطابق رحلة عميل السياحة تماماً — من أول استفسار وحتى انتهاء الرحلة.",
+      en: "I implemented and fully customized Bitrix24 — designing the interfaces, workflows, and status cards to match the tourism customer journey exactly, from first inquiry to trip completion.",
+      tr: "Bitrix24'ü uyguladım ve tamamen özelleştirdim — arayüzleri, iş akışlarını ve durum kartlarını turizm müşteri yolculuğuna tam uyacak şekilde, ilk sorgudan seyahatin bitişine kadar tasarladım."
+    },
+    impact: {
+      ar: "أسّست مصدراً موحّداً وموثوقاً لرحلة كل عميل، ما مكّن الفريق من الوصول الفوري للتاريخ الكامل وتقديم خدمة شخصية ثابتة الجودة.",
+      en: "Established a single, reliable source for every customer's journey, letting the team instantly access full history and deliver consistently personal service.",
+      tr: "Her müşterinin yolculuğu için tek ve güvenilir bir kaynak kurdu; ekip artık tam geçmişe anında ulaşıp tutarlı, kişisel hizmet sunabiliyor."
+    },
+    tools: {
+      ar: "أتمتة سير العمل، تصميم أنظمة CRM، Bitrix24",
+      en: "Workflow automation, CRM system design, Bitrix24",
+      tr: "İş akışı otomasyonu, CRM sistem tasarımı, Bitrix24"
+    }
+  },
+  {
+    badgeNum: "98%↓",
+    badgeLabel: { ar: "بوقت تحضير التقرير", en: "less report prep time", tr: "daha az rapor hazırlama süresi" },
+    category: { ar: "التوحيد المالي والتقارير", en: "Financial Consolidation & Reporting", tr: "Mali Konsolidasyon ve Raporlama" },
+    title: {
+      ar: "أتمتة البيانات المالية اللحظية عبر ثلاثة ملفات منفصلة",
+      en: "Automating real-time financial data across three separate files",
+      tr: "Üç ayrı dosya arasında gerçek zamanlı mali veri otomasyonu"
+    },
+    challenge: {
+      ar: "كانت وكالة سياحة تتابع العملاء والموردين والشركاء عبر ثلاثة ملفات منفصلة، يتم تحديثها ومطابقتها يدوياً، ورغم كونها رقمية، بقيت العملية يدوية بالكامل، بدون أي رؤية لحظية للوضع المالي العام للشركة.",
+      en: "A tourism agency tracked customers, suppliers, and partners across three separate files, updated and reconciled by hand — digital, yet still entirely manual, with no real-time view of the company's overall finances.",
+      tr: "Bir turizm acentesi, müşterileri, tedarikçileri ve ortakları üç ayrı dosya üzerinden takip ediyordu; bunlar elle güncelleniyor ve mutabakat yapılıyordu — dijital olmasına rağmen süreç tamamen manuel kaldı, şirketin genel mali durumuna dair anlık bir görünürlük yoktu."
+    },
+    solution: {
+      ar: "أعدت بناء النظام باستخدام PivotTables لسحب البيانات من الملفات الثلاثة كلها ودمجها تلقائياً في واجهة موحّدة.",
+      en: "I rebuilt the system using PivotTables to pull data from all three files and merge it automatically into a single unified view.",
+      tr: "Üç dosyanın tümünden veri çekip tek bir birleşik arayüzde otomatik olarak birleştiren sistemi PivotTables kullanarak yeniden kurdum."
+    },
+    impact: {
+      ar: "حوّلت عملية يدوية بالكامل موزعة على ثلاثة ملفات إلى نظام آلي يعمل بشكل لحظي — يمنح رؤية فورية وبضغطة واحدة للوضع المالي الكامل.",
+      en: "Turned a fully manual process spread across three files into a real-time automated system — giving instant, one-click visibility into the complete financial picture.",
+      tr: "Üç dosyaya dağılmış tamamen manuel bir süreci, gerçek zamanlı çalışan otomatik bir sisteme dönüştürdü — tek tıkla anlık ve tam mali görünürlük sağlıyor."
+    },
+    tools: {
+      ar: "التوحيد المالي، PivotTables، Excel (متقدم)",
+      en: "Financial consolidation, PivotTables, advanced Excel",
+      tr: "Mali konsolidasyon, PivotTables, gelişmiş Excel"
+    }
+  },
+];
+
 const ITEMS = [
   {
     emoji: "📿",
@@ -194,7 +316,9 @@ const translations = {
     "nav.name": "أحمد صالح تفاحة",
     "nav.role": "مطوّر أعمال",
     "back": "عودة للرئيسية",
-    "page.title": "مشاريع جانبية",
+    "page.title": "مشاريع عملت عليها",
+    "subheading.projects": "أعمال أخرى",
+    caseLabels: { challenge: "التحدي", solution: "الحل", impact: "الأثر", tools: "الأدوات" },
     "empty": "قريباً — أول مشروع جاي.",
     "footer.copy": "© 2026 أحمد صالح تفاحة — جميع الحقوق محفوظة",
     "footer.home": "الرئيسية",
@@ -203,7 +327,9 @@ const translations = {
     "nav.name": "Ahmad Saleh Tuffaha",
     "nav.role": "Business Developer",
     "back": "Back to home",
-    "page.title": "Side Projects",
+    "page.title": "Projects I've Worked On",
+    "subheading.projects": "Other Work",
+    caseLabels: { challenge: "Challenge", solution: "Solution", impact: "Impact", tools: "Tools" },
     "empty": "Coming soon — first project on the way.",
     "footer.copy": "© 2026 Ahmad Saleh Tuffaha — All rights reserved",
     "footer.home": "Home",
@@ -212,7 +338,9 @@ const translations = {
     "nav.name": "Ahmad Saleh Tuffaha",
     "nav.role": "İş Geliştirme Uzmanı",
     "back": "Ana sayfaya dön",
-    "page.title": "Yan Projeler",
+    "page.title": "Üzerinde Çalıştığım Projeler",
+    "subheading.projects": "Diğer Çalışmalar",
+    caseLabels: { challenge: "Zorluk", solution: "Çözüm", impact: "Etki", tools: "Araçlar" },
     "empty": "Yakında — ilk proje yolda.",
     "footer.copy": "© 2026 Ahmad Saleh Tuffaha — Tüm hakları saklıdır",
     "footer.home": "Ana sayfa",
@@ -245,6 +373,34 @@ function formatDate(code, lang){
   const monthName = (months[lang] || months.en)[mm];
   if(lang === "en") return `${monthName} ${dd}, ${year}`;
   return `${dd} ${monthName} ${year}`;
+}
+
+function renderCases(lang){
+  const list = document.getElementById("case-list");
+  list.innerHTML = "";
+  CASES.forEach(c=>{
+    const labels = translations[lang].caseLabels;
+    const block = document.createElement("div");
+    block.className = "case-block";
+    block.innerHTML = `
+      <div class="case-top">
+        <div class="case-badge">
+          <span class="num">${c.badgeNum}</span>
+          <span class="lbl">${c.badgeLabel[lang] || c.badgeLabel.ar}</span>
+        </div>
+        <div>
+          <p class="case-category">${c.category[lang] || c.category.ar}</p>
+          <p class="case-title">${c.title[lang] || c.title.ar}</p>
+        </div>
+      </div>
+      <div class="case-grid">
+        <div><h4>${labels.challenge}</h4><p>${c.challenge[lang] || c.challenge.ar}</p></div>
+        <div><h4>${labels.solution}</h4><p>${c.solution[lang] || c.solution.ar}</p></div>
+        <div><h4>${labels.impact}</h4><p>${c.impact[lang] || c.impact.ar}</p></div>
+        <div class="case-tools"><h4>${labels.tools}</h4><p>${c.tools[lang] || c.tools.ar}</p></div>
+      </div>`;
+    list.appendChild(block);
+  });
 }
 
 function renderItems(lang){
@@ -288,6 +444,7 @@ function renderItems(lang){
 function setLanguage(lang){
   localStorage.setItem("site-lang", lang);
   applyTranslations(lang);
+  renderCases(lang);
   renderItems(lang);
 }
 
