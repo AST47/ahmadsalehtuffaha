@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <title>Ahmad Saleh Tuffaha</title>
+<link rel="icon" type="image/png" href="images/logo-icon.png">
 <meta name="description" content="Ahmad Saleh Tuffaha — Business Developer. Portfolio, side projects, and articles.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,8 +21,8 @@
   --ink-soft:#5a5a55;
   --ink-ghost:#a0a09a;
   --line:#d8d4cc;
-  --accent:#c0392b;
-  --accent-wash:rgba(192,57,43,.07);
+  --accent:#7d0102;
+  --accent-wash:rgba(125,1,2,.07);
   --radius:14px;
   --maxw:880px;
 }
@@ -72,21 +73,22 @@ header{
   max-width:var(--maxw);margin:0 auto;
   padding:16px 24px;
   display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;
+}
+@media(max-width:480px){
+  .nav-wrap{flex-direction:column;justify-content:center;gap:12px;}
 }
 .logo{
   display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;
+  flex-wrap:wrap;justify-content:center;
 }
 html[lang="en"] .logo, html[lang="tr"] .logo{font-weight:700;}
-.logo .mark{
-  width:34px;height:34px;border-radius:50%;
-  background:var(--ink);color:var(--cream);
-  display:flex;align-items:center;justify-content:center;
-  font-size:15px;font-weight:800;
-}
+.logo .mark-img{height:32px;width:auto;display:block;}
 .logo .role{
-  font-weight:600;font-size:13px;color:var(--ink-soft);
-  padding-inline-start:10px;border-inline-start:1px solid var(--line);
+  display:flex;align-items:center;gap:8px;
+  font-weight:700;font-size:12.5px;color:var(--accent);letter-spacing:.03em;
 }
+.logo .role .dash{width:16px;height:1.5px;background:var(--accent);display:inline-block;flex-shrink:0;}
 .lang-switch{display:flex;gap:4px;background:var(--white);border:1px solid var(--line);border-radius:999px;padding:3px;}
 .lang-switch button{
   border:none;background:transparent;cursor:pointer;
@@ -287,7 +289,6 @@ html[dir="rtl"] .article-row:hover svg{transform:translateX(-3px);}
    ============================================================ */
 .services-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:0;}
 @media(min-width:620px){.services-grid{grid-template-columns:repeat(2,1fr);}}
-.service-card{cursor:default;}
 .service-name{font-size:19px;}
 
 .contact-dark{background:var(--ink);padding:70px 24px;text-align:center;}
@@ -313,12 +314,23 @@ html[lang="ar"] .contact-question .hl{font-size:1.7em;}
 footer{
   border-top:1px solid var(--line);padding:34px 24px;
   max-width:var(--maxw);margin:0 auto;
-  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;
 }
-.foot-socials{display:flex;gap:16px;}
-.foot-socials a{color:var(--ink-soft);font-size:13px;font-weight:600;}
-.foot-socials a:hover{color:var(--accent);}
-.foot-copy{font-size:13px;color:var(--ink-ghost);}
+@media(max-width:480px){
+  footer{grid-template-columns:1fr;justify-items:center;text-align:center;gap:18px;}
+}
+.footer-logo{display:block;justify-self:center;}
+.footer-logo img{height:34px;width:auto;display:block;}
+.foot-copy{font-size:13px;color:var(--ink-ghost);justify-self:end;text-align:end;}
+@media(max-width:480px){.foot-copy{justify-self:center;text-align:center;}}
+.foot-socials{display:flex;gap:10px;justify-self:start;}
+.social-btn{
+  width:44px;height:44px;border-radius:10px;background:var(--white);border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;color:var(--ink-soft);
+  transition:border-color .2s, color .2s;
+}
+.social-btn:hover{border-color:var(--accent);color:var(--accent);}
+.social-btn svg{width:20px;height:20px;}
 
 @media (prefers-reduced-motion: reduce){
   .cursor{animation:none;}
@@ -334,9 +346,9 @@ footer{
 <header>
   <div class="nav-wrap">
     <a href="#top" class="logo">
-      <span class="mark">A</span>
+      <img class="mark-img" src="images/logo-icon.png" alt="AST">
       <span data-i18n="nav.name">أحمد صالح تفاحة</span>
-      <span class="role" data-i18n="nav.role">مطوّر أعمال</span>
+      <span class="role"><span class="dash"></span><span data-i18n="nav.role">مطوّر أعمال</span><span class="dash"></span></span>
     </a>
     <div class="lang-switch" role="group" aria-label="Language">
       <button data-lang="ar" class="active">AR</button>
@@ -391,7 +403,7 @@ footer{
     <div class="cards-grid">
 
       <!-- Portfolio -->
-      <a class="dest-card reveal" href="https://portfolio.ahmadsalehtuffaha.com//" target="_blank" rel="noopener">
+      <a class="dest-card reveal" href="https://portfolio.ahmadsalehtuffaha.com/" target="_blank" rel="noopener">
         <div class="dest-card-top">
           <span class="dest-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
@@ -451,7 +463,7 @@ footer{
   <!-- ============== SERVICES ============== -->
   <section>
     <div class="services-grid">
-      <div class="dest-card reveal service-card">
+      <a class="dest-card reveal service-card" href="#" target="_blank" rel="noopener" data-service="growth">
         <div class="dest-card-top">
           <span class="dest-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 9 11 13 15 21 7"/><path d="M14 7h7v7"/></svg>
@@ -459,9 +471,13 @@ footer{
           <span class="dest-name service-name" data-i18n="service.growth.name">تطوير الأعمال والنمو</span>
         </div>
         <p class="dest-desc" data-i18n="service.growth.desc">إيجاد الفرص التجارية وبناء العلاقات التي تصنع نمواً مستداماً.</p>
-      </div>
+        <span class="dest-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
+          <span data-i18n="service.cta">تواصل عبر واتساب</span>
+        </span>
+      </a>
 
-      <div class="dest-card reveal service-card">
+      <a class="dest-card reveal service-card" href="#" target="_blank" rel="noopener" data-service="systems">
         <div class="dest-card-top">
           <span class="dest-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M7.5 7.5 11 16M16.5 7.5 13 16"/></svg>
@@ -469,9 +485,13 @@ footer{
           <span class="dest-name service-name" data-i18n="service.systems.name">تصميم الأنظمة وسير العمل</span>
         </div>
         <p class="dest-desc" data-i18n="service.systems.desc">إعادة هندسة كيف يتحرك الشغل جوا شركتك، من الطلب لحد التسليم.</p>
-      </div>
+        <span class="dest-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
+          <span data-i18n="service.cta">تواصل عبر واتساب</span>
+        </span>
+      </a>
 
-      <div class="dest-card reveal service-card">
+      <a class="dest-card reveal service-card" href="#" target="_blank" rel="noopener" data-service="waste">
         <div class="dest-card-top">
           <span class="dest-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18l-7 8v6l-4-2v-4L3 5Z"/></svg>
@@ -479,9 +499,13 @@ footer{
           <span class="dest-name service-name" data-i18n="service.waste.name">تقليل الهدر التشغيلي</span>
         </div>
         <p class="dest-desc" data-i18n="service.waste.desc">كشف نقاط ضياع الوقت والجهد، وبناء أنظمة تمنع تكرارها.</p>
-      </div>
+        <span class="dest-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
+          <span data-i18n="service.cta">تواصل عبر واتساب</span>
+        </span>
+      </a>
 
-      <div class="dest-card reveal service-card">
+      <a class="dest-card reveal service-card" href="#" target="_blank" rel="noopener" data-service="consulting">
         <div class="dest-card-top">
           <span class="dest-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="m9 14 2 2 4-4"/></svg>
@@ -489,7 +513,11 @@ footer{
           <span class="dest-name service-name" data-i18n="service.consulting.name">الاستشارات التشغيلية</span>
         </div>
         <p class="dest-desc" data-i18n="service.consulting.desc">تشخيص نقاط الضعف، وتسليم حلول عملية قابلة للتنفيذ فوراً.</p>
-      </div>
+        <span class="dest-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
+          <span data-i18n="service.cta">تواصل عبر واتساب</span>
+        </span>
+      </a>
     </div>
   </section>
 
@@ -505,11 +533,19 @@ footer{
 </main>
 
 <footer>
-  <span class="foot-copy" data-i18n="footer.copy">© 2026 أحمد صالح تفاحة — جميع الحقوق محفوظة</span>
   <div class="foot-socials">
-    <a href="https://www.linkedin.com/in/ahmad-saleh-tuffaha/" target="_blank" rel="noopener">LinkedIn</a>
-    <a href="mailto:ahmadsalehtuffaha@gmail.com">Email</a>
+    <a class="social-btn" href="https://www.linkedin.com/in/ahmad-saleh-tuffaha/" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2ZM8 19H5V9h3ZM6.5 7.7A1.7 1.7 0 1 1 8.2 6a1.7 1.7 0 0 1-1.7 1.7ZM19 19h-3v-4.7c0-1.1 0-2.6-1.6-2.6s-1.8 1.2-1.8 2.5V19h-3V9h2.9v1.3h0a3.1 3.1 0 0 1 2.8-1.6c3 0 3.6 2 3.6 4.6Z"/></svg>
+    </a>
+    <a class="social-btn" href="mailto:ahmadsalehtuffaha@gmail.com" aria-label="Email">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
+    </a>
+    <a class="social-btn" href="https://wa.me/905525407377" target="_blank" rel="noopener" aria-label="WhatsApp">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
+    </a>
   </div>
+  <a href="index.html" class="footer-logo"><img src="images/Logo.png" alt="Ahmad Saleh Tuffaha — Business Development"></a>
+  <span class="foot-copy" data-i18n="footer.copy">© 2026 أحمد صالح تفاحة — جميع الحقوق محفوظة</span>
 </footer>
 
 <script>
@@ -538,6 +574,39 @@ const CERTIFICATIONS = [
   "IFRC Online — WORC: World of Red Cross",
   "Damascus University — Commercial Institute / Accounting",
 ];
+
+// Prefilled WhatsApp message per service card, per language.
+const SERVICE_WA_MESSAGES = {
+  growth: {
+    ar: "مرحباً أحمد، عندي استفسار حول تطوير الأعمال والنمو.",
+    en: "Hi Ahmad, I have a question about Business Development & Growth.",
+    tr: "Merhaba Ahmad, İş Geliştirme ve Büyüme hakkında bir sorum var."
+  },
+  systems: {
+    ar: "مرحباً أحمد، عندي استفسار حول تصميم الأنظمة وسير العمل.",
+    en: "Hi Ahmad, I have a question about Systems & Workflow Design.",
+    tr: "Merhaba Ahmad, Sistem ve İş Akışı Tasarımı hakkında bir sorum var."
+  },
+  waste: {
+    ar: "مرحباً أحمد، عندي استفسار حول تقليل الهدر التشغيلي.",
+    en: "Hi Ahmad, I have a question about Operational Waste Reduction.",
+    tr: "Merhaba Ahmad, Operasyonel İsrafın Azaltılması hakkında bir sorum var."
+  },
+  consulting: {
+    ar: "مرحباً أحمد، عندي استفسار حول الاستشارات التشغيلية.",
+    en: "Hi Ahmad, I have a question about Operational Consulting.",
+    tr: "Merhaba Ahmad, Operasyonel Danışmanlık hakkında bir sorum var."
+  }
+};
+const WHATSAPP_NUMBER = "905525407377";
+
+function updateServiceLinks(lang){
+  document.querySelectorAll("[data-service]").forEach(el=>{
+    const key = el.getAttribute("data-service");
+    const msg = SERVICE_WA_MESSAGES[key][lang] || SERVICE_WA_MESSAGES[key].ar;
+    el.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+  });
+}
 
 const translations = {
   ar: {
@@ -573,10 +642,10 @@ const translations = {
     "service.waste.desc": "كشف نقاط ضياع الوقت والجهد، وبناء أنظمة تمنع تكرارها.",
     "service.consulting.name": "الاستشارات التشغيلية",
     "service.consulting.desc": "تشخيص نقاط الضعف، وتسليم حلول عملية قابلة للتنفيذ فوراً.",
+    "service.cta": "تواصل عبر واتساب",
     "contact.q1": "عندك مشكلة وعم تدور على <span class=\"hl hand\">الحل</span>؟",
     "contact.whatsapp": "راسلني على واتساب",
     "footer.copy": "© 2026 أحمد صالح تفاحة — جميع الحقوق محفوظة",
-    "footer.portfolio": "البورتفوليو",
   },
   en: {
     "nav.name": "Ahmad Saleh Tuffaha",
@@ -611,10 +680,10 @@ const translations = {
     "service.waste.desc": "Finding where time and effort leak, then building systems that stop it.",
     "service.consulting.name": "Operational Consulting",
     "service.consulting.desc": "Diagnosing weak points and delivering practical, ready-to-run solutions.",
+    "service.cta": "Message on WhatsApp",
     "contact.q1": "Have a problem and looking for the <span class=\"hl hand\">solution</span>?",
     "contact.whatsapp": "Message me on WhatsApp",
     "footer.copy": "© 2026 Ahmad Saleh Tuffaha — All rights reserved",
-    "footer.portfolio": "Portfolio",
   },
   tr: {
     "nav.name": "Ahmad Saleh Tuffaha",
@@ -649,10 +718,10 @@ const translations = {
     "service.waste.desc": "Zaman ve emeğin nerede kaybolduğunu bulup, bunu önleyen sistemler kurmak.",
     "service.consulting.name": "Operasyonel Danışmanlık",
     "service.consulting.desc": "Zayıf noktaları teşhis edip hemen uygulanabilir çözümler sunmak.",
+    "service.cta": "WhatsApp'tan yaz",
     "contact.q1": "Bir sorununuz var ve <span class=\"hl hand\">çözümü</span> mü arıyorsunuz?",
     "contact.whatsapp": "WhatsApp'tan yaz",
     "footer.copy": "© 2026 Ahmad Saleh Tuffaha — Tüm hakları saklıdır",
-    "footer.portfolio": "Portfolyo",
   }
 };
 
@@ -752,6 +821,7 @@ function setLanguage(lang){
   localStorage.setItem("site-lang", lang);
   applyTranslations(lang);
   renderMarquees(lang);
+  updateServiceLinks(lang);
   startTypewriter(lang);
 }
 
@@ -779,8 +849,16 @@ function revealOnScroll(){
 window.addEventListener("scroll", revealOnScroll);
 window.addEventListener("resize", revealOnScroll);
 
-const savedLang = localStorage.getItem("site-lang");
-setLanguage(translations[savedLang] ? savedLang : "ar");
+function detectLang(){
+  const saved = localStorage.getItem("site-lang");
+  if(translations[saved]) return saved;
+  const nav = (navigator.language || navigator.userLanguage || "").toLowerCase();
+  if(nav.startsWith("ar")) return "ar";
+  if(nav.startsWith("tr")) return "tr";
+  if(nav.startsWith("en")) return "en";
+  return "ar";
+}
+setLanguage(detectLang());
 revealOnScroll();
 </script>
 </body>
