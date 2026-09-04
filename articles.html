@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <title>Ahmad Saleh Tuffaha — Reflections & Experiences</title>
+<link rel="icon" type="image/png" href="images/logo-icon.png">
 <meta name="description" content="Reflections and experiences by Ahmad Saleh Tuffaha.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,8 +21,8 @@
   --ink-soft:#5a5a55;
   --ink-ghost:#a0a09a;
   --line:#d8d4cc;
-  --accent:#c0392b;
-  --accent-wash:rgba(192,57,43,.07);
+  --accent:#7d0102;
+  --accent-wash:rgba(125,1,2,.07);
   --radius:14px;
   --maxw:880px;
 }
@@ -48,11 +49,15 @@ header{
   background:rgba(245,242,235,.86);backdrop-filter:blur(10px);
   border-bottom:1px solid var(--line);
 }
-.nav-wrap{max-width:var(--maxw);margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;}
-.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;}
+.nav-wrap{max-width:var(--maxw);margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+@media(max-width:480px){
+  .nav-wrap{flex-direction:column;justify-content:center;gap:12px;}
+}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;flex-wrap:wrap;justify-content:center;}
 html[lang="en"] .logo, html[lang="tr"] .logo{font-weight:700;}
-.logo .mark{width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--cream);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;}
-.logo .role{font-weight:600;font-size:13px;color:var(--ink-soft);padding-inline-start:10px;border-inline-start:1px solid var(--line);}
+.logo .mark-img{height:32px;width:auto;display:block;}
+.logo .role{display:flex;align-items:center;gap:8px;font-weight:700;font-size:12.5px;color:var(--accent);letter-spacing:.03em;}
+.logo .role .dash{width:16px;height:1.5px;background:var(--accent);display:inline-block;flex-shrink:0;}
 .lang-switch{display:flex;gap:4px;background:var(--white);border:1px solid var(--line);border-radius:999px;padding:3px;}
 .lang-switch button{border:none;background:transparent;cursor:pointer;font-family:'Cairo',sans-serif;font-size:13px;font-weight:600;color:var(--ink-soft);padding:6px 13px;border-radius:999px;transition:background .2s, color .2s;}
 .lang-switch button.active{background:var(--ink);color:var(--cream);}
@@ -102,11 +107,20 @@ html[lang="en"] .item-title, html[lang="tr"] .item-title{font-weight:700;}
 }
 
 /* ---------- footer ---------- */
-footer{border-top:1px solid var(--line);padding:34px 24px;max-width:var(--maxw);margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;}
-.foot-socials{display:flex;gap:16px;}
-.foot-socials a{color:var(--ink-soft);font-size:13px;font-weight:600;}
-.foot-socials a:hover{color:var(--accent);}
-.foot-copy{font-size:13px;color:var(--ink-ghost);}
+footer{border-top:1px solid var(--line);padding:34px 24px;max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;}
+@media(max-width:480px){
+  footer{grid-template-columns:1fr;gap:18px;}
+  .foot-copy{justify-self:center !important;text-align:center;}
+  .footer-logo{justify-self:center;}
+  .foot-socials{justify-self:center !important;}
+}
+.footer-logo{display:block;justify-self:center;}
+.footer-logo img{height:52px;width:auto;display:block;}
+.foot-copy{font-size:13px;color:var(--ink-ghost);justify-self:start;text-align:start;}
+.foot-socials{display:flex;gap:10px;justify-self:end;}
+.social-btn{width:44px;height:44px;border-radius:10px;background:var(--white);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink-soft);transition:border-color .2s, color .2s;}
+.social-btn:hover{border-color:var(--accent);color:var(--accent);}
+.social-btn svg{width:20px;height:20px;}
 </style>
 </head>
 <body>
@@ -116,9 +130,9 @@ footer{border-top:1px solid var(--line);padding:34px 24px;max-width:var(--maxw);
 <header>
   <div class="nav-wrap">
     <a href="index.html" class="logo">
-      <span class="mark">A</span>
+      <img class="mark-img" src="images/logo-icon.png" alt="AST">
       <span data-i18n="nav.name">أحمد صالح تفاحة</span>
-      <span class="role" data-i18n="nav.role">مطوّر أعمال</span>
+      <span class="role"><span class="dash"></span><span data-i18n="nav.role">مطوّر أعمال</span><span class="dash"></span></span>
     </a>
     <div class="lang-switch" role="group" aria-label="Language">
       <button data-lang="ar" class="active">AR</button>
@@ -144,10 +158,17 @@ footer{border-top:1px solid var(--line);padding:34px 24px;max-width:var(--maxw);
 
 <footer>
   <span class="foot-copy" data-i18n="footer.copy">© 2026 أحمد صالح تفاحة — جميع الحقوق محفوظة</span>
+  <a href="index.html" class="footer-logo"><img src="images/Logo.png" alt="Ahmad Saleh Tuffaha — Business Development"></a>
   <div class="foot-socials">
-    <a href="https://www.linkedin.com/in/ahmad-saleh-tuffaha/" target="_blank" rel="noopener">LinkedIn</a>
-    <a href="index.html" data-i18n="footer.home">الرئيسية</a>
-    <a href="mailto:salehzuh@gmail.com">Email</a>
+    <a class="social-btn" href="https://www.linkedin.com/in/ahmad-saleh-tuffaha/" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2ZM8 19H5V9h3ZM6.5 7.7A1.7 1.7 0 1 1 8.2 6a1.7 1.7 0 0 1-1.7 1.7ZM19 19h-3v-4.7c0-1.1 0-2.6-1.6-2.6s-1.8 1.2-1.8 2.5V19h-3V9h2.9v1.3h0a3.1 3.1 0 0 1 2.8-1.6c3 0 3.6 2 3.6 4.6Z"/></svg>
+    </a>
+    <a class="social-btn" href="mailto:ahmadsalehtuffaha@gmail.com" aria-label="Email">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
+    </a>
+    <a class="social-btn" href="https://wa.me/905525407377" target="_blank" rel="noopener" aria-label="WhatsApp">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
+    </a>
   </div>
 </footer>
 
@@ -299,7 +320,6 @@ const translations = {
     "page.title": "خواطر وتجارب",
     "empty": "لسا ما في خواطر منشورة — تابعني عالينكدإن.",
     "footer.copy": "© 2026 أحمد صالح تفاحة — جميع الحقوق محفوظة",
-    "footer.home": "الرئيسية",
   },
   en: {
     "nav.name": "Ahmad Saleh Tuffaha",
@@ -308,7 +328,6 @@ const translations = {
     "page.title": "Reflections & Experiences",
     "empty": "No reflections published yet — follow along on LinkedIn.",
     "footer.copy": "© 2026 Ahmad Saleh Tuffaha — All rights reserved",
-    "footer.home": "Home",
   },
   tr: {
     "nav.name": "Ahmad Saleh Tuffaha",
@@ -317,7 +336,6 @@ const translations = {
     "page.title": "Düşünceler ve Deneyimler",
     "empty": "Henüz paylaşılmış bir düşünce yok — LinkedIn'den takip edebilirsin.",
     "footer.copy": "© 2026 Ahmad Saleh Tuffaha — Tüm hakları saklıdır",
-    "footer.home": "Ana sayfa",
   }
 };
 
@@ -397,8 +415,16 @@ document.querySelectorAll(".lang-switch button").forEach(btn=>{
   btn.addEventListener("click", ()=> setLanguage(btn.dataset.lang));
 });
 
-const savedLang = localStorage.getItem("site-lang");
-setLanguage(translations[savedLang] ? savedLang : "ar");
+function detectLang(){
+  const saved = localStorage.getItem("site-lang");
+  if(translations[saved]) return saved;
+  const nav = (navigator.language || navigator.userLanguage || "").toLowerCase();
+  if(nav.startsWith("ar")) return "ar";
+  if(nav.startsWith("tr")) return "tr";
+  if(nav.startsWith("en")) return "en";
+  return "ar";
+}
+setLanguage(detectLang());
 </script>
 </body>
 </html>
