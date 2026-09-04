@@ -83,14 +83,15 @@ section{max-width:var(--maxw);margin:0 auto;padding:26px 24px 70px;}
 }
 .item-card:hover{opacity:.85;}
 .item-body{position:relative;z-index:1;}
-.item-top{display:flex;align-items:center;gap:16px;margin-bottom:14px;position:relative;z-index:1;}
-.item-ext{width:15px;height:15px;stroke:var(--ink-ghost);flex-shrink:0;margin-inline-start:auto;transition:stroke .2s;}
+.item-top{display:flex;flex-direction:column;gap:20px;position:relative;z-index:1;}
+@media(min-width:480px){.item-top{flex-direction:row;align-items:center;gap:24px;}}
+.item-ext{width:15px;height:15px;stroke:var(--ink-ghost);flex-shrink:0;margin-inline-start:auto;transition:stroke .2s;align-self:flex-start;}
 .item-card:hover .item-ext{stroke:var(--accent);}
-.item-emoji{width:64px;height:64px;border-radius:14px;background:var(--white);border:1px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:26px;}
+.item-emoji{width:128px;height:128px;border-radius:20px;background:var(--white);border:1px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:48px;}
+.item-text-col{flex:1;min-width:0;}
 .item-title{font-size:19px;font-weight:800;line-height:1.4;position:relative;z-index:1;}
 html[lang="en"] .item-title, html[lang="tr"] .item-title{font-weight:700;}
-.item-date{font-size:12px;color:var(--ink-ghost);font-weight:600;margin-top:12px;display:block;position:relative;z-index:1;}
-.item-blurb{font-size:14px;line-height:1.85;color:var(--ink);position:relative;z-index:1;}
+.item-blurb{font-size:14px;line-height:1.85;color:var(--ink);margin-top:6px;position:relative;z-index:1;}
 
 .empty-state{
   grid-column:1/-1;text-align:center;padding:50px 20px;color:var(--ink-ghost);font-size:15px;
@@ -130,7 +131,7 @@ footer{border-top:1px solid var(--line);padding:34px 24px;max-width:var(--maxw);
   .foot-socials{justify-self:center !important;}
 }
 .footer-logo{display:block;justify-self:center;}
-.footer-logo img{height:52px;width:auto;display:block;}
+.footer-logo img{height:72px;width:auto;display:block;}
 .foot-copy{font-size:13px;color:var(--ink-ghost);justify-self:start;text-align:start;}
 .foot-socials{display:flex;gap:10px;justify-self:end;}
 .social-btn{width:44px;height:44px;border-radius:10px;background:var(--white);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink-soft);transition:border-color .2s, color .2s;}
@@ -431,11 +432,12 @@ function renderItems(lang){
       <div class="item-body">
         <div class="item-top">
           <span class="item-emoji">${item.emoji || "🔗"}</span>
-          <span class="item-title">${item.title[lang] || item.title.ar}</span>
+          <div class="item-text-col">
+            <span class="item-title">${item.title[lang] || item.title.ar}</span>
+            <p class="item-blurb">${(item.blurb && (item.blurb[lang] || item.blurb.ar)) || ""}</p>
+          </div>
           <svg class="item-ext" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
         </div>
-        <p class="item-blurb">${(item.blurb && (item.blurb[lang] || item.blurb.ar)) || ""}</p>
-        <span class="item-date">${formatDate(item.date, lang)}</span>
       </div>`;
     grid.appendChild(a);
   });
