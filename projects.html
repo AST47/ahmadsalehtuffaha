@@ -88,6 +88,7 @@ section{max-width:var(--maxw);margin:0 auto;padding:26px 24px 70px;}
 .item-ext{width:15px;height:15px;stroke:var(--ink-ghost);flex-shrink:0;margin-inline-start:auto;transition:stroke .2s;align-self:flex-start;}
 .item-card:hover .item-ext{stroke:var(--accent);}
 .item-emoji{width:128px;height:128px;border-radius:20px;background:var(--white);border:1px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:48px;}
+.item-emoji img{width:72%;height:72%;object-fit:contain;}
 .item-text-col{flex:1;min-width:0;}
 .item-title{font-size:19px;font-weight:800;line-height:1.4;position:relative;z-index:1;}
 html[lang="en"] .item-title, html[lang="tr"] .item-title{font-weight:700;}
@@ -296,6 +297,7 @@ const CASES = [
 const ITEMS = [
   {
     emoji: "📿",
+    image: "images/Azkar.png",
     date: "2026",
     url: "https://ast47.github.io/Azkar/",
     title: { ar: "أذكار وأدعية", en: "Azkar & Duas", tr: "Ezkar ve Dualar" },
@@ -307,6 +309,7 @@ const ITEMS = [
   },
   {
     emoji: "⚽",
+    image: "images/WC2026.png",
     date: "2026",
     url: "https://ast47.github.io/worldcup2026/",
     title: { ar: "متابعة كأس العالم 2026", en: "FIFA World Cup 2026 Tracker", tr: "2026 Dünya Kupası Takip" },
@@ -428,10 +431,13 @@ function renderItems(lang){
     const a = document.createElement("a");
     a.href = item.url; a.target = "_blank"; a.rel = "noopener";
     a.className = "item-card";
+    const badgeContent = item.image
+      ? `<img src="${item.image}" alt="" loading="lazy">`
+      : (item.emoji || "🔗");
     a.innerHTML = `
       <div class="item-body">
         <div class="item-top">
-          <span class="item-emoji">${item.emoji || "🔗"}</span>
+          <span class="item-emoji">${badgeContent}</span>
           <div class="item-text-col">
             <span class="item-title">${item.title[lang] || item.title.ar}</span>
             <p class="item-blurb">${(item.blurb && (item.blurb[lang] || item.blurb.ar)) || ""}</p>
