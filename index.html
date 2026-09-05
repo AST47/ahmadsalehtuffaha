@@ -248,6 +248,14 @@ html[lang="en"] .section-title, html[lang="tr"] .section-title{font-weight:700;}
 .dest-icon svg{width:22px;height:22px;stroke:var(--ink);}
 .dest-name{font-size:26px;font-weight:800;}
 html[lang="en"] .dest-name, html[lang="tr"] .dest-name{font-weight:700;}
+
+/* image-based destination cards (Portfolio/Results/Reflections) */
+.dest-card.image-card{padding:0;aspect-ratio:4/5;}
+.dest-card.image-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s;}
+.dest-card.image-card:hover img{transform:scale(1.045);}
+.dest-overlay{position:absolute;left:0;right:0;bottom:0;padding:20px 22px 24px;z-index:2;text-align:center;}
+.dest-overlay .dest-name{display:block;margin-bottom:8px;color:var(--ink);font-size:clamp(16px,2.3vw,21px);white-space:nowrap;}
+.dest-overlay .dest-link{margin-top:0;justify-content:center;}
 .dest-desc{font-size:14.5px;color:var(--ink-soft);margin-bottom:6px;}
 .dest-link{
   display:inline-flex;align-items:center;gap:6px;
@@ -405,45 +413,39 @@ footer{
     <div class="cards-grid">
 
       <!-- Portfolio -->
-      <a class="dest-card reveal" href="https://portfolio.ahmadsalehtuffaha.com/" target="_blank" rel="noopener">
-        <div class="dest-card-top">
-          <span class="dest-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-          </span>
+      <a class="dest-card image-card reveal" href="https://portfolio.ahmadsalehtuffaha.com/" target="_blank" rel="noopener">
+        <img src="images/Portfolio.png" alt="">
+        <div class="dest-overlay">
           <span class="dest-name" data-i18n="dest.portfolio.name">البورتفوليو الكامل</span>
+          <span class="dest-link">
+            <span data-i18n="dest.portfolio.cta">زيارة البورتفوليو</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+          </span>
         </div>
-        <span class="dest-link">
-          <span data-i18n="dest.portfolio.cta">زيارة البورتفوليو</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
-        </span>
       </a>
 
       <!-- Side projects -->
-      <a class="dest-card reveal" href="projects.html">
-        <div class="dest-card-top">
-          <span class="dest-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m8 9-3 3 3 3M16 9l3 3-3 3M13 6l-2 12"/></svg>
-          </span>
+      <a class="dest-card image-card reveal" href="projects.html">
+        <img src="images/Projects.png" alt="">
+        <div class="dest-overlay">
           <span class="dest-name" data-i18n="dest.projects.name">نتائج، مش وعود</span>
+          <span class="dest-link">
+            <span data-i18n="dest.projects.cta">تصفح المشاريع</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+          </span>
         </div>
-        <span class="dest-link">
-          <span data-i18n="dest.projects.cta">تصفح المشاريع</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
-        </span>
       </a>
 
       <!-- Articles -->
-      <a class="dest-card reveal" href="articles.html">
-        <div class="dest-card-top">
-          <span class="dest-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>
-          </span>
+      <a class="dest-card image-card reveal" href="articles.html">
+        <img src="images/Articles.png" alt="">
+        <div class="dest-overlay">
           <span class="dest-name" data-i18n="dest.articles.name">خواطر وتجارب</span>
+          <span class="dest-link">
+            <span data-i18n="dest.articles.cta">قراءة الخواطر</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+          </span>
         </div>
-        <span class="dest-link">
-          <span data-i18n="dest.articles.cta">قراءة الخواطر</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
-        </span>
       </a>
 
     </div>
