@@ -95,7 +95,6 @@ section{max-width:var(--maxw);margin:0 auto;padding:26px 24px 70px;}
 .item-top{display:flex;align-items:center;gap:12px;margin-bottom:10px;position:relative;z-index:1;}
 .item-ext{width:14px;height:14px;stroke:var(--ink-ghost);flex-shrink:0;margin-inline-start:auto;transition:stroke .2s;}
 .item-card:hover .item-ext{stroke:var(--accent);}
-.item-emoji{width:38px;height:38px;border-radius:9px;background:var(--cream);border:1px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:18px;}
 .item-title{font-size:17px;font-weight:800;position:relative;z-index:1;}
 html[lang="en"] .item-title, html[lang="tr"] .item-title{font-weight:700;}
 .item-date{font-size:12px;color:var(--ink-ghost);font-weight:600;margin-top:12px;display:block;position:relative;z-index:1;}
@@ -181,7 +180,7 @@ footer{border-top:1px solid var(--line);padding:34px 24px;max-width:var(--maxw);
    in all three fields if you don't want to re-write it per language).
 
    IMAGE (optional): add an "image" field with a direct link to the
-   picture and it'll show as a cover photo instead of the emoji icon.
+   picture and it'll show as a cover photo.
    Two ways to get that link:
    1) On the LinkedIn post, right-click the image → "Copy image address".
       Fast, but LinkedIn's image links can occasionally expire.
@@ -191,7 +190,36 @@ footer{border-top:1px solid var(--line);padding:34px 24px;max-width:var(--maxw);
    ============================================================ */
 const ITEMS = [
   {
-    emoji: "💡",
+    image: "images/260906.jpg",
+    date: "260906",
+    url: "https://www.linkedin.com/posts/ahmad-saleh-tuffaha_operationalexcellence-businessintelligence-share-7502101811969896448-5j_V",
+    title: {
+      ar: "كيف كشف \"منظور الشفافية\" عن من الموارد المهدرة في شركة استشارات؟",
+      en: "How did a \"transparency lens\" reveal wasted resources at a consulting firm?",
+      tr: "\"Şeffaflık merceği\" bir danışmanlık şirketindeki israf edilen kaynakları nasıl ortaya çıkardı?"
+    },
+    blurb: {
+      ar: "البيانات المشتتة هي عدوك الأول؛ النظام الحقيقي يمنحك \"الشفافية التشغيلية\" التي تحول الغموض المالي إلى وضوح وقرارات ربحية.",
+      en: "Scattered data is your first enemy; a real system gives you \"operational transparency\" that turns financial ambiguity into clarity and profitable decisions.",
+      tr: "Dağınık veri en büyük düşmanınızdır; gerçek bir sistem, mali belirsizliği netliğe ve karlı kararlara dönüştüren \"operasyonel şeffaflık\" sağlar."
+    }
+  },
+  {
+    image: "images/260901.jpg",
+    date: "260901",
+    url: "https://www.linkedin.com/posts/ahmad-saleh-tuffaha_businessoperations-systemsthinking-workflowautomation-activity-7500311368852709376-qG7s",
+    title: {
+      ar: "هل تقضي يومك \"في\" العمل.. أم \"تعمل\" على تطوير العمل؟",
+      en: "Do you spend your day \"in\" the business... or \"working on\" growing it?",
+      tr: "Gününüzü iş \"içinde\" mi geçiriyorsunuz... yoksa işi geliştirmek \"üzerinde\" mi çalışıyorsunuz?"
+    },
+    blurb: {
+      ar: "عندما تغيب الأنظمة، يصبح الموظفون رهائن للمهام اليومية بدلاً من التركيز على النمو والتطوير.",
+      en: "When systems are absent, employees become hostages to daily tasks instead of focusing on growth and development.",
+      tr: "Sistemler eksik olduğunda, çalışanlar büyüme ve gelişime odaklanmak yerine günlük görevlerin esiri haline gelir."
+    }
+  },
+  {
     image: "images/260827.jpg",
     date: "260827",
     url: "https://www.linkedin.com/posts/ahmad-saleh-tuffaha_systemsintegration-operationalexcellence-activity-7498660803173048320-U_Zc",
@@ -207,7 +235,6 @@ const ITEMS = [
     }
   },
   {
-    emoji: "⏱️",
     image: "images/260823.jpg",
     date: "260823",
     url: "https://www.linkedin.com/posts/ahmad-saleh-tuffaha_operationalefficiency-processautomation-wastereduction-share-7497572532280156160-USvT/",
@@ -223,7 +250,6 @@ const ITEMS = [
     }
   },
   {
-    emoji: "🔧",
     image: "images/260818.jpg",
     date: "260818",
     url: "https://www.linkedin.com/posts/ahmad-saleh-tuffaha_operationalefficiency-processautomation-wastereduction-activity-7495855956870942721-OxLJ",
@@ -239,7 +265,6 @@ const ITEMS = [
     }
   },
   {
-    emoji: "📊",
     image: "images/260813.jpg",
     date: "260813",
     url: "https://www.linkedin.com/posts/ahmad-saleh-tuffaha_businessoperations-datagovernance-systemsintegration-activity-7493952495950413824-73fn",
@@ -255,7 +280,6 @@ const ITEMS = [
     }
   },
   {
-    emoji: "⚙️",
     image: "images/260809.jpg",
     date: "260809",
     url: "https://www.linkedin.com/posts/ahmad-saleh-tuffaha_businessdevelopment-automation-operationalefficiency-activity-7492470785522036736-8zlM",
@@ -271,7 +295,6 @@ const ITEMS = [
     }
   },
   {
-    emoji: "🌐",
     image: "images/260804.jpg",
     date: "260804",
     url: "https://www.linkedin.com/posts/ahmad-saleh-tuffaha_businessdevelopment-strategicpartnerships-activity-7490723970284056576-SjLY",
@@ -287,7 +310,6 @@ const ITEMS = [
     }
   },
   {
-    emoji: "🤝",
     image: "images/260731.jpg",
     date: "260731",
     url: "https://www.linkedin.com/posts/ahmad-saleh-tuffaha_businessdevelopment-softskills-emotionalintelligence-activity-7489397848871198720-S9Qj",
@@ -302,9 +324,23 @@ const ITEMS = [
       tr: "Teknik deneyim sadece \"giriş biletinizdir\"; sizi masada \"kilit oyuncu\" yapan ise yumuşak becerilerdir."
     }
   },
+  {
+    image: "images/260719.jpg",
+    date: "260719",
+    url: "https://www.linkedin.com/posts/ahmad-saleh-tuffaha_businessdevelopment-growthstrategy-markettrends-activity-7485020221754433536-gxDz",
+    title: {
+      ar: "إلى مدراء تطوير الأعمال: هل سيبقى نموذج عملك الحالي صالحاً حتى نهاية 2026؟",
+      en: "To business development managers: will your current business model still hold up by the end of 2026?",
+      tr: "İş geliştirme müdürlerine: mevcut iş modeliniz 2026 sonuna kadar geçerliliğini koruyacak mı?"
+    },
+    blurb: {
+      ar: "تطوير الأعمال اليوم هو مزيج بين \"الفطنة الإنسانية\" في بناء العلاقات و\"الدقة الرقمية\" في تحليل البيانات.",
+      en: "Business development today is a blend of \"human insight\" in building relationships and \"digital precision\" in analyzing data.",
+      tr: "Bugün iş geliştirme, ilişkiler kurmada \"insani sezgi\" ile veri analizinde \"dijital hassasiyetin\" birleşimidir."
+    }
+  },
   // {
-  //   emoji: "📝",
-  //   image: "images/my-post.jpg", // optional — omit to use the emoji instead
+  //   image: "images/my-post.jpg", // optional — cover photo
   //   date: "يناير 2026",
   //   url: "https://www.linkedin.com/posts/your-post-url",
   //   title: { ar: "عنوان المقال", en: "Article title", tr: "Makale başlığı" },
@@ -384,12 +420,10 @@ function renderItems(lang){
     const cover = item.image
       ? `<div class="item-cover"><img src="${item.image}" alt="" loading="lazy"></div>`
       : "";
-    const icon = item.image ? "" : `<span class="item-emoji">${item.emoji || "🔗"}</span>`;
     a.innerHTML = `
       ${cover}
       <div class="item-body">
         <div class="item-top">
-          ${icon}
           <span class="item-title">${item.title[lang] || item.title.ar}</span>
           <svg class="item-ext" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
         </div>
