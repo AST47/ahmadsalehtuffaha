@@ -8,7 +8,7 @@
 <meta name="description" content="Ahmad Saleh Tuffaha — Business Developer. Portfolio, side projects, and articles.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&family=Aref+Ruqaa+Ink&family=Lora:wght@400;600;700&family=Kalam:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&family=Aref+Ruqaa:wght@400;700&family=Lora:wght@400;600;700&family=Kalam:wght@700&display=swap" rel="stylesheet">
 <style>
 
 /* ============================================================
@@ -44,8 +44,8 @@ html[lang="ar"] body{font-family:'Cairo',sans-serif;}
 html[lang="en"] body,
 html[lang="tr"] body{font-family:'Lora',serif;}
 
-/* Handwritten accent: Aref Ruqaa Ink for Arabic, Kalam for Latin scripts */
-html[lang="ar"] .hand{font-family:'Aref Ruqaa Ink',serif;color:#6b0000;}
+/* Handwritten accent: Aref Ruqaa for Arabic, Kalam for Latin scripts */
+html[lang="ar"] .hand{font-family:'Aref Ruqaa',serif;font-weight:700;}
 html[lang="en"] .hand,
 html[lang="tr"] .hand{font-family:'Kalam',cursive;}
 
@@ -323,8 +323,11 @@ html[dir="rtl"] .article-row:hover svg{transform:translateX(-3px);}
   color:var(--cream);max-width:600px;margin-inline:auto;line-height:1.5;
 }
 html[lang="en"] .contact-question, html[lang="tr"] .contact-question{font-weight:700;}
-.contact-question .hl{color:var(--accent);margin-inline-end:8px;}
+.contact-question .hl{margin-inline-end:8px;}
+.contact-question .hl-red{color:var(--accent);}
+.contact-question .hl-green{color:#1f7a4a;}
 html[lang="ar"] .contact-question .hl{font-size:1.7em;}
+html[lang="ar"] .contact-question .hl-green{color:#1f7a4a;}
 .btn{
   display:inline-flex;align-items:center;gap:8px;
   padding:13px 24px;border-radius:999px;font-size:14.5px;font-weight:700;
@@ -541,7 +544,7 @@ footer{
 
   <!-- ============== CONTACT ============== -->
   <div class="contact-dark">
-    <p class="contact-question reveal" data-i18n-html="contact.q1">عندك مشكلة وعم تدور على <span class="hl hand">الحل</span>؟</p>
+    <p class="contact-question reveal" data-i18n-html="contact.q1">عندك <span class="hl hand" style="color:#7d0102">مشكلة</span> وعم تدور على <span class="hl hand" style="color:#1f7a4a">الحل</span>؟</p>
     <a class="btn btn-whatsapp reveal" href="https://wa.me/905525407377" target="_blank" rel="noopener">
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
       <span data-i18n="contact.whatsapp">راسلني على واتساب</span>
@@ -661,7 +664,7 @@ const translations = {
     "service.consulting.name": "الاستشارات التشغيلية",
     "service.consulting.desc": "تشخيص وحلول قابلة للتنفيذ",
     "service.cta": "تواصل عبر واتساب",
-    "contact.q1": "عندك مشكلة وعم تدور على <span class=\"hl hand\">الحل</span>؟",
+    "contact.q1": "عندك <span class=\"hl hand\" style=\"color:#7d0102\">مشكلة</span> وعم تدور على <span class=\"hl hand\" style=\"color:#1f7a4a\">الحل</span>؟",
     "contact.whatsapp": "راسلني على واتساب",
     "footer.copy": "© 2026 أحمد صالح تفاحة — جميع الحقوق محفوظة",
   },
@@ -699,7 +702,7 @@ const translations = {
     "service.consulting.name": "Operational Consulting",
     "service.consulting.desc": "Diagnosis, then real solutions",
     "service.cta": "Message on WhatsApp",
-    "contact.q1": "Have a problem and looking for the <span class=\"hl hand\">solution</span>?",
+    "contact.q1": "Have a <span class=\"hl hand\" style=\"color:#7d0102\">problem</span> and looking for the <span class=\"hl hand\" style=\"color:#1f7a4a\">solution</span>?",
     "contact.whatsapp": "Message me on WhatsApp",
     "footer.copy": "© 2026 Ahmad Saleh Tuffaha — All rights reserved",
   },
@@ -737,7 +740,7 @@ const translations = {
     "service.consulting.name": "Operasyonel Danışmanlık",
     "service.consulting.desc": "Teşhis ve uygulanabilir çözümler",
     "service.cta": "WhatsApp'tan yaz",
-    "contact.q1": "Bir sorununuz var ve <span class=\"hl hand\">çözümü</span> mü arıyorsunuz?",
+    "contact.q1": "Bir <span class=\"hl hand\" style=\"color:#7d0102\">sorununuz</span> var ve <span class=\"hl hand\" style=\"color:#1f7a4a\">çözümü</span> mü arıyorsunuz?",
     "contact.whatsapp": "WhatsApp'tan yaz",
     "footer.copy": "© 2026 Ahmad Saleh Tuffaha — Tüm hakları saklıdır",
   }
