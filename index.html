@@ -45,7 +45,7 @@ html[lang="en"] body,
 html[lang="tr"] body{font-family:'Lora',serif;}
 
 /* Handwritten accent: Aref Ruqaa for Arabic, Kalam for Latin scripts */
-html[lang="ar"] .hand{font-family:'Aref Ruqaa',serif;font-weight:400;}
+html[lang="ar"] .hand{font-family:'Aref Ruqaa',serif;font-weight:700;}
 html[lang="en"] .hand,
 html[lang="tr"] .hand{font-family:'Kalam',cursive;}
 
@@ -127,37 +127,63 @@ html[lang="ar"] .tw-line .suffix-key{font-size:1.45em;}
 @keyframes blink{50%{opacity:0;}}
 
 /* ============================================================
-   ABOUT — rough brush-stroke shape with quote + paragraph
+   EXPLAINER + ABOUT — two organic brush-stroke panels, side by side
+   on wide screens, stacked on narrow ones. Each split into 4 quarters
+   with the heading/quote anchored in one quarter (mirrored between
+   the two panels) and the body text filling the rest.
    ============================================================ */
-.about-wrap{position:relative;margin:0 auto;max-width:var(--maxw);padding:20px 24px 10px;}
-.about-shape{position:relative;padding:56px 34px;}
-.about-bg-svg{position:absolute;inset:0;width:100%;height:100%;z-index:0;}
-.about-watermark{
-  position:absolute;inset:0;z-index:1;
-  display:flex;align-items:center;justify-content:center;
-  text-align:center;pointer-events:none;
-  font-family:'Cairo',sans-serif;font-weight:800;
-  font-size:clamp(2.2rem,8vw,4.4rem);line-height:1.15;
-  color:var(--ink);opacity:.07;white-space:pre-line;
+.quarters-row{
+  display:grid;grid-template-columns:1fr 1fr;gap:24px;
+  max-width:1300px;margin:0 auto;padding:0 24px;
 }
-.about-content{
-  position:relative;z-index:2;
-  display:flex;flex-direction:column;align-items:center;gap:28px;text-align:center;
+@media(max-width:900px){
+  .quarters-row{grid-template-columns:1fr;max-width:var(--maxw);}
 }
-.about-quote{
-  font-size:clamp(1.6rem,4.4vw,2.3rem);color:var(--accent);line-height:1.5;max-width:420px;
+.define-wrap,.about-wrap{position:relative;}
+
+/* --- shared quarter-grid mechanics --- */
+.define-shape,.about-shape{position:relative;padding:52px 40px;min-height:300px;height:100%;display:flex;align-items:center;}
+.define-bg-svg,.about-bg-svg{position:absolute;inset:0;width:100%;height:100%;z-index:0;}
+.define-inner,.about-inner{
+  position:relative;z-index:2;width:100%;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:28px;align-items:stretch;
 }
-.about-text{
-  font-size:15.5px;line-height:2;color:var(--ink);max-width:640px;
+
+/* --- EXPLAINER: heading in quarter 1 (right) --- */
+.define-title-cell{
+  grid-column:1 / 2;display:flex;align-items:center;
+  padding-inline-end:20px;border-inline-end:1px solid rgba(125,1,2,.22);
 }
+.explainer-title{font-size:clamp(1.3rem,3vw,1.7rem);font-weight:800;line-height:1.35;text-align:start;color:var(--ink);}
+html[lang="en"] .explainer-title, html[lang="tr"] .explainer-title{font-weight:700;}
+html[lang="en"] .about-quote, html[lang="tr"] .about-quote{font-weight:700;}
+.explainer-title .hl{color:var(--accent);}
+html[lang="ar"] .explainer-title .hl{font-size:1.4em;}
+.define-text-cell{grid-column:2 / 5;display:flex;align-items:center;}
+.explainer-text{font-size:15.5px;line-height:1.9;color:var(--ink-soft);}
+.explainer-text .hl{color:var(--accent);font-weight:700;}
+@media(max-width:700px){
+  .define-inner{grid-template-columns:1fr;gap:18px;}
+  .define-title-cell{grid-column:1;border-inline-end:none;padding-inline-end:0;border-bottom:1px solid rgba(125,1,2,.22);padding-bottom:14px;}
+  .define-text-cell{grid-column:1;}
+}
+
+/* --- ABOUT: quote in quarter 4 (left), mirrored --- */
+.about-text-cell{grid-column:1 / 4;display:flex;align-items:center;}
+.about-text{font-size:15.5px;line-height:2;color:var(--ink);}
 html[lang="en"] .about-text, html[lang="tr"] .about-text{font-size:16px;}
 .about-text .hl{color:var(--accent);font-weight:700;}
-html[lang="en"] .about-text .hl, html[lang="tr"] .about-text .hl{font-weight:700;}
-
-@media(min-width:860px){
-  .about-content{flex-direction:row;align-items:center;text-align:start;gap:50px;}
-  .about-quote{text-align:start;flex:0 0 300px;}
-  .about-text{text-align:start;}
+.about-quote-cell{
+  grid-column:4 / 5;display:flex;align-items:center;
+  padding-inline-start:20px;border-inline-start:1px solid rgba(125,1,2,.22);
+}
+.about-quote{font-size:clamp(1.3rem,3vw,1.7rem);font-weight:800;line-height:1.35;color:var(--ink);text-align:start;}
+.about-quote .hl{color:var(--accent);}
+html[lang="ar"] .about-quote .hl{font-size:1.4em;}
+@media(max-width:700px){
+  .about-inner{grid-template-columns:1fr;gap:18px;}
+  .about-text-cell{grid-column:1;}
+  .about-quote-cell{grid-column:1;border-inline-start:none;padding-inline-start:0;border-top:1px solid rgba(125,1,2,.22);padding-top:14px;}
 }
 
 /* ============================================================
@@ -189,20 +215,6 @@ html[lang="ar"] .marquee-item{font-weight:800;}
 @media (prefers-reduced-motion: reduce){.marquee-track{animation:none;}}
 
 /* ============================================================
-   EXPLAINER — "what is business development" statement, dark full-bleed
-   ============================================================ */
-.explainer-dark{background:var(--ink);padding:64px 24px;}
-.explainer{max-width:var(--maxw);margin:0 auto;text-align:center;}
-.explainer-title{
-  font-size:clamp(1.6rem,4.2vw,2.4rem);font-weight:800;line-height:1.35;margin-bottom:26px;max-width:620px;color:var(--cream);
-  margin-inline:auto;
-}
-html[lang="en"] .explainer-title, html[lang="tr"] .explainer-title{font-weight:700;}
-.explainer-title .hl{color:var(--accent);}
-html[lang="ar"] .explainer-title .hl{font-size:1.45em;}
-.explainer-text{font-size:15.5px;line-height:1.9;color:rgba(245,242,235,.72);max-width:600px;margin-inline:auto;}
-
-/* ============================================================
    SECTION SHELL
    ============================================================ */
 
@@ -223,9 +235,9 @@ html[lang="en"] .section-title, html[lang="tr"] .section-title{font-weight:700;}
 /* ============================================================
    DESTINATION CARDS (spotlight hover)
    ============================================================ */
-.cards-grid{display:grid;grid-template-columns:1fr;gap:18px;}
+.cards-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
 @media(min-width:760px){
-  .cards-grid{grid-template-columns:repeat(3,1fr);}
+  .cards-grid{grid-template-columns:repeat(4,1fr);gap:18px;}
 }
 .dest-card{
   position:relative;overflow:hidden;
@@ -254,18 +266,7 @@ html[lang="en"] .dest-name, html[lang="tr"] .dest-name{font-weight:700;}
 .dest-card.image-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s;}
 .dest-card.image-card:hover img{transform:scale(1.045);}
 .dest-overlay{position:absolute;left:0;right:0;bottom:0;padding:20px 22px 24px;z-index:2;text-align:center;}
-.service-card .dest-overlay{
-  left:0;right:auto;top:0;bottom:0;width:62%;
-  padding:16px 18px;
-}
-.service-card .dest-overlay .service-text{
-  position:absolute;left:18px;right:18px;bottom:25%;
-  text-align:center;
-}
-.service-card .dest-overlay .dest-name{white-space:normal;line-height:1.3;font-size:13px;}
-.service-card .dest-overlay .dest-desc-mini{white-space:normal;line-height:1.35;font-size:10.5px;margin-bottom:0;}
 .wa-badge{
-  position:absolute;top:14px;left:14px;z-index:3;
   width:34px;height:34px;border-radius:50%;background:#1f7a4a;
   display:flex;align-items:center;justify-content:center;
 }
@@ -273,14 +274,19 @@ html[lang="en"] .dest-name, html[lang="tr"] .dest-name{font-weight:700;}
 .dest-overlay .dest-name{display:block;margin-bottom:8px;color:var(--ink);font-size:15px;white-space:nowrap;}
 .dest-overlay .dest-desc-mini{display:block;margin-bottom:8px;margin-top:-4px;color:var(--accent);font-size:12px;white-space:nowrap;}
 .dest-overlay .dest-link{margin-top:0;justify-content:center;}
+@media(max-width:759px){
+  .dest-overlay{padding:12px 10px 14px;}
+  .dest-overlay .dest-name{font-size:12.5px;white-space:normal;line-height:1.25;margin-bottom:5px;}
+  .dest-overlay .dest-desc-mini{display:none;}
+  .dest-link{font-size:11.5px;gap:4px;}
+  .dest-link svg{width:12px;height:12px;}
+}
 .dest-link{
   display:inline-flex;align-items:center;gap:6px;
   font-size:14px;font-weight:700;color:var(--accent);margin-top:10px;
 }
 .dest-card:hover .dest-link{gap:9px;}
 .dest-link svg{width:15px;height:15px;stroke:var(--accent);transition:transform .2s;}
-.service-card .dest-link{color:#1f7a4a;}
-.service-card .dest-link svg{stroke:#1f7a4a;}
 
 /* sub-grid used inside the side-projects card */
 .sub-grid{margin-top:18px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
@@ -313,9 +319,48 @@ html[dir="rtl"] .article-row:hover svg{transform:translateX(-3px);}
 /* ============================================================
    CONTACT
    ============================================================ */
-.services-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:0;}
-@media(min-width:620px){.services-grid{grid-template-columns:repeat(2,1fr);}}
-.service-card.image-card{aspect-ratio:5/4;}
+/* ============================================================
+   SERVICES — full-bleed image cards. Each image is custom-designed
+   with the illustration on one side and empty space on the other
+   (art-right / art-left). Text sits in the empty space. Visual
+   order is controlled per-card via --order-m / --order-d so cards
+   can be rearranged per breakpoint without touching the markup.
+   ============================================================ */
+.services-grid{display:flex;flex-direction:column;gap:14px;margin-bottom:0;}
+@media(min-width:760px){
+  .services-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+}
+.service-card{
+  order:var(--order-m,0);
+  position:relative;overflow:hidden;border-radius:var(--radius);
+  aspect-ratio:4/1;display:block;
+}
+@media(min-width:760px){
+  .service-card{order:var(--order-d,0);}
+}
+.service-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s;}
+.service-card:hover img{transform:scale(1.04);}
+.service-card .dest-overlay{
+  position:absolute;top:0;bottom:0;width:58%;z-index:2;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:12px 20px;text-align:start;
+}
+.service-card.art-right .dest-overlay{left:0;right:auto;background:linear-gradient(to right, var(--cream) 52%, rgba(245,242,235,0) 100%);}
+.service-card.art-left .dest-overlay{right:0;left:auto;background:linear-gradient(to left, var(--cream) 52%, rgba(245,242,235,0) 100%);}
+.service-card .dest-overlay .dest-name{display:block;font-size:14px;font-weight:800;color:var(--ink);white-space:normal;line-height:1.25;margin-bottom:3px;}
+html[lang="en"] .service-card .dest-overlay .dest-name, html[lang="tr"] .service-card .dest-overlay .dest-name{font-weight:700;}
+.service-card .dest-overlay .dest-desc-mini{display:block;font-size:11px;color:var(--ink-soft);white-space:normal;line-height:1.3;margin-bottom:0;}
+.service-card .wa-badge{position:absolute;top:14px;z-index:3;border:2px solid var(--cream);}
+.service-card.art-right .wa-badge{right:14px;}
+.service-card.art-left .wa-badge{left:14px;}
+@media(max-width:480px){
+  .service-card .dest-overlay{width:64%;padding:10px 16px;}
+  .service-card .dest-overlay .dest-name{font-size:13px;margin-bottom:2px;}
+  .service-card .dest-overlay .dest-desc-mini{display:block;font-size:10.5px;}
+}
+@media(max-width:759px){
+  .service-card .dest-overlay .dest-desc-mini{display:block;}
+}
 
 .contact-dark{background:var(--ink);padding:70px 24px;text-align:center;}
 .contact-question{
@@ -400,31 +445,49 @@ footer{
     </h1>
   </div>
 
-  <!-- ============== EXPLAINER ============== -->
-  <div class="explainer-dark">
-    <div class="explainer">
-      <h2 class="explainer-title reveal" data-i18n-html="explain.title">ما هو <span class="hl hand">تطوير الأعمال</span> بالتحديد؟</h2>
-      <p class="explainer-text reveal" data-i18n="explain.col1">تطوير الأعمال ليس مجرد مبيعات.</p>
+  <!-- ============== EXPLAINER + ABOUT ============== -->
+  <div class="quarters-row">
+    <div class="define-wrap">
+      <div class="define-shape reveal">
+        <svg class="define-bg-svg" viewBox="0 0 800 300" preserveAspectRatio="none">
+          <defs>
+            <filter id="defineRough" x="-25%" y="-25%" width="150%" height="150%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.017 0.1" numOctaves="4" seed="7" result="n"/>
+              <feDisplacementMap in="SourceGraphic" in2="n" scale="20"/>
+            </filter>
+          </defs>
+          <rect x="18" y="18" width="764" height="264" fill="#e3e1da" filter="url(#defineRough)"/>
+        </svg>
+        <div class="define-inner">
+          <div class="define-title-cell">
+            <h2 class="explainer-title" data-i18n-html="explain.title">ما هو <span class="hl hand">تطوير الأعمال</span> بالتحديد؟</h2>
+          </div>
+          <div class="define-text-cell">
+            <p class="explainer-text" data-i18n-html="explain.col1">تطوير الأعمال ليس مجرد مبيعات.</p>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <!-- ============== ABOUT ============== -->
-  <div class="about-wrap">
-    <div class="about-shape reveal">
-      <svg class="about-bg-svg" viewBox="0 0 800 340" preserveAspectRatio="none">
-        <defs>
-          <filter id="aboutRough" x="-25%" y="-25%" width="150%" height="150%">
-            <feTurbulence type="fractalNoise" baseFrequency="0.016 0.11" numOctaves="4" seed="21" result="n"/>
-            <feDisplacementMap in="SourceGraphic" in2="n" scale="22"/>
-          </filter>
-        </defs>
-        <rect x="20" y="20" width="760" height="300" fill="#e3ddd0" filter="url(#aboutRough)"/>
-      </svg>
-      <div class="about-watermark" data-i18n="about.watermark">خبرة تزيد
-عن عشرين عاماً</div>
-      <div class="about-content">
-        <p class="about-quote hand" data-i18n="about.quote">الوضوح هو ما أترك خلفي.</p>
-        <p class="about-text" data-i18n-html="about.text"></p>
+    <div class="about-wrap">
+      <div class="about-shape reveal">
+        <svg class="about-bg-svg" viewBox="0 0 800 300" preserveAspectRatio="none">
+          <defs>
+            <filter id="aboutRough" x="-25%" y="-25%" width="150%" height="150%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.016 0.11" numOctaves="4" seed="21" result="n"/>
+              <feDisplacementMap in="SourceGraphic" in2="n" scale="22"/>
+            </filter>
+          </defs>
+          <rect x="20" y="18" width="760" height="264" fill="#ebdfd8" filter="url(#aboutRough)"/>
+        </svg>
+        <div class="about-inner">
+          <div class="about-text-cell">
+            <p class="about-text" data-i18n-html="about.text"></p>
+          </div>
+          <div class="about-quote-cell">
+            <p class="about-quote" data-i18n-html="about.quote"><span class="hl hand">الوضوح</span> هو ما أتركه خلفي.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -469,6 +532,18 @@ footer{
         </div>
       </a>
 
+      <!-- Apps -->
+      <a class="dest-card image-card reveal" href="apps.html">
+        <img src="images/Apps.png" alt="">
+        <div class="dest-overlay">
+          <span class="dest-name" data-i18n="dest.apps.name">تطبيقات، مش أفكار</span>
+          <span class="dest-link">
+            <span data-i18n="dest.apps.cta">تصفح التطبيقات</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+          </span>
+        </div>
+      </a>
+
     </div>
   </section>
 
@@ -488,55 +563,47 @@ footer{
   <!-- ============== SERVICES ============== -->
   <section>
     <div class="services-grid">
-      <a class="dest-card image-card reveal service-card" href="#" target="_blank" rel="noopener" data-service="growth">
+      <a class="dest-card image-card reveal service-card art-right" href="#" target="_blank" rel="noopener" data-service="growth" style="--order-m:1;--order-d:1;">
         <img src="images/Growth.png" alt="">
         <span class="wa-badge">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
         </span>
         <div class="dest-overlay">
-          <div class="service-text">
-            <span class="dest-name service-name" data-i18n="service.growth.name">تطوير الأعمال والنمو</span>
-            <span class="dest-desc-mini" data-i18n="service.growth.desc">فرص وشراكات تصنع نمواً</span>
-          </div>
+          <span class="dest-name service-name" data-i18n="service.growth.name">تطوير الأعمال والنمو</span>
+          <span class="dest-desc-mini" data-i18n="service.growth.desc">فرص وشراكات تصنع نمواً</span>
         </div>
       </a>
 
-      <a class="dest-card image-card reveal service-card" href="#" target="_blank" rel="noopener" data-service="systems">
+      <a class="dest-card image-card reveal service-card art-left" href="#" target="_blank" rel="noopener" data-service="systems" style="--order-m:2;--order-d:2;">
         <img src="images/Systems.png" alt="">
         <span class="wa-badge">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
         </span>
         <div class="dest-overlay">
-          <div class="service-text">
-            <span class="dest-name service-name" data-i18n="service.systems.name">تصميم الأنظمة وسير العمل</span>
-            <span class="dest-desc-mini" data-i18n="service.systems.desc">من الطلب لحد التسليم</span>
-          </div>
+          <span class="dest-name service-name" data-i18n="service.systems.name">تصميم الأنظمة وسير العمل</span>
+          <span class="dest-desc-mini" data-i18n="service.systems.desc">من الطلب لحد التسليم</span>
         </div>
       </a>
 
-      <a class="dest-card image-card reveal service-card" href="#" target="_blank" rel="noopener" data-service="waste">
+      <a class="dest-card image-card reveal service-card art-right" href="#" target="_blank" rel="noopener" data-service="waste" style="--order-m:3;--order-d:4;">
         <img src="images/Waste.png" alt="">
         <span class="wa-badge">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
         </span>
         <div class="dest-overlay">
-          <div class="service-text">
-            <span class="dest-name service-name" data-i18n="service.waste.name">تقليل الهدر التشغيلي</span>
-            <span class="dest-desc-mini" data-i18n="service.waste.desc">كشف الهدر ومنع تكراره</span>
-          </div>
+          <span class="dest-name service-name" data-i18n="service.waste.name">تقليل الهدر التشغيلي</span>
+          <span class="dest-desc-mini" data-i18n="service.waste.desc">كشف الهدر ومنع تكراره</span>
         </div>
       </a>
 
-      <a class="dest-card image-card reveal service-card" href="#" target="_blank" rel="noopener" data-service="consulting">
+      <a class="dest-card image-card reveal service-card art-left" href="#" target="_blank" rel="noopener" data-service="consulting" style="--order-m:4;--order-d:3;">
         <img src="images/Consulting.png" alt="">
         <span class="wa-badge">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
         </span>
         <div class="dest-overlay">
-          <div class="service-text">
-            <span class="dest-name service-name" data-i18n="service.consulting.name">الاستشارات التشغيلية</span>
-            <span class="dest-desc-mini" data-i18n="service.consulting.desc">تشخيص وحلول قابلة للتنفيذ</span>
-          </div>
+          <span class="dest-name service-name" data-i18n="service.consulting.name">الاستشارات التشغيلية</span>
+          <span class="dest-desc-mini" data-i18n="service.consulting.desc">تشخيص وحلول قابلة للتنفيذ</span>
         </div>
       </a>
     </div>
@@ -639,22 +706,25 @@ const translations = {
       {main:"مسارات عمل بلا ", key:"هدر."},
       {main:"عمليات واضحة و", key:"مُقاسة."}
     ],
+    "explain.label": "تعريف",
     "explain.title": "ما هو <span class=\"hl hand\">تطوير الأعمال</span> بالتحديد؟",
-    "explain.col1": "يربط كثيرون تطوير الأعمال بتحسين المبيعات المباشر، لكنه ليس مبيعات: المبيعات تُغلق صفقة اليوم، وتطوير الأعمال يبني الأنظمة والشراكات التي تصنع الفرصة وتؤمّن صفقة الغد — أشبه بالفرق بين من يحصد موسماً واحداً، ومن يهندس شبكة الري ويخطط للمواسم العشرة القادمة.",
+    "explain.col1": "يربط كثيرون تطوير الأعمال بتحسين المبيعات المباشر، لكنه ليس مبيعات: المبيعات <span class=\"hl\">تُغلق صفقة اليوم</span>، وتطوير الأعمال يبني الأنظمة والشراكات التي تصنع الفرصة و<span class=\"hl\">تؤمّن صفقة الغد</span> — أشبه بالفرق بين من يحصد موسماً واحداً، ومن يخطط للمواسم العشرة القادمة.",
     "about.watermark": "خبرة تزيد\nعن عشرين عاماً",
-    "about.quote": "الوضوح هو ما أترك خلفي.",
+    "about.quote": "<span class=\"hl hand\">الوضوح</span> هو ما أتركه خلفي.",
     "about.text": "يُكلّف <span class=\"hl\">الهدر التشغيلي والفوضى الخفية</span> الشركاتِ وقتاً وموارداً أكثر بكثير مما يتوقعون. لدي خبرة تزيد عن 20 عاماً في تطوير أعمال الشركات والمؤسسات، وأتمتة سير عملها ومراقبته لتحويل تلك الفوضى إلى <span class=\"hl\">أنظمة دقيقة عالية الكفاءة</span>.",
     "tools.quote": "عدّة عمل مرنة مثلي.",
     "tools.skills": ["Excel والبيانات","الذكاء الاصطناعي والأدوات الرقمية","العمليات","أنظمة CRM","حزمة Adobe","التسويق الرقمي","AutoCAD","العربية","الإنكليزية","التركية"],
     "dest.label": "الوجهات",
     "dest.title": "وين بدك توصل؟",
-    "dest.portfolio.name": "البورتفوليو الكامل",
+    "dest.portfolio.name": "مسيرتي المهنية",
     "dest.portfolio.desc": "السيرة المهنية الكاملة: الخبرات، الشهادات، والمهارات بالتفصيل.",
     "dest.portfolio.cta": "زيارة البورتفوليو",
     "dest.projects.name": "نتائج، مش وعود",
     "dest.projects.cta": "تصفح المشاريع",
     "dest.articles.name": "خواطر وتجارب",
     "dest.articles.cta": "قراءة الخواطر",
+    "dest.apps.name": "تطبيقات، مش أفكار",
+    "dest.apps.cta": "تصفح التطبيقات",
     "service.growth.name": "تطوير الأعمال والنمو",
     "service.growth.desc": "فرص وشراكات تصنع نمواً",
     "service.systems.name": "تصميم الأنظمة وسير العمل",
@@ -678,21 +748,24 @@ const translations = {
       {main:"processes that are ", key:"measurable."}
     ],
     "about.watermark": "Over 20 Years\nof Experience",
+    "explain.label": "Definition",
     "explain.title": "What is <span class=\"hl hand\">business development</span>, exactly?",
-    "explain.col1": "Many treat business development as an extension of sales, but it isn't: sales close today's deal, while business development builds the systems and partnerships that create the opportunity and secure tomorrow's — the difference between harvesting one season and engineering the irrigation network while planning the next ten.",
-    "about.quote": "Clarity is what I leave behind.",
+    "explain.col1": "Many treat business development as an extension of sales, but it isn't: sales <span class=\"hl\">close today's deal</span>, while business development builds the systems and partnerships that create the opportunity and <span class=\"hl\">secure tomorrow's deal</span> — the difference between harvesting one season and planning for the next ten.",
+    "about.quote": "<span class=\"hl hand\">Clarity</span> is what I leave behind.",
     "about.text": "<span class=\"hl\">Hidden waste and operational friction</span> cost companies far more time and resources than they realize. I bring over 20 years of experience building and automating business operations for companies and institutions — turning that friction into <span class=\"hl\">precise, high-performing systems</span>.",
     "tools.quote": "A flexible toolkit, just like me.",
     "tools.skills": ["Excel & Data","AI & Digital Tools","Operations","CRM Systems","Adobe Suite","Digital Marketing","AutoCAD","Arabic","English","Turkish"],
     "dest.label": "Destinations",
     "dest.title": "Where do you want to go?",
-    "dest.portfolio.name": "Full portfolio",
+    "dest.portfolio.name": "My Career Journey",
     "dest.portfolio.desc": "The complete professional story: experience, certifications, and skills in detail.",
     "dest.portfolio.cta": "Visit the portfolio",
     "dest.projects.name": "Results, Not Promises",
     "dest.projects.cta": "Browse the projects",
     "dest.articles.name": "Thoughts & Experiences",
     "dest.articles.cta": "Read the thoughts",
+    "dest.apps.name": "Apps, Not Ideas",
+    "dest.apps.cta": "Browse the apps",
     "service.growth.name": "Business Development & Growth",
     "service.growth.desc": "Opportunities that create growth",
     "service.systems.name": "Systems & Workflow Design",
@@ -716,21 +789,24 @@ const translations = {
       {main:"net ve ölçülebilir ", key:"süreçler."}
     ],
     "about.watermark": "20 Yılı Aşkın\nDeneyim",
+    "explain.label": "Tanım",
     "explain.title": "<span class=\"hl hand\">İş geliştirme</span> tam olarak nedir?",
-    "explain.col1": "Birçok kişi iş geliştirmeyi doğrudan satışla ilişkilendirir, ama iş geliştirme satış değildir: satış bugünün anlaşmasını kapatır, iş geliştirme ise fırsatı yaratan ve yarının anlaşmasını güvence altına alan sistemleri ve ortaklıkları kurar — tek bir sezonu hasat etmekle, sulama sistemini kurup önümüzdeki on sezonu planlamak arasındaki fark gibi.",
-    "about.quote": "Arkamda bıraktığım şey netliktir.",
+    "explain.col1": "Birçok kişi iş geliştirmeyi doğrudan satışla ilişkilendirir, ama iş geliştirme satış değildir: satış <span class=\"hl\">bugünün anlaşmasını kapatır</span>, iş geliştirme ise fırsatı yaratan ve <span class=\"hl\">yarının anlaşmasını güvence altına alan</span> sistemleri ve ortaklıkları kurar — tek bir sezonu hasat etmekle önümüzdeki on sezonu planlamak arasındaki fark gibi.",
+    "about.quote": "Arkamda bıraktığım şey <span class=\"hl hand\">netliktir</span>.",
     "about.text": "<span class=\"hl\">Görünmeyen israf ve operasyonel karmaşa</span>, şirketlere düşündüklerinden çok daha fazla zaman ve kaynağa mal olur. 20 yılı aşkın deneyimimle şirketlerin ve kurumların iş süreçlerini geliştirip otomatikleştiriyor, bu karmaşayı <span class=\"hl\">hassas ve yüksek verimli sistemlere</span> dönüştürüyorum.",
     "tools.quote": "Benim gibi esnek bir araç seti.",
     "tools.skills": ["Excel ve Veri","Yapay Zeka ve Dijital Araçlar","Operasyonlar","CRM Sistemleri","Adobe Suite","Dijital Pazarlama","AutoCAD","Arapça","İngilizce","Türkçe"],
     "dest.label": "Yönler",
     "dest.title": "Nereye gitmek istersin?",
-    "dest.portfolio.name": "Tam portfolyo",
+    "dest.portfolio.name": "Kariyer Yolculuğum",
     "dest.portfolio.desc": "Deneyim, sertifikalar ve yetkinliklerin tamamı.",
     "dest.portfolio.cta": "Portfolyoyu görüntüle",
     "dest.projects.name": "Söz Değil, Sonuç",
     "dest.projects.cta": "Projelere göz at",
     "dest.articles.name": "Düşünceler ve Deneyimler",
     "dest.articles.cta": "Düşünceleri oku",
+    "dest.apps.name": "Fikir Değil, Uygulama",
+    "dest.apps.cta": "Uygulamalara göz at",
     "service.growth.name": "İş Geliştirme ve Büyüme",
     "service.growth.desc": "Sürdürülebilir büyüme fırsatları",
     "service.systems.name": "Sistem ve İş Akışı Tasarımı",
