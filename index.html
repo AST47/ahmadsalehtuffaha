@@ -230,57 +230,37 @@ html[lang="en"] .section-title, html[lang="tr"] .section-title{font-weight:700;}
 .reveal.active{opacity:1;transform:translateY(0);}
 
 /* ============================================================
-   DESTINATION CARDS (spotlight hover)
+   DESTINATIONS — 2×2 bento hover-expand grid.
+   On real hover devices (mouse), hovering one cell grows it at the
+   expense of the other three (row+column weight redistribution).
+   On touch/no-hover devices, cells stay equal-sized and the
+   description is always visible (no hover state to rely on).
    ============================================================ */
-.cards-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
-.dest-card{
-  position:relative;overflow:hidden;
-  background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
-  padding:28px;transition:border-color .3s, transform .2s;
+.bento-dest{
+  display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,1fr);
+  gap:8px;aspect-ratio:1;border-radius:var(--radius);overflow:hidden;
 }
-.dest-card:hover{border-color:var(--accent);transform:translateY(-2px);}
-.dest-card::before{
-  content:'';position:absolute;inset:0;pointer-events:none;opacity:0;
-  background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%), var(--accent-wash), transparent 45%);
-  transition:opacity .4s;
+.bento-cell{position:relative;overflow:hidden;display:flex;align-items:flex-end;}
+.bento-cell img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+.bento-content{position:relative;z-index:2;width:100%;padding:20px 22px;display:flex;flex-direction:column;gap:6px;}
+.bento-title{color:var(--ink);font-weight:800;font-size:17px;line-height:1.3;text-align:start;}
+html[lang="en"] .bento-title, html[lang="tr"] .bento-title{font-weight:700;}
+.bento-desc{color:var(--accent);font-size:12.5px;line-height:1.6;text-align:start;max-height:200px;opacity:1;overflow:hidden;}
+@media(hover:hover) and (pointer:fine){
+  .bento-dest{
+    grid-template-columns:var(--c1,1fr) var(--c2,1fr);
+    grid-template-rows:var(--r1,1fr) var(--r2,1fr);
+    transition:grid-template-columns .45s cubic-bezier(.4,0,.2,1), grid-template-rows .45s cubic-bezier(.4,0,.2,1);
+  }
+  .bento-cell img{transition:transform .5s;}
+  .bento-desc{max-height:0;opacity:0;transition:max-height .4s ease, opacity .3s ease, margin-top .4s ease;}
+  .bento-cell:hover .bento-desc{max-height:120px;opacity:1;margin-top:2px;}
 }
-.dest-card:hover::before{opacity:1;}
-.dest-card-top{display:flex;align-items:center;gap:14px;margin-bottom:18px;}
-.dest-icon{
-  width:44px;height:44px;border-radius:10px;background:var(--cream);
-  border:1px solid var(--line);flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
+@media(max-width:480px){
+  .bento-content{padding:14px 16px;}
+  .bento-title{font-size:14px;}
+  .bento-desc{font-size:11px;}
 }
-.dest-icon svg{width:22px;height:22px;stroke:var(--ink);}
-.dest-name{font-size:26px;font-weight:800;}
-html[lang="en"] .dest-name, html[lang="tr"] .dest-name{font-weight:700;}
-
-/* image-based destination cards (Portfolio/Results/Reflections) */
-.dest-card.image-card{padding:0;aspect-ratio:4/5;display:block;}
-.dest-card.image-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s;}
-.dest-card.image-card:hover img{transform:scale(1.045);}
-.dest-overlay{position:absolute;left:0;right:0;bottom:0;padding:20px 22px 24px;z-index:2;text-align:center;}
-.wa-badge{
-  width:20px;height:20px;
-  display:flex;align-items:center;justify-content:center;
-}
-.wa-badge svg{width:18px;height:18px;stroke:#1f7a4a;}
-.dest-overlay .dest-name{display:block;margin-bottom:8px;color:var(--ink);font-size:15px;white-space:nowrap;}
-.dest-overlay .dest-desc-mini{display:block;margin-bottom:8px;margin-top:-4px;color:var(--accent);font-size:12px;white-space:nowrap;}
-.dest-overlay .dest-link{margin-top:0;justify-content:center;}
-@media(max-width:759px){
-  .dest-overlay{padding:12px 10px 14px;}
-  .dest-overlay .dest-name{font-size:12.5px;white-space:normal;line-height:1.25;margin-bottom:5px;}
-  .dest-overlay .dest-desc-mini{display:none;}
-  .dest-link{font-size:11.5px;gap:4px;}
-  .dest-link svg{width:12px;height:12px;}
-}
-.dest-link{
-  display:inline-flex;align-items:center;gap:6px;
-  font-size:14px;font-weight:700;color:var(--accent);margin-top:10px;
-}
-.dest-card:hover .dest-link{gap:9px;}
-.dest-link svg{width:15px;height:15px;stroke:var(--accent);transition:transform .2s;}
 
 /* sub-grid used inside the side-projects card */
 .sub-grid{margin-top:18px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
@@ -311,43 +291,59 @@ html[dir="rtl"] .article-row:hover svg{transform:translateX(-3px);}
 .article-empty{font-size:14px;color:var(--ink-ghost);}
 
 /* ============================================================
-   CONTACT
+   SERVICES — horizontal hover-expand accordion.
+   Title always sits on the right. Collapsed: a narrow strip
+   pinned to the right edge holds the rotated title (centering
+   happens inside that narrow strip only, so it can never drift
+   toward the middle of the card). Expanded: a completely separate
+   block shows the title above the description in normal flow,
+   so the two can never overlap.
+   Stacked single column on touch/no-hover devices, description
+   always visible there (no hover to rely on).
    ============================================================ */
-/* ============================================================
-   SERVICES — full-bleed image cards, always a single column.
-   Each image is custom-designed with the illustration on one side
-   and empty space on the other (art-right / art-left), alternating
-   simply by position: 1st right, 2nd left, 3rd right, 4th left...
-   ============================================================ */
-.services-grid{display:flex;flex-direction:column;gap:14px;margin-bottom:0;}
-.dest-card.image-card.service-card{
-  position:relative;overflow:hidden;border-radius:var(--radius);
-  aspect-ratio:4/1;display:block;
+.services-grid{display:flex;flex-direction:column;gap:14px;margin-bottom:0;width:100%;}
+.service-card{position:relative;overflow:hidden;border-radius:var(--radius);aspect-ratio:4/1;display:block;}
+.service-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+
+.title-strip{display:none;}
+.content-expanded{
+  position:absolute;inset:0;z-index:2;padding:14px 18px;
+  display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;
 }
-.service-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s;}
-.service-card:hover img{transform:scale(1.04);}
-.service-card .dest-overlay{
-  position:absolute;top:0;bottom:0;width:58%;z-index:2;
-  display:flex;flex-direction:column;justify-content:center;
-  padding:12px 20px;text-align:center;
+.content-expanded .service-title{color:var(--ink);font-weight:800;font-size:15px;line-height:1.3;text-align:start;white-space:normal;}
+html[lang="en"] .content-expanded .service-title, html[lang="tr"] .content-expanded .service-title{font-weight:700;}
+.service-desc{color:var(--accent);font-size:12px;line-height:1.5;text-align:start;margin-top:4px;}
+.service-card .wa-badge{position:absolute;top:12px;right:12px;z-index:3;}
+
+@media(hover:hover) and (pointer:fine){
+  .services-grid{flex-direction:row;aspect-ratio:2.75/1;gap:8px;}
+  .service-card{flex:1;min-width:60px;aspect-ratio:auto;transition:flex-grow .5s cubic-bezier(.4,0,.2,1);}
+  .services-grid:hover .service-card{flex-grow:1;}
+  .services-grid .service-card:hover{flex-grow:6;}
+  .service-card img{transition:transform .5s;}
+
+  .title-strip{
+    display:flex;position:absolute;top:0;bottom:0;right:16px;width:28px;z-index:2;
+    align-items:center;justify-content:center;transition:opacity .25s;
+  }
+  .title-strip .service-title{white-space:nowrap;font-weight:800;font-size:15px;color:var(--ink);transform:rotate(-90deg);}
+  html[lang="en"] .title-strip .service-title, html[lang="tr"] .title-strip .service-title{font-weight:700;}
+
+  .content-expanded{opacity:0;pointer-events:none;transition:opacity .25s;}
+  .service-desc{max-height:0;opacity:0;overflow:hidden;transition:max-height .4s ease, opacity .3s ease, margin-top .4s ease;}
+
+  .service-card:hover .title-strip{opacity:0;}
+  .service-card:hover .content-expanded{opacity:1;pointer-events:auto;}
+  .service-card:hover .service-desc{max-height:100px;opacity:1;margin-top:4px;}
 }
-.service-card.art-right .dest-overlay{left:0;right:auto;}
-.service-card.art-left .dest-overlay{right:0;left:auto;}
-.service-card .dest-overlay .dest-name{display:block;font-size:14px;font-weight:800;color:var(--ink);white-space:normal;line-height:1.25;margin-bottom:3px;}
-html[lang="en"] .service-card .dest-overlay .dest-name, html[lang="tr"] .service-card .dest-overlay .dest-name{font-weight:700;}
-.service-card .dest-overlay .dest-desc-mini{display:block;font-size:11px;color:var(--ink-soft);white-space:normal;line-height:1.3;margin-bottom:0;}
-.service-card .wa-badge{position:absolute;top:14px;z-index:3;}
-.service-card.art-right .wa-badge{right:14px;}
-.service-card.art-left .wa-badge{left:14px;}
 @media(max-width:480px){
-  .service-card .dest-overlay{width:64%;padding:10px 16px;}
-  .service-card .dest-overlay .dest-name{font-size:13px;margin-bottom:2px;}
-  .service-card .dest-overlay .dest-desc-mini{display:block;font-size:10.5px;}
-}
-@media(max-width:759px){
-  .service-card .dest-overlay .dest-desc-mini{display:block;}
+  .content-expanded .service-title{font-size:13px;}
+  .service-desc{font-size:10.5px;}
 }
 
+/* ============================================================
+   CONTACT
+   ============================================================ */
 .contact-dark{background:var(--ink);padding:70px 24px;text-align:center;}
 .contact-question{
   font-size:clamp(1.5rem,3.8vw,2.2rem);font-weight:800;margin-bottom:32px;
@@ -480,53 +476,41 @@ footer{
 
   <!-- ============== DESTINATIONS ============== -->
   <section>
-    <div class="cards-grid">
+    <div class="bento-dest reveal" id="bento-dest">
 
       <!-- Portfolio -->
-      <a class="dest-card image-card reveal" href="https://portfolio.ahmadsalehtuffaha.com/" target="_blank" rel="noopener">
+      <a class="bento-cell" data-r="1" data-c="1" href="https://portfolio.ahmadsalehtuffaha.com/" target="_blank" rel="noopener">
         <img src="images/Portfolio.png" alt="">
-        <div class="dest-overlay">
-          <span class="dest-name" data-i18n="dest.portfolio.name">البورتفوليو الكامل</span>
-          <span class="dest-link">
-            <span data-i18n="dest.portfolio.cta">زيارة البورتفوليو</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
-          </span>
+        <div class="bento-content">
+          <span class="bento-title" data-i18n="dest.portfolio.name">مسيرتي المهنية</span>
+          <p class="bento-desc" data-i18n="dest.portfolio.desc">السيرة المهنية الكاملة: الخبرات، الشهادات، والمهارات بالتفصيل.</p>
         </div>
       </a>
 
       <!-- Side projects -->
-      <a class="dest-card image-card reveal" href="projects.html">
+      <a class="bento-cell" data-r="1" data-c="2" href="projects.html">
         <img src="images/Projects.png" alt="">
-        <div class="dest-overlay">
-          <span class="dest-name" data-i18n="dest.projects.name">نتائج، مش وعود</span>
-          <span class="dest-link">
-            <span data-i18n="dest.projects.cta">تصفح المشاريع</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
-          </span>
+        <div class="bento-content">
+          <span class="bento-title" data-i18n="dest.projects.name">نتائج، مش وعود</span>
+          <p class="bento-desc" data-i18n="dest.projects.desc">مشاريع فعلية ونتائج ملموسة قدرت أحققها لعملائي.</p>
         </div>
       </a>
 
       <!-- Articles -->
-      <a class="dest-card image-card reveal" href="articles.html">
+      <a class="bento-cell" data-r="2" data-c="1" href="articles.html">
         <img src="images/Articles.png" alt="">
-        <div class="dest-overlay">
-          <span class="dest-name" data-i18n="dest.articles.name">خواطر وتجارب</span>
-          <span class="dest-link">
-            <span data-i18n="dest.articles.cta">قراءة الخواطر</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
-          </span>
+        <div class="bento-content">
+          <span class="bento-title" data-i18n="dest.articles.name">خواطر وتجارب</span>
+          <p class="bento-desc" data-i18n="dest.articles.desc">مقالات وتأملات من مسيرتي المهنية ومحطاتها.</p>
         </div>
       </a>
 
       <!-- Apps -->
-      <a class="dest-card image-card reveal" href="apps.html">
+      <a class="bento-cell" data-r="2" data-c="2" href="apps.html">
         <img src="images/Apps.png" alt="">
-        <div class="dest-overlay">
-          <span class="dest-name" data-i18n="dest.apps.name">تطبيقات، مش أفكار</span>
-          <span class="dest-link">
-            <span data-i18n="dest.apps.cta">تصفح التطبيقات</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
-          </span>
+        <div class="bento-content">
+          <span class="bento-title" data-i18n="dest.apps.name">تطبيقات، مش أفكار</span>
+          <p class="bento-desc" data-i18n="dest.apps.desc">أدوات وتطبيقات ويب صممتها وبنيتها بنفسي.</p>
         </div>
       </a>
 
@@ -548,48 +532,60 @@ footer{
 
   <!-- ============== SERVICES ============== -->
   <section>
-    <div class="services-grid">
-      <a class="dest-card image-card reveal service-card art-right" href="#" target="_blank" rel="noopener" data-service="growth">
+    <div class="services-grid reveal" id="services-grid">
+      <a class="service-card" href="#" target="_blank" rel="noopener" data-service="growth">
         <img src="images/Growth.png" alt="">
         <span class="wa-badge">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
         </span>
-        <div class="dest-overlay">
-          <span class="dest-name service-name" data-i18n="service.growth.name">تطوير الأعمال والنمو</span>
-          <span class="dest-desc-mini" data-i18n="service.growth.desc">فرص وشراكات تصنع نمواً</span>
+        <div class="title-strip">
+          <span class="service-title" data-i18n="service.growth.name">تطوير الأعمال والنمو</span>
+        </div>
+        <div class="content-expanded">
+          <span class="service-title" data-i18n="service.growth.name">تطوير الأعمال والنمو</span>
+          <p class="service-desc" data-i18n="service.growth.desc">فرص وشراكات تصنع نمواً</p>
         </div>
       </a>
 
-      <a class="dest-card image-card reveal service-card art-left" href="#" target="_blank" rel="noopener" data-service="systems">
+      <a class="service-card" href="#" target="_blank" rel="noopener" data-service="systems">
         <img src="images/Systems.png" alt="">
         <span class="wa-badge">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
         </span>
-        <div class="dest-overlay">
-          <span class="dest-name service-name" data-i18n="service.systems.name">تصميم الأنظمة وسير العمل</span>
-          <span class="dest-desc-mini" data-i18n="service.systems.desc">من الطلب لحد التسليم</span>
+        <div class="title-strip">
+          <span class="service-title" data-i18n="service.systems.name">تصميم الأنظمة وسير العمل</span>
+        </div>
+        <div class="content-expanded">
+          <span class="service-title" data-i18n="service.systems.name">تصميم الأنظمة وسير العمل</span>
+          <p class="service-desc" data-i18n="service.systems.desc">من الطلب لحد التسليم</p>
         </div>
       </a>
 
-      <a class="dest-card image-card reveal service-card art-right" href="#" target="_blank" rel="noopener" data-service="waste">
+      <a class="service-card" href="#" target="_blank" rel="noopener" data-service="waste">
         <img src="images/Waste.png" alt="">
         <span class="wa-badge">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
         </span>
-        <div class="dest-overlay">
-          <span class="dest-name service-name" data-i18n="service.waste.name">تقليل الهدر التشغيلي</span>
-          <span class="dest-desc-mini" data-i18n="service.waste.desc">كشف الهدر ومنع تكراره</span>
+        <div class="title-strip">
+          <span class="service-title" data-i18n="service.waste.name">تقليل الهدر التشغيلي</span>
+        </div>
+        <div class="content-expanded">
+          <span class="service-title" data-i18n="service.waste.name">تقليل الهدر التشغيلي</span>
+          <p class="service-desc" data-i18n="service.waste.desc">كشف الهدر ومنع تكراره</p>
         </div>
       </a>
 
-      <a class="dest-card image-card reveal service-card art-left" href="#" target="_blank" rel="noopener" data-service="consulting">
+      <a class="service-card" href="#" target="_blank" rel="noopener" data-service="consulting">
         <img src="images/Consulting.png" alt="">
         <span class="wa-badge">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
         </span>
-        <div class="dest-overlay">
-          <span class="dest-name service-name" data-i18n="service.consulting.name">الاستشارات التشغيلية</span>
-          <span class="dest-desc-mini" data-i18n="service.consulting.desc">تشخيص وحلول قابلة للتنفيذ</span>
+        <div class="title-strip">
+          <span class="service-title" data-i18n="service.consulting.name">الاستشارات التشغيلية</span>
+        </div>
+        <div class="content-expanded">
+          <span class="service-title" data-i18n="service.consulting.name">الاستشارات التشغيلية</span>
+          <p class="service-desc" data-i18n="service.consulting.desc">تشخيص وحلول قابلة للتنفيذ</p>
         </div>
       </a>
     </div>
@@ -706,10 +702,13 @@ const translations = {
     "dest.portfolio.desc": "السيرة المهنية الكاملة: الخبرات، الشهادات، والمهارات بالتفصيل.",
     "dest.portfolio.cta": "زيارة البورتفوليو",
     "dest.projects.name": "نتائج، مش وعود",
+    "dest.projects.desc": "مشاريع فعلية ونتائج ملموسة قدرت أحققها لعملائي.",
     "dest.projects.cta": "تصفح المشاريع",
     "dest.articles.name": "خواطر وتجارب",
+    "dest.articles.desc": "مقالات وتأملات من مسيرتي المهنية ومحطاتها.",
     "dest.articles.cta": "قراءة الخواطر",
     "dest.apps.name": "تطبيقات، مش أفكار",
+    "dest.apps.desc": "أدوات وتطبيقات ويب صممتها وبنيتها بنفسي.",
     "dest.apps.cta": "تصفح التطبيقات",
     "service.growth.name": "تطوير الأعمال والنمو",
     "service.growth.desc": "فرص وشراكات تصنع نمواً",
@@ -747,10 +746,13 @@ const translations = {
     "dest.portfolio.desc": "The complete professional story: experience, certifications, and skills in detail.",
     "dest.portfolio.cta": "Visit the portfolio",
     "dest.projects.name": "Results, Not Promises",
+    "dest.projects.desc": "Real projects and measurable results delivered for clients.",
     "dest.projects.cta": "Browse the projects",
     "dest.articles.name": "Thoughts & Experiences",
+    "dest.articles.desc": "Articles and reflections from my professional journey.",
     "dest.articles.cta": "Read the thoughts",
     "dest.apps.name": "Apps, Not Ideas",
+    "dest.apps.desc": "Web tools and apps I designed and built myself.",
     "dest.apps.cta": "Browse the apps",
     "service.growth.name": "Business Development & Growth",
     "service.growth.desc": "Opportunities that create growth",
@@ -788,10 +790,13 @@ const translations = {
     "dest.portfolio.desc": "Deneyim, sertifikalar ve yetkinliklerin tamamı.",
     "dest.portfolio.cta": "Portfolyoyu görüntüle",
     "dest.projects.name": "Söz Değil, Sonuç",
+    "dest.projects.desc": "Müşteriler için tamamlanan gerçek projeler ve somut sonuçlar.",
     "dest.projects.cta": "Projelere göz at",
     "dest.articles.name": "Düşünceler ve Deneyimler",
+    "dest.articles.desc": "Kariyer yolculuğumdan makaleler ve düşünceler.",
     "dest.articles.cta": "Düşünceleri oku",
     "dest.apps.name": "Fikir Değil, Uygulama",
+    "dest.apps.desc": "Kendi tasarladığım ve geliştirdiğim web araçları ve uygulamalar.",
     "dest.apps.cta": "Uygulamalara göz at",
     "service.growth.name": "İş Geliştirme ve Büyüme",
     "service.growth.desc": "Sürdürülebilir büyüme fırsatları",
@@ -912,14 +917,6 @@ document.querySelectorAll(".lang-switch button").forEach(btn=>{
   btn.addEventListener("click", ()=> setLanguage(btn.dataset.lang));
 });
 
-/* spotlight mouse tracking on destination cards */
-document.querySelectorAll(".dest-card").forEach(card=>{
-  card.addEventListener("mousemove", e=>{
-    const r = card.getBoundingClientRect();
-    card.style.setProperty("--mx", (e.clientX - r.left) + "px");
-    card.style.setProperty("--my", (e.clientY - r.top) + "px");
-  });
-});
 
 /* scroll reveal */
 const reveals = document.querySelectorAll(".reveal");
@@ -943,6 +940,33 @@ function detectLang(){
 }
 setLanguage(detectLang());
 revealOnScroll();
+
+/* 2x2 bento hover-expand (destinations). Setting the CSS custom
+   properties is harmless on touch devices: the grid-template rule
+   that consumes them only exists inside the (hover:hover) media
+   query, so nothing visually changes there. */
+(function initBentoDest(){
+  const bento = document.getElementById("bento-dest");
+  if(!bento) return;
+  const cells = bento.querySelectorAll(".bento-cell");
+  const BIG = 3, SMALL = 1;
+  function setActive(r, c){
+    bento.style.setProperty("--c1", c === "1" ? `${BIG}fr` : `${SMALL}fr`);
+    bento.style.setProperty("--c2", c === "2" ? `${BIG}fr` : `${SMALL}fr`);
+    bento.style.setProperty("--r1", r === "1" ? `${BIG}fr` : `${SMALL}fr`);
+    bento.style.setProperty("--r2", r === "2" ? `${BIG}fr` : `${SMALL}fr`);
+  }
+  function reset(){
+    bento.style.setProperty("--c1", "1fr");
+    bento.style.setProperty("--c2", "1fr");
+    bento.style.setProperty("--r1", "1fr");
+    bento.style.setProperty("--r2", "1fr");
+  }
+  cells.forEach(cell=>{
+    cell.addEventListener("mouseenter", ()=> setActive(cell.dataset.r, cell.dataset.c));
+  });
+  bento.addEventListener("mouseleave", reset);
+})();
 </script>
 </body>
 </html>
