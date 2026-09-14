@@ -231,29 +231,29 @@ html[lang="en"] .section-title, html[lang="tr"] .section-title{font-weight:700;}
 
 /* ============================================================
    DESTINATIONS — 2×2 bento hover-expand grid.
-   On real hover devices (mouse), hovering one cell grows it at the
-   expense of the other three (row+column weight redistribution).
-   On touch/no-hover devices, cells stay equal-sized and the
-   description is always visible (no hover state to rely on).
+   Identical on every device: hovering (desktop) or tapping (touch)
+   a cell grows it at the expense of the other three, and reveals
+   its description. Driven by JS (mouseenter + click both trigger
+   the same state), no separate touch fallback.
    ============================================================ */
 .bento-dest{
-  display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,1fr);
+  display:grid;
+  grid-template-columns:var(--c1,1fr) var(--c2,1fr);
+  grid-template-rows:var(--r1,1fr) var(--r2,1fr);
   gap:8px;aspect-ratio:1;border-radius:var(--radius);overflow:hidden;
+  transition:grid-template-columns .45s cubic-bezier(.4,0,.2,1), grid-template-rows .45s cubic-bezier(.4,0,.2,1);
 }
 .bento-cell{position:relative;overflow:hidden;display:flex;align-items:flex-end;}
-.bento-cell img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+.bento-cell img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s;}
 .bento-content{position:relative;z-index:2;width:100%;padding:20px 22px;display:flex;flex-direction:column;gap:6px;}
 .bento-title{color:var(--ink);font-weight:800;font-size:17px;line-height:1.3;text-align:start;}
 html[lang="en"] .bento-title, html[lang="tr"] .bento-title{font-weight:700;}
-.bento-desc{color:var(--accent);font-size:12.5px;line-height:1.6;text-align:start;max-height:200px;opacity:1;overflow:hidden;}
+.bento-desc{color:var(--accent);font-size:12.5px;line-height:1.6;text-align:start;max-height:0;opacity:0;overflow:hidden;transition:max-height .4s ease, opacity .3s ease, margin-top .4s ease;}
+.bento-link{position:absolute;top:12px;right:12px;z-index:3;width:30px;height:30px;border-radius:50%;background:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .2s;}
+.bento-link:hover{transform:scale(1.12);}
+.bento-link svg{width:14px;height:14px;stroke:var(--ink);}
+.bento-cell.is-open .bento-desc{max-height:120px;opacity:1;margin-top:2px;}
 @media(hover:hover) and (pointer:fine){
-  .bento-dest{
-    grid-template-columns:var(--c1,1fr) var(--c2,1fr);
-    grid-template-rows:var(--r1,1fr) var(--r2,1fr);
-    transition:grid-template-columns .45s cubic-bezier(.4,0,.2,1), grid-template-rows .45s cubic-bezier(.4,0,.2,1);
-  }
-  .bento-cell img{transition:transform .5s;}
-  .bento-desc{max-height:0;opacity:0;transition:max-height .4s ease, opacity .3s ease, margin-top .4s ease;}
   .bento-cell:hover .bento-desc{max-height:120px;opacity:1;margin-top:2px;}
 }
 @media(max-width:480px){
@@ -302,22 +302,20 @@ html[dir="rtl"] .article-row:hover svg{transform:translateX(-3px);}
    always visible there (no hover to rely on).
    ============================================================ */
 /* ============================================================
-   SERVICES — hover-expand accordion (desktop) / tap-expand (touch).
-   Same visual shape everywhere: narrow rotated title-strip pinned
-   to the right when collapsed, full title+description stacked
-   block when expanded (title always above description, in normal
-   flow, so they can never overlap).
-   Desktop: a row where hovering a card grows it via flex-grow.
-   Touch: a stacked column where tapping a card grows its height;
-   tapping another card or empty space collapses it again (JS below).
+   SERVICES — hover-expand accordion. Identical row layout on every
+   device: hovering (desktop) or tapping (touch) a card grows it via
+   flex-grow at the expense of the others. Narrow rotated title-strip
+   pinned to the right when collapsed, full title+description
+   stacked block when expanded (title always above description, in
+   normal flow, so they can never overlap).
    ============================================================ */
-.services-grid{display:flex;flex-direction:column;gap:14px;margin-bottom:0;width:100%;}
+.services-grid{display:flex;flex-direction:row;aspect-ratio:2.75/1;gap:8px;margin-bottom:0;width:100%;}
 .service-card{
   position:relative;overflow:hidden;border-radius:var(--radius);
-  aspect-ratio:4/1;display:block;
-  transition:aspect-ratio .4s ease, flex-grow .5s cubic-bezier(.4,0,.2,1);
+  flex:1;min-width:50px;
+  transition:flex-grow .5s cubic-bezier(.4,0,.2,1);
 }
-.service-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+.service-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s;}
 
 .title-strip{
   display:flex;position:absolute;top:0;bottom:0;right:16px;width:28px;z-index:2;
@@ -334,23 +332,19 @@ html[lang="en"] .title-strip .service-title, html[lang="tr"] .title-strip .servi
 .content-expanded .service-title{color:var(--ink);font-weight:800;font-size:15px;line-height:1.3;text-align:start;white-space:normal;}
 html[lang="en"] .content-expanded .service-title, html[lang="tr"] .content-expanded .service-title{font-weight:700;}
 .service-desc{color:var(--accent);font-size:12px;line-height:1.5;text-align:start;max-height:0;opacity:0;overflow:hidden;transition:max-height .4s ease, opacity .3s ease, margin-top .4s ease;}
-.service-link{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--accent);margin-top:8px;}
-.service-link svg{width:13px;height:13px;stroke:var(--accent);}
-.service-card .wa-badge{position:absolute;top:12px;right:12px;z-index:3;}
+.service-card .wa-badge{position:absolute;top:12px;right:12px;z-index:3;cursor:pointer;transition:transform .2s;}
+.service-card .wa-badge:hover{transform:scale(1.12);}
 
-/* OPEN state — works the same everywhere, whether triggered by
-   real :hover (desktop) or the .is-open class (touch, via JS) */
-.service-card.is-open{aspect-ratio:auto;min-height:150px;}
+/* OPEN state — identical whether triggered by real :hover (desktop)
+   or the .is-open class (touch, via JS) */
+.service-card.is-open{flex-grow:6;}
 .service-card.is-open .title-strip{opacity:0;pointer-events:none;}
 .service-card.is-open .content-expanded{opacity:1;pointer-events:auto;}
 .service-card.is-open .service-desc{max-height:200px;opacity:1;margin-top:4px;}
 
 @media(hover:hover) and (pointer:fine){
-  .services-grid{flex-direction:row;aspect-ratio:2.75/1;gap:8px;}
-  .service-card{flex:1;min-width:60px;aspect-ratio:auto;}
   .services-grid:hover .service-card{flex-grow:1;}
   .services-grid .service-card:hover{flex-grow:6;}
-  .service-card img{transition:transform .5s;}
   .service-card:hover .title-strip{opacity:0;}
   .service-card:hover .content-expanded{opacity:1;pointer-events:auto;}
   .service-card:hover .service-desc{max-height:200px;opacity:1;margin-top:4px;}
@@ -498,40 +492,52 @@ footer{
     <div class="bento-dest reveal" id="bento-dest">
 
       <!-- Portfolio -->
-      <a class="bento-cell" data-r="1" data-c="1" href="https://portfolio.ahmadsalehtuffaha.com/" target="_blank" rel="noopener">
+      <div class="bento-cell" data-r="1" data-c="1">
         <img src="images/Portfolio.png" alt="">
+        <a class="bento-link" href="https://portfolio.ahmadsalehtuffaha.com/" target="_blank" rel="noopener" aria-label="Portfolio">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        </a>
         <div class="bento-content">
           <span class="bento-title" data-i18n="dest.portfolio.name">مسيرتي المهنية</span>
           <p class="bento-desc" data-i18n="dest.portfolio.desc">السيرة المهنية الكاملة: الخبرات، الشهادات، والمهارات بالتفصيل.</p>
         </div>
-      </a>
+      </div>
 
       <!-- Side projects -->
-      <a class="bento-cell" data-r="1" data-c="2" href="projects.html">
+      <div class="bento-cell" data-r="1" data-c="2">
         <img src="images/Projects.png" alt="">
+        <a class="bento-link" href="projects.html" aria-label="Projects">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        </a>
         <div class="bento-content">
           <span class="bento-title" data-i18n="dest.projects.name">نتائج، مش وعود</span>
           <p class="bento-desc" data-i18n="dest.projects.desc">مشاريع فعلية ونتائج ملموسة قدرت أحققها لعملائي.</p>
         </div>
-      </a>
+      </div>
 
       <!-- Articles -->
-      <a class="bento-cell" data-r="2" data-c="1" href="articles.html">
+      <div class="bento-cell" data-r="2" data-c="1">
         <img src="images/Articles.png" alt="">
+        <a class="bento-link" href="articles.html" aria-label="Articles">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        </a>
         <div class="bento-content">
           <span class="bento-title" data-i18n="dest.articles.name">خواطر وتجارب</span>
           <p class="bento-desc" data-i18n="dest.articles.desc">مقالات وتأملات من مسيرتي المهنية ومحطاتها.</p>
         </div>
-      </a>
+      </div>
 
       <!-- Apps -->
-      <a class="bento-cell" data-r="2" data-c="2" href="apps.html">
+      <div class="bento-cell" data-r="2" data-c="2">
         <img src="images/Apps.png" alt="">
+        <a class="bento-link" href="apps.html" aria-label="Apps">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        </a>
         <div class="bento-content">
           <span class="bento-title" data-i18n="dest.apps.name">تطبيقات، مش أفكار</span>
           <p class="bento-desc" data-i18n="dest.apps.desc">أدوات وتطبيقات ويب صممتها وبنيتها بنفسي.</p>
         </div>
-      </a>
+      </div>
 
     </div>
   </section>
@@ -554,73 +560,57 @@ footer{
     <div class="services-grid reveal" id="services-grid">
       <div class="service-card">
         <img src="images/Growth.png" alt="">
-        <span class="wa-badge">
+        <a class="wa-badge" href="#" target="_blank" rel="noopener" data-service="growth">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
-        </span>
+        </a>
         <div class="title-strip">
           <span class="service-title" data-i18n="service.growth.name">تطوير الأعمال والنمو</span>
         </div>
         <div class="content-expanded">
           <span class="service-title" data-i18n="service.growth.name">تطوير الأعمال والنمو</span>
           <p class="service-desc" data-i18n="service.growth.desc">فرص وشراكات تصنع نمواً</p>
-          <a class="service-link" href="#" target="_blank" rel="noopener" data-service="growth">
-            <span data-i18n="service.cta">تواصل عبر واتساب</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
-          </a>
         </div>
       </div>
 
       <div class="service-card">
         <img src="images/Systems.png" alt="">
-        <span class="wa-badge">
+        <a class="wa-badge" href="#" target="_blank" rel="noopener" data-service="systems">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
-        </span>
+        </a>
         <div class="title-strip">
           <span class="service-title" data-i18n="service.systems.name">تصميم الأنظمة وسير العمل</span>
         </div>
         <div class="content-expanded">
           <span class="service-title" data-i18n="service.systems.name">تصميم الأنظمة وسير العمل</span>
           <p class="service-desc" data-i18n="service.systems.desc">من الطلب لحد التسليم</p>
-          <a class="service-link" href="#" target="_blank" rel="noopener" data-service="systems">
-            <span data-i18n="service.cta">تواصل عبر واتساب</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
-          </a>
         </div>
       </div>
 
       <div class="service-card">
         <img src="images/Waste.png" alt="">
-        <span class="wa-badge">
+        <a class="wa-badge" href="#" target="_blank" rel="noopener" data-service="waste">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
-        </span>
+        </a>
         <div class="title-strip">
           <span class="service-title" data-i18n="service.waste.name">تقليل الهدر التشغيلي</span>
         </div>
         <div class="content-expanded">
           <span class="service-title" data-i18n="service.waste.name">تقليل الهدر التشغيلي</span>
           <p class="service-desc" data-i18n="service.waste.desc">كشف الهدر ومنع تكراره</p>
-          <a class="service-link" href="#" target="_blank" rel="noopener" data-service="waste">
-            <span data-i18n="service.cta">تواصل عبر واتساب</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
-          </a>
         </div>
       </div>
 
       <div class="service-card">
         <img src="images/Consulting.png" alt="">
-        <span class="wa-badge">
+        <a class="wa-badge" href="#" target="_blank" rel="noopener" data-service="consulting">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
-        </span>
+        </a>
         <div class="title-strip">
           <span class="service-title" data-i18n="service.consulting.name">الاستشارات التشغيلية</span>
         </div>
         <div class="content-expanded">
           <span class="service-title" data-i18n="service.consulting.name">الاستشارات التشغيلية</span>
           <p class="service-desc" data-i18n="service.consulting.desc">تشخيص وحلول قابلة للتنفيذ</p>
-          <a class="service-link" href="#" target="_blank" rel="noopener" data-service="consulting">
-            <span data-i18n="service.cta">تواصل عبر واتساب</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
-          </a>
         </div>
       </div>
     </div>
@@ -976,37 +966,47 @@ function detectLang(){
 setLanguage(detectLang());
 revealOnScroll();
 
-/* 2x2 bento hover-expand (destinations). Setting the CSS custom
-   properties is harmless on touch devices: the grid-template rule
-   that consumes them only exists inside the (hover:hover) media
-   query, so nothing visually changes there. */
+/* 2x2 bento — identical on every device. mouseenter (desktop) and
+   click (touch) both call the same openCell(); the grid weights and
+   the .is-open class (which reveals the description) always move
+   together, so hover and tap produce exactly the same result. */
 (function initBentoDest(){
   const bento = document.getElementById("bento-dest");
   if(!bento) return;
   const cells = bento.querySelectorAll(".bento-cell");
   const BIG = 3, SMALL = 1;
-  function setActive(r, c){
+  function openCell(cell){
+    const r = cell.dataset.r, c = cell.dataset.c;
     bento.style.setProperty("--c1", c === "1" ? `${BIG}fr` : `${SMALL}fr`);
     bento.style.setProperty("--c2", c === "2" ? `${BIG}fr` : `${SMALL}fr`);
     bento.style.setProperty("--r1", r === "1" ? `${BIG}fr` : `${SMALL}fr`);
     bento.style.setProperty("--r2", r === "2" ? `${BIG}fr` : `${SMALL}fr`);
+    cells.forEach(x=> x.classList.toggle("is-open", x === cell));
   }
-  function reset(){
+  function closeAll(){
     bento.style.setProperty("--c1", "1fr");
     bento.style.setProperty("--c2", "1fr");
     bento.style.setProperty("--r1", "1fr");
     bento.style.setProperty("--r2", "1fr");
+    cells.forEach(x=> x.classList.remove("is-open"));
   }
   cells.forEach(cell=>{
-    cell.addEventListener("mouseenter", ()=> setActive(cell.dataset.r, cell.dataset.c));
+    cell.addEventListener("mouseenter", ()=> openCell(cell));
+    cell.addEventListener("click", (e)=>{
+      if(e.target.closest(".bento-link")) return;
+      if(!cell.classList.contains("is-open")) openCell(cell);
+    });
   });
-  bento.addEventListener("mouseleave", reset);
+  bento.addEventListener("mouseleave", closeAll);
+  document.addEventListener("click", (e)=>{
+    if(!e.target.closest("#bento-dest")) closeAll();
+  });
 })();
 
 /* Service cards: tap to expand (same look as desktop hover).
    One open at a time; tapping another card or empty space closes it.
-   The inner .service-link is a real link and navigates normally —
-   we only intercept taps on the card body itself. */
+   The wa-badge is the real link and navigates normally — we only
+   intercept taps on the card body itself. */
 (function initServiceCards(){
   const cards = document.querySelectorAll(".service-card");
   if(!cards.length) return;
@@ -1015,7 +1015,7 @@ revealOnScroll();
   }
   cards.forEach(card=>{
     card.addEventListener("click", (e)=>{
-      if(e.target.closest(".service-link")) return;
+      if(e.target.closest(".wa-badge")) return;
       const wasOpen = card.classList.contains("is-open");
       closeAll(card);
       card.classList.toggle("is-open", !wasOpen);
