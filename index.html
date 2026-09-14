@@ -301,40 +301,59 @@ html[dir="rtl"] .article-row:hover svg{transform:translateX(-3px);}
    Stacked single column on touch/no-hover devices, description
    always visible there (no hover to rely on).
    ============================================================ */
+/* ============================================================
+   SERVICES — hover-expand accordion (desktop) / tap-expand (touch).
+   Same visual shape everywhere: narrow rotated title-strip pinned
+   to the right when collapsed, full title+description stacked
+   block when expanded (title always above description, in normal
+   flow, so they can never overlap).
+   Desktop: a row where hovering a card grows it via flex-grow.
+   Touch: a stacked column where tapping a card grows its height;
+   tapping another card or empty space collapses it again (JS below).
+   ============================================================ */
 .services-grid{display:flex;flex-direction:column;gap:14px;margin-bottom:0;width:100%;}
-.service-card{position:relative;overflow:hidden;border-radius:var(--radius);aspect-ratio:4/1;display:block;}
+.service-card{
+  position:relative;overflow:hidden;border-radius:var(--radius);
+  aspect-ratio:4/1;display:block;
+  transition:aspect-ratio .4s ease, flex-grow .5s cubic-bezier(.4,0,.2,1);
+}
 .service-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 
-.title-strip{display:none;}
+.title-strip{
+  display:flex;position:absolute;top:0;bottom:0;right:16px;width:28px;z-index:2;
+  align-items:center;justify-content:center;transition:opacity .25s;
+}
+.title-strip .service-title{white-space:nowrap;font-weight:800;font-size:15px;color:var(--ink);transform:rotate(-90deg);}
+html[lang="en"] .title-strip .service-title, html[lang="tr"] .title-strip .service-title{font-weight:700;}
+
 .content-expanded{
   position:absolute;inset:0;z-index:2;padding:14px 18px;
   display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;
+  opacity:0;pointer-events:none;transition:opacity .25s;
 }
 .content-expanded .service-title{color:var(--ink);font-weight:800;font-size:15px;line-height:1.3;text-align:start;white-space:normal;}
 html[lang="en"] .content-expanded .service-title, html[lang="tr"] .content-expanded .service-title{font-weight:700;}
-.service-desc{color:var(--accent);font-size:12px;line-height:1.5;text-align:start;margin-top:4px;}
+.service-desc{color:var(--accent);font-size:12px;line-height:1.5;text-align:start;max-height:0;opacity:0;overflow:hidden;transition:max-height .4s ease, opacity .3s ease, margin-top .4s ease;}
+.service-link{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--accent);margin-top:8px;}
+.service-link svg{width:13px;height:13px;stroke:var(--accent);}
 .service-card .wa-badge{position:absolute;top:12px;right:12px;z-index:3;}
+
+/* OPEN state — works the same everywhere, whether triggered by
+   real :hover (desktop) or the .is-open class (touch, via JS) */
+.service-card.is-open{aspect-ratio:auto;min-height:150px;}
+.service-card.is-open .title-strip{opacity:0;pointer-events:none;}
+.service-card.is-open .content-expanded{opacity:1;pointer-events:auto;}
+.service-card.is-open .service-desc{max-height:200px;opacity:1;margin-top:4px;}
 
 @media(hover:hover) and (pointer:fine){
   .services-grid{flex-direction:row;aspect-ratio:2.75/1;gap:8px;}
-  .service-card{flex:1;min-width:60px;aspect-ratio:auto;transition:flex-grow .5s cubic-bezier(.4,0,.2,1);}
+  .service-card{flex:1;min-width:60px;aspect-ratio:auto;}
   .services-grid:hover .service-card{flex-grow:1;}
   .services-grid .service-card:hover{flex-grow:6;}
   .service-card img{transition:transform .5s;}
-
-  .title-strip{
-    display:flex;position:absolute;top:0;bottom:0;right:16px;width:28px;z-index:2;
-    align-items:center;justify-content:center;transition:opacity .25s;
-  }
-  .title-strip .service-title{white-space:nowrap;font-weight:800;font-size:15px;color:var(--ink);transform:rotate(-90deg);}
-  html[lang="en"] .title-strip .service-title, html[lang="tr"] .title-strip .service-title{font-weight:700;}
-
-  .content-expanded{opacity:0;pointer-events:none;transition:opacity .25s;}
-  .service-desc{max-height:0;opacity:0;overflow:hidden;transition:max-height .4s ease, opacity .3s ease, margin-top .4s ease;}
-
   .service-card:hover .title-strip{opacity:0;}
   .service-card:hover .content-expanded{opacity:1;pointer-events:auto;}
-  .service-card:hover .service-desc{max-height:100px;opacity:1;margin-top:4px;}
+  .service-card:hover .service-desc{max-height:200px;opacity:1;margin-top:4px;}
 }
 @media(max-width:480px){
   .content-expanded .service-title{font-size:13px;}
@@ -533,7 +552,7 @@ footer{
   <!-- ============== SERVICES ============== -->
   <section>
     <div class="services-grid reveal" id="services-grid">
-      <a class="service-card" href="#" target="_blank" rel="noopener" data-service="growth">
+      <div class="service-card">
         <img src="images/Growth.png" alt="">
         <span class="wa-badge">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
@@ -544,10 +563,14 @@ footer{
         <div class="content-expanded">
           <span class="service-title" data-i18n="service.growth.name">تطوير الأعمال والنمو</span>
           <p class="service-desc" data-i18n="service.growth.desc">فرص وشراكات تصنع نمواً</p>
+          <a class="service-link" href="#" target="_blank" rel="noopener" data-service="growth">
+            <span data-i18n="service.cta">تواصل عبر واتساب</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+          </a>
         </div>
-      </a>
+      </div>
 
-      <a class="service-card" href="#" target="_blank" rel="noopener" data-service="systems">
+      <div class="service-card">
         <img src="images/Systems.png" alt="">
         <span class="wa-badge">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
@@ -558,10 +581,14 @@ footer{
         <div class="content-expanded">
           <span class="service-title" data-i18n="service.systems.name">تصميم الأنظمة وسير العمل</span>
           <p class="service-desc" data-i18n="service.systems.desc">من الطلب لحد التسليم</p>
+          <a class="service-link" href="#" target="_blank" rel="noopener" data-service="systems">
+            <span data-i18n="service.cta">تواصل عبر واتساب</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+          </a>
         </div>
-      </a>
+      </div>
 
-      <a class="service-card" href="#" target="_blank" rel="noopener" data-service="waste">
+      <div class="service-card">
         <img src="images/Waste.png" alt="">
         <span class="wa-badge">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
@@ -572,10 +599,14 @@ footer{
         <div class="content-expanded">
           <span class="service-title" data-i18n="service.waste.name">تقليل الهدر التشغيلي</span>
           <p class="service-desc" data-i18n="service.waste.desc">كشف الهدر ومنع تكراره</p>
+          <a class="service-link" href="#" target="_blank" rel="noopener" data-service="waste">
+            <span data-i18n="service.cta">تواصل عبر واتساب</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+          </a>
         </div>
-      </a>
+      </div>
 
-      <a class="service-card" href="#" target="_blank" rel="noopener" data-service="consulting">
+      <div class="service-card">
         <img src="images/Consulting.png" alt="">
         <span class="wa-badge">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
@@ -586,8 +617,12 @@ footer{
         <div class="content-expanded">
           <span class="service-title" data-i18n="service.consulting.name">الاستشارات التشغيلية</span>
           <p class="service-desc" data-i18n="service.consulting.desc">تشخيص وحلول قابلة للتنفيذ</p>
+          <a class="service-link" href="#" target="_blank" rel="noopener" data-service="consulting">
+            <span data-i18n="service.cta">تواصل عبر واتساب</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
+          </a>
         </div>
-      </a>
+      </div>
     </div>
   </section>
 
@@ -966,6 +1001,29 @@ revealOnScroll();
     cell.addEventListener("mouseenter", ()=> setActive(cell.dataset.r, cell.dataset.c));
   });
   bento.addEventListener("mouseleave", reset);
+})();
+
+/* Service cards: tap to expand (same look as desktop hover).
+   One open at a time; tapping another card or empty space closes it.
+   The inner .service-link is a real link and navigates normally —
+   we only intercept taps on the card body itself. */
+(function initServiceCards(){
+  const cards = document.querySelectorAll(".service-card");
+  if(!cards.length) return;
+  function closeAll(except){
+    cards.forEach(c=>{ if(c !== except) c.classList.remove("is-open"); });
+  }
+  cards.forEach(card=>{
+    card.addEventListener("click", (e)=>{
+      if(e.target.closest(".service-link")) return;
+      const wasOpen = card.classList.contains("is-open");
+      closeAll(card);
+      card.classList.toggle("is-open", !wasOpen);
+    });
+  });
+  document.addEventListener("click", (e)=>{
+    if(!e.target.closest(".service-card")) closeAll(null);
+  });
 })();
 </script>
 </body>
