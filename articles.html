@@ -20,7 +20,8 @@
    ============================================================ */
 :root{
   --cream:#f5f2eb;
-  --white:#ffffff;
+  --plum-light:#e3e1da;
+  --maroon-light:#ebdfd8;
   --ink:#1a1a18;
   --ink-soft:#5a5a55;
   --ink-ghost:#a0a09a;
@@ -62,7 +63,7 @@ html[lang="en"] .logo, html[lang="tr"] .logo{font-weight:700;}
 .logo .mark-img{height:32px;width:auto;display:block;}
 .logo .role{display:flex;align-items:center;gap:8px;font-weight:700;font-size:12.5px;color:var(--accent);letter-spacing:.03em;}
 .logo .role .dash{width:16px;height:1.5px;background:var(--accent);display:inline-block;flex-shrink:0;}
-.lang-switch{display:flex;gap:4px;background:var(--white);border:1px solid var(--line);border-radius:999px;padding:3px;}
+.lang-switch{display:flex;gap:4px;background:var(--plum-light);border:1px solid var(--line);border-radius:999px;padding:3px;}
 .lang-switch button{border:none;background:transparent;cursor:pointer;font-family:'Cairo',sans-serif;font-size:13px;font-weight:600;color:var(--ink-soft);padding:6px 13px;border-radius:999px;transition:background .2s, color .2s;}
 .lang-switch button.active{background:var(--ink);color:var(--cream);}
 .lang-switch button:hover:not(.active){color:var(--ink);}
@@ -83,7 +84,7 @@ section{max-width:var(--maxw);margin:0 auto;padding:26px 24px 70px;}
 
 .item-card{
   position:relative;overflow:hidden;
-  background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--plum-light);border:1px solid var(--line);border-radius:var(--radius);
   transition:border-color .3s, transform .2s;
 }
 .item-card:hover{border-color:var(--accent);transform:translateY(-2px);}
@@ -102,7 +103,7 @@ section{max-width:var(--maxw);margin:0 auto;padding:26px 24px 70px;}
 .item-title{font-size:17px;font-weight:800;position:relative;z-index:1;}
 html[lang="en"] .item-title, html[lang="tr"] .item-title{font-weight:700;}
 .item-date{font-size:12px;color:var(--ink-ghost);font-weight:600;margin-top:12px;display:block;position:relative;z-index:1;}
-.item-blurb{font-size:14px;color:var(--ink-soft);position:relative;z-index:1;}
+.item-blurb{font-size:14px;color:var(--accent);position:relative;z-index:1;}
 
 .empty-state{
   grid-column:1/-1;text-align:center;padding:50px 20px;color:var(--ink-ghost);font-size:15px;
@@ -121,8 +122,8 @@ footer{border-top:1px solid var(--line);padding:34px 24px;max-width:var(--maxw);
 .footer-logo img{height:72px;width:auto;display:block;}
 .foot-copy{font-size:13px;color:var(--ink-ghost);justify-self:start;text-align:start;}
 .foot-socials{display:flex;gap:10px;justify-self:end;}
-.social-btn{width:44px;height:44px;border-radius:10px;background:var(--white);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink-soft);transition:border-color .2s, color .2s;}
-.social-btn:hover{border-color:var(--accent);color:var(--accent);}
+.social-btn{width:44px;height:44px;border-radius:10px;background:var(--plum-light);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink-soft);transition:border-color .2s, color .2s, background .2s;}
+.social-btn:hover{background:var(--maroon-light);border-color:var(--accent);color:var(--accent);}
 .social-btn svg{width:20px;height:20px;}
 </style>
 </head>
@@ -193,6 +194,21 @@ footer{border-top:1px solid var(--line);padding:34px 24px;max-width:var(--maxw);
       More reliable long-term, since it doesn't depend on LinkedIn.
    ============================================================ */
 const ITEMS = [
+  {
+    image: "images/260914.jpg",
+    date: "260914",
+    url: "https://www.linkedin.com/posts/ahmad-saleh-tuffaha_datasecurity-artificialintelligence-informationsecurity-activity-7505152657460908032-JJWR",
+    title: {
+      ar: "الذكاء الاصطناعي يوفر في ساعات العمل، لكن هل تساءلت عن الثمن الخفي؟ 🚨",
+      en: "AI saves work hours, but have you wondered about the hidden cost? 🚨",
+      tr: "Yapay zeka çalışma saatlerinden tasarruf sağlar, ama gizli bedeli hiç düşündünüz mü? 🚨"
+    },
+    blurb: {
+      ar: "التقنية وجدت لتخدم عملك لا لتكشف أسرارك.",
+      en: "Technology exists to serve your business, not to expose your secrets.",
+      tr: "Teknoloji işinize hizmet etmek için var, sırlarınızı ifşa etmek için değil."
+    }
+  },
   {
     image: "images/260910.jpg",
     date: "260910",
