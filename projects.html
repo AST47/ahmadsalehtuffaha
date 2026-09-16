@@ -16,7 +16,8 @@
    ============================================================ */
 :root{
   --cream:#f5f2eb;
-  --white:#ffffff;
+  --paper:#ebdfd8;
+  --paper-alt:#e3e1da;
   --ink:#1a1a18;
   --ink-soft:#5a5a55;
   --ink-ghost:#a0a09a;
@@ -58,7 +59,7 @@ html[lang="en"] .logo, html[lang="tr"] .logo{font-weight:700;}
 .logo .mark-img{height:32px;width:auto;display:block;}
 .logo .role{display:flex;align-items:center;gap:8px;font-weight:700;font-size:12.5px;color:var(--accent);letter-spacing:.03em;}
 .logo .role .dash{width:16px;height:1.5px;background:var(--accent);display:inline-block;flex-shrink:0;}
-.lang-switch{display:flex;gap:4px;background:var(--white);border:1px solid var(--line);border-radius:999px;padding:3px;}
+.lang-switch{display:flex;gap:4px;background:var(--paper-alt);border:1px solid var(--line);border-radius:999px;padding:3px;}
 .lang-switch button{border:none;background:transparent;cursor:pointer;font-family:'Cairo',sans-serif;font-size:13px;font-weight:600;color:var(--ink-soft);padding:6px 13px;border-radius:999px;transition:background .2s, color .2s;}
 .lang-switch button.active{background:var(--ink);color:var(--cream);}
 .lang-switch button:hover:not(.active){color:var(--ink);}
@@ -77,12 +78,13 @@ section{max-width:var(--maxw);margin:0 auto;padding:26px 24px 70px;}
 /* ---------- case studies (spacious, no card box) ---------- */
 .case-list{display:flex;flex-direction:column;gap:44px;margin-bottom:50px;}
 .case-block{border-top:3px solid var(--accent);padding-top:26px;}
-.case-image{margin-bottom:26px;border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:0 8px 24px rgba(0,0,0,.07);background:var(--white);}
+.case-image{margin-bottom:26px;border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:0 8px 24px rgba(0,0,0,.07);background:var(--paper);}
 .case-image img{width:100%;display:block;}
+.case-image-caption{padding:7px 14px;font-size:11px;line-height:1.5;color:var(--accent);text-align:start;background:var(--accent-wash);}
 .case-top{display:flex;flex-direction:column;gap:20px;margin-bottom:26px;}
 @media(min-width:480px){.case-top{flex-direction:row;align-items:center;gap:24px;}}
 .case-badge{
-  width:128px;height:128px;border-radius:20px;background:var(--white);border:1px solid var(--line);
+  width:128px;height:128px;border-radius:20px;background:var(--accent-wash);border:1px solid var(--line);
   flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
 }
 .case-badge .num{font-size:38px;font-weight:800;color:var(--accent);line-height:1;}
@@ -109,8 +111,8 @@ footer{border-top:1px solid var(--line);padding:34px 24px;max-width:var(--maxw);
 .footer-logo img{height:72px;width:auto;display:block;}
 .foot-copy{font-size:13px;color:var(--ink-ghost);justify-self:start;text-align:start;}
 .foot-socials{display:flex;gap:10px;justify-self:end;}
-.social-btn{width:44px;height:44px;border-radius:10px;background:var(--white);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink-soft);transition:border-color .2s, color .2s;}
-.social-btn:hover{border-color:var(--accent);color:var(--accent);}
+.social-btn{width:44px;height:44px;border-radius:10px;background:var(--paper-alt);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink-soft);transition:background .2s, border-color .2s, color .2s;}
+.social-btn:hover{background:var(--accent-wash);border-color:var(--accent);color:var(--accent);}
 .social-btn svg{width:20px;height:20px;}
 </style>
 </head>
@@ -207,6 +209,7 @@ const CASES = [
   },
   {
     badgeNum: "72%↑",
+    image: "images/Project72.png",
     badgeLabel: { ar: "وصول أسرع للبيانات", en: "faster data access", tr: "daha hızlı veri erişimi" },
     category: { ar: "تطبيق أنظمة CRM وتنظيم سير العمل", en: "CRM Implementation & Workflow", tr: "CRM Uygulaması ve İş Akışı" },
     title: {
@@ -237,6 +240,7 @@ const CASES = [
   },
   {
     badgeNum: "98%↓",
+    image: "images/Project-98.png",
     badgeLabel: { ar: "بوقت تحضير التقرير", en: "less report prep time", tr: "daha az rapor hazırlama süresi" },
     category: { ar: "التوحيد المالي والتقارير", en: "Financial Consolidation & Reporting", tr: "Mali Konsolidasyon ve Raporlama" },
     title: {
@@ -274,6 +278,7 @@ const translations = {
     "back": "عودة للرئيسية",
     "page.title": "مشاريع عملت عليها",
     caseLabels: { challenge: "التحدي", solution: "الحل", impact: "الأثر", tools: "الأدوات" },
+    "ai_disclaimer": "هذه صورة مولّدة بالذكاء الاصطناعي، مبنية على لقطة شاشة من المشروع الحقيقي مع تعديل المعلومات لحماية بيانات الشركات المعنية.",
     "footer.copy": "© 2026 أحمد صالح تفاحة — جميع الحقوق محفوظة",
   },
   en: {
@@ -282,6 +287,7 @@ const translations = {
     "back": "Back to home",
     "page.title": "Projects I've Worked On",
     caseLabels: { challenge: "Challenge", solution: "Solution", impact: "Impact", tools: "Tools" },
+    "ai_disclaimer": "This image was generated by AI, based on a real screenshot from the project, with information altered to protect the data of the companies involved.",
     "footer.copy": "© 2026 Ahmad Saleh Tuffaha — All rights reserved",
   },
   tr: {
@@ -290,6 +296,7 @@ const translations = {
     "back": "Ana sayfaya dön",
     "page.title": "Üzerinde Çalıştığım Projeler",
     caseLabels: { challenge: "Zorluk", solution: "Çözüm", impact: "Etki", tools: "Araçlar" },
+    "ai_disclaimer": "Bu görsel, ilgili şirketlerin verilerini korumak amacıyla bilgileri değiştirilmiş, projeden alınan gerçek bir ekran görüntüsüne dayanılarak yapay zeka ile oluşturulmuştur.",
     "footer.copy": "© 2026 Ahmad Saleh Tuffaha — Tüm hakları saklıdır",
   }
 };
@@ -340,7 +347,7 @@ function renderCases(lang){
           <p class="case-title">${c.title[lang] || c.title.ar}</p>
         </div>
       </div>
-      ${c.image ? `<div class="case-image"><img src="${c.image}" alt="${c.title[lang] || c.title.ar}" loading="lazy" onerror="this.closest('.case-image').style.display='none'"></div>` : ""}
+      ${c.image ? `<div class="case-image"><img src="${c.image}" alt="${c.title[lang] || c.title.ar}" loading="lazy" onerror="this.closest('.case-image').style.display='none'"><p class="case-image-caption">${translations[lang]["ai_disclaimer"]}</p></div>` : ""}
       <div class="case-grid">
         <div><h4>${labels.challenge}</h4><p>${c.challenge[lang] || c.challenge.ar}</p></div>
         <div><h4>${labels.solution}</h4><p>${c.solution[lang] || c.solution.ar}</p></div>
