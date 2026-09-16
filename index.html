@@ -935,10 +935,13 @@ revealOnScroll();
     bento.style.setProperty("--r2", "1fr");
     cells.forEach(x=> x.classList.remove("is-open"));
   }
+  const hasRealHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   cells.forEach(cell=>{
     const href = cell.dataset.href || null;
     const target = cell.dataset.target || null;
-    cell.addEventListener("mouseenter", ()=> openCell(cell));
+    if(hasRealHover){
+      cell.addEventListener("mouseenter", ()=> openCell(cell));
+    }
     cell.addEventListener("click", ()=>{
       if(cell.classList.contains("is-open")){
         if(href){
@@ -950,7 +953,9 @@ revealOnScroll();
       }
     });
   });
-  bento.addEventListener("mouseleave", closeAll);
+  if(hasRealHover){
+    bento.addEventListener("mouseleave", closeAll);
+  }
   document.addEventListener("click", (e)=>{
     if(!e.target.closest("#bento-dest")) closeAll();
   });
