@@ -89,7 +89,7 @@ html[lang="en"] .logo, html[lang="tr"] .logo{font-weight:700;}
   font-weight:700;font-size:12.5px;color:var(--accent);letter-spacing:.03em;
 }
 .logo .role .dash{width:16px;height:1.5px;background:var(--accent);display:inline-block;flex-shrink:0;}
-.lang-switch{display:flex;gap:4px;background:var(--white);border:1px solid var(--line);border-radius:999px;padding:3px;}
+.lang-switch{display:flex;gap:4px;background:#e3e1da;border:1px solid var(--line);border-radius:999px;padding:3px;}
 .lang-switch button{
   border:none;background:transparent;cursor:pointer;
   font-family:'Cairo',sans-serif;font-size:13px;font-weight:600;
@@ -198,7 +198,7 @@ html[lang="en"] .tools-quote, html[lang="tr"] .tools-quote{font-weight:400;}
 
 .marquee-row{overflow:hidden;position:relative;padding:15px 0;}
 .marquee-row.dark{background:var(--ink);}
-.marquee-row.light{background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.marquee-row.light{background:#e3e1da;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
 .marquee-track{display:flex;width:max-content;direction:ltr;unicode-bidi:isolate;will-change:transform;transform:translateZ(0);backface-visibility:hidden;}
 .marquee-track.dir-left{animation:marqueeLeft 34s linear infinite;}
 .marquee-track.dir-right{animation:marqueeRight 42s linear infinite;}
@@ -269,9 +269,9 @@ html[lang="en"] .bento-title, html[lang="tr"] .bento-title{font-weight:700;}
   padding:10px 12px;font-size:13.5px;font-weight:600;
   transition:border-color .2s, background .2s;
 }
-.sub-item:hover{border-color:var(--accent);background:var(--white);}
+.sub-item:hover{border-color:var(--accent);background:#e3e1da;}
 .sub-item .sub-logo{
-  width:26px;height:26px;border-radius:7px;background:var(--white);
+  width:26px;height:26px;border-radius:7px;background:#e3e1da;
   border:1px solid var(--line);flex-shrink:0;
   display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--ink-soft);
 }
@@ -357,11 +357,11 @@ footer{
 .foot-copy{font-size:13px;color:var(--ink-ghost);justify-self:start;text-align:start;}
 .foot-socials{display:flex;gap:10px;justify-self:end;}
 .social-btn{
-  width:44px;height:44px;border-radius:10px;background:var(--white);border:1px solid var(--line);
+  width:44px;height:44px;border-radius:10px;background:#e3e1da;border:1px solid var(--line);
   display:flex;align-items:center;justify-content:center;color:var(--ink-soft);
-  transition:border-color .2s, color .2s;
+  transition:border-color .2s, color .2s, background .2s;
 }
-.social-btn:hover{border-color:var(--accent);color:var(--accent);}
+.social-btn:hover{border-color:var(--accent);color:var(--accent);background:#ebdfd8;}
 .social-btn svg{width:20px;height:20px;}
 
 @media (prefers-reduced-motion: reduce){
@@ -399,53 +399,6 @@ footer{
       <span class="suffix-main" id="tw-main"></span>
       <span class="suffix-key hand" id="tw-key"></span><span class="cursor"></span>
     </h1>
-  </div>
-
-  <!-- ============== EXPLAINER + ABOUT ============== -->
-  <div class="quarters-row">
-    <div class="define-wrap">
-      <div class="define-shape reveal">
-        <svg class="define-bg-svg" viewBox="0 0 800 300" preserveAspectRatio="none">
-          <defs>
-            <filter id="defineRough" x="-25%" y="-25%" width="150%" height="150%">
-              <feTurbulence type="fractalNoise" baseFrequency="0.017 0.1" numOctaves="4" seed="7" result="n"/>
-              <feDisplacementMap in="SourceGraphic" in2="n" scale="20"/>
-            </filter>
-          </defs>
-          <rect x="18" y="18" width="764" height="264" fill="#e3e1da" filter="url(#defineRough)"/>
-        </svg>
-        <div class="define-inner">
-          <div class="define-title-cell">
-            <h2 class="explainer-title" data-i18n-html="explain.title">ما هو <span class="hl hand">تطوير الأعمال</span> بالتحديد؟</h2>
-          </div>
-          <div class="define-text-cell">
-            <p class="explainer-text" data-i18n-html="explain.col1">تطوير الأعمال ليس مجرد مبيعات.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="about-wrap">
-      <div class="about-shape reveal">
-        <svg class="about-bg-svg" viewBox="0 0 800 300" preserveAspectRatio="none">
-          <defs>
-            <filter id="aboutRough" x="-25%" y="-25%" width="150%" height="150%">
-              <feTurbulence type="fractalNoise" baseFrequency="0.016 0.11" numOctaves="4" seed="21" result="n"/>
-              <feDisplacementMap in="SourceGraphic" in2="n" scale="22"/>
-            </filter>
-          </defs>
-          <rect x="20" y="18" width="760" height="264" fill="#ebdfd8" filter="url(#aboutRough)"/>
-        </svg>
-        <div class="about-inner">
-          <div class="about-text-cell">
-            <p class="about-text" data-i18n-html="about.text"></p>
-          </div>
-          <div class="about-quote-cell">
-            <p class="about-quote" data-i18n-html="about.quote"><span class="hl hand">الوضوح</span> هو ما أتركه خلفي.</p>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 
   <!-- ============== DESTINATIONS ============== -->
@@ -502,6 +455,53 @@ footer{
 
     </div>
   </section>
+
+  <!-- ============== EXPLAINER + ABOUT ============== -->
+  <div class="quarters-row">
+    <div class="define-wrap">
+      <div class="define-shape reveal">
+        <svg class="define-bg-svg" viewBox="0 0 800 300" preserveAspectRatio="none">
+          <defs>
+            <filter id="defineRough" x="-25%" y="-25%" width="150%" height="150%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.017 0.1" numOctaves="4" seed="7" result="n"/>
+              <feDisplacementMap in="SourceGraphic" in2="n" scale="20"/>
+            </filter>
+          </defs>
+          <rect x="18" y="18" width="764" height="264" fill="#e3e1da" filter="url(#defineRough)"/>
+        </svg>
+        <div class="define-inner">
+          <div class="define-title-cell">
+            <h2 class="explainer-title" data-i18n-html="explain.title">ما هو <span class="hl hand">تطوير الأعمال</span> بالتحديد؟</h2>
+          </div>
+          <div class="define-text-cell">
+            <p class="explainer-text" data-i18n-html="explain.col1">تطوير الأعمال ليس مجرد مبيعات.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-wrap">
+      <div class="about-shape reveal">
+        <svg class="about-bg-svg" viewBox="0 0 800 300" preserveAspectRatio="none">
+          <defs>
+            <filter id="aboutRough" x="-25%" y="-25%" width="150%" height="150%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.016 0.11" numOctaves="4" seed="21" result="n"/>
+              <feDisplacementMap in="SourceGraphic" in2="n" scale="22"/>
+            </filter>
+          </defs>
+          <rect x="20" y="18" width="760" height="264" fill="#ebdfd8" filter="url(#aboutRough)"/>
+        </svg>
+        <div class="about-inner">
+          <div class="about-text-cell">
+            <p class="about-text" data-i18n-html="about.text"></p>
+          </div>
+          <div class="about-quote-cell">
+            <p class="about-quote" data-i18n-html="about.quote"><span class="hl hand">الوضوح</span> هو ما أتركه خلفي.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ============== TOOLS ============== -->
   <div class="tools-wrap">
@@ -801,9 +801,56 @@ function applyTranslations(lang){
   });
 }
 
+/* Reserve a fixed height on .tw-line equal to the tallest possible
+   rendering among this language's phrases at the current viewport
+   width, so switching between a 1-line and a 2/3-line phrase never
+   shifts the content below it. Recomputed on language change and
+   on resize (debounced). */
+function lockHeroHeight(lang){
+  const titleEl = document.querySelector(".tw-line");
+  const heroEl = document.querySelector(".hero");
+  if(!titleEl || !heroEl) return;
+  const phrases = translations[lang]["hero.phrases"];
+  const prefixText = translations[lang]["hero.prefix"] + " ";
+
+  // reset so the measurement isn't biased by a previously locked height
+  titleEl.style.minHeight = "";
+
+  const probe = titleEl.cloneNode(true);
+  probe.removeAttribute("id");
+  probe.querySelectorAll("[id]").forEach(el=> el.removeAttribute("id"));
+  probe.style.position = "absolute";
+  probe.style.visibility = "hidden";
+  probe.style.pointerEvents = "none";
+  probe.style.minHeight = "0";
+  heroEl.appendChild(probe);
+
+  const pPrefix = probe.querySelector(".prefix");
+  const pMain = probe.querySelector(".suffix-main");
+  const pKey = probe.querySelector(".suffix-key");
+
+  let max = 0;
+  phrases.forEach(ph=>{
+    pPrefix.textContent = prefixText;
+    pMain.textContent = ph.main;
+    pKey.textContent = ph.key;
+    max = Math.max(max, probe.getBoundingClientRect().height);
+  });
+
+  heroEl.removeChild(probe);
+  if(max > 0) titleEl.style.minHeight = max + "px";
+}
+
+let heroResizeTimer = null;
+window.addEventListener("resize", ()=>{
+  clearTimeout(heroResizeTimer);
+  heroResizeTimer = setTimeout(()=> lockHeroHeight(currentLang), 150);
+});
+
 /* typewriter: static prefix + bold main text + handwritten key word */
 function startTypewriter(lang){
   clearTimeout(twTimer);
+  lockHeroHeight(lang);
   const prefixEl = document.getElementById("tw-prefix");
   const mainEl = document.getElementById("tw-main");
   const keyEl = document.getElementById("tw-key");
