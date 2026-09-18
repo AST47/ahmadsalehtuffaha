@@ -83,7 +83,7 @@ section{max-width:var(--maxw);margin:0 auto;padding:26px 24px 70px;}
 @media(min-width:640px){.item-grid{grid-template-columns:repeat(2,1fr);}}
 
 .item-card{
-  position:relative;overflow:hidden;
+  position:relative;overflow:hidden;cursor:pointer;
   background:var(--plum-light);border:1px solid var(--line);border-radius:var(--radius);
   transition:border-color .3s, transform .2s;
 }
@@ -98,11 +98,27 @@ section{max-width:var(--maxw);margin:0 auto;padding:26px 24px 70px;}
 .item-cover{width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--cream);border-bottom:1px solid var(--line);}
 .item-cover img{width:100%;height:100%;object-fit:cover;display:block;}
 .item-top{display:flex;align-items:center;gap:12px;margin-bottom:10px;position:relative;z-index:1;}
-.item-ext{width:14px;height:14px;stroke:var(--ink-ghost);flex-shrink:0;margin-inline-start:auto;transition:stroke .2s;}
-.item-card:hover .item-ext{stroke:var(--accent);}
 .item-title{font-size:17px;font-weight:800;position:relative;z-index:1;}
 html[lang="en"] .item-title, html[lang="tr"] .item-title{font-weight:700;}
 .item-date{font-size:12px;color:var(--ink-ghost);font-weight:600;margin-top:12px;display:block;position:relative;z-index:1;}
+.item-cta{font-size:12px;font-weight:700;color:var(--accent);margin-top:6px;display:flex;align-items:center;gap:4px;position:relative;z-index:1;}
+
+.modal-overlay{position:fixed;inset:0;background:rgba(20,18,15,.65);display:none;align-items:center;justify-content:center;z-index:200;padding:24px;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:var(--plum-light);border-radius:var(--radius);max-width:720px;width:100%;max-height:85vh;overflow-y:auto;padding:32px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.35);display:flex;flex-direction:column;}
+.modal-close{position:absolute;top:14px;inset-inline-end:14px;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--cream);color:var(--ink);font-size:22px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.modal-close:hover{background:var(--maroon-light);border-color:var(--accent);color:var(--accent);}
+.modal-cover{border-radius:10px;overflow:hidden;margin-bottom:18px;}
+.modal-cover img{width:100%;display:block;}
+.modal-title{font-size:22px;font-weight:800;margin-bottom:14px;color:var(--ink);padding-inline-end:36px;}
+.modal-body{font-size:15px;line-height:1.9;color:var(--ink);margin-bottom:24px;}
+.modal-body p{margin:0 0 14px;white-space:pre-line;}
+.modal-body p:last-child{margin-bottom:0;}
+.modal-highlight{color:var(--accent);font-weight:700;}
+.modal-question{color:#0A66C2;font-weight:700;}
+.modal-linkedin-btn{box-sizing:border-box;display:inline-flex;vertical-align:middle;align-items:center;justify-content:center;width:30px;height:30px;background:#0A66C2;color:#fff;border-radius:8px;overflow:hidden;text-decoration:none;transition:background .2s;margin-inline-start:6px;}
+.modal-linkedin-btn:hover{background:#004182;}
+.modal-linkedin-btn svg{width:16px;height:16px;}
 .item-blurb{font-size:14px;color:var(--accent);position:relative;z-index:1;}
 
 .empty-state{
@@ -160,6 +176,18 @@ footer{border-top:1px solid var(--line);padding:34px 24px;max-width:var(--maxw);
   </section>
 </main>
 
+<div class="modal-overlay" id="item-modal-overlay">
+  <div class="modal-box">
+    <button class="modal-close" id="item-modal-close" type="button" aria-label="Close">×</button>
+    <div class="modal-cover" id="item-modal-cover"></div>
+    <h3 class="modal-title" id="item-modal-title"></h3>
+    <p class="modal-body" id="item-modal-body"></p>
+    <a class="modal-linkedin-btn" id="item-modal-link" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.85-3.03-1.85 0-2.14 1.45-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.11 20.45H3.56V9h3.55v11.45z"/></svg>
+    </a>
+  </div>
+</div>
+
 <footer>
   <span class="foot-copy" data-i18n="footer.copy">© 2026 أحمد صالح تفاحة — جميع الحقوق محفوظة</span>
   <a href="index.html" class="footer-logo"><img src="images/Logo.png" alt="Ahmad Saleh Tuffaha — Business Development"></a>
@@ -194,6 +222,31 @@ footer{border-top:1px solid var(--line);padding:34px 24px;max-width:var(--maxw);
       More reliable long-term, since it doesn't depend on LinkedIn.
    ============================================================ */
 const ITEMS = [
+  {
+    image: "images/260918.jpg",
+    date: "260918",
+    url: "https://www.linkedin.com/posts/ahmad-saleh-tuffaha_businessoperations-operationalefficiency-share-7506608306887573504-MZaG",
+    title: {
+      ar: "لا تُحلّ الفوضى التشغيلية بزيادة عدد الموظفين، بل بتحويلها إلى نظام متكامل! ⚙️",
+      en: "Don't solve operational chaos by hiring more people — turn it into an integrated system! ⚙️",
+      tr: "Operasyonel kaosu daha fazla personel alarak değil, onu bütünleşik bir sisteme dönüştürerek çözün! ⚙️"
+    },
+    blurb: {
+      ar: "الأنظمة الذكية هي التي تبتلع الفوضى وتخرج لك نمواً صافياً.",
+      en: "Smart systems are the ones that swallow the chaos and hand you back pure growth.",
+      tr: "Akıllı sistemler, kaosu yutup size saf büyüme olarak geri verenlerdir."
+    },
+    fullText: {
+      ar: "تستهلك الكثير من الشركات طاقة فريقها في \"إدارة الفوضى\" بدلاً من بناء العمليات، لا يكمن السر في حل المشكلة عندما تقع، بل في بناء البنية التحتية التي تعيد ترتيب العشوائية تلقائياً.\n\nكيف تتحول الفوضى اليومية بكل ملفاتها وإيميلاتها المتشابكة إلى تدفق رقمي منظم يضمن النمو المستدام؟ يعتمد التحول الحقيقي على 3 خطوات محورية:\n1️⃣ امتصاص الفوضى: جمع كل المدخلات المبعثرة (جداول، إيميلات، رسائل) في نقطة ربط مركزية واحدة.\n2️⃣ المعالجة الآلية: تمرير المهام عبر أنظمة وتروس رقمية تضمن إنجازها بدقة ودون تدخل بشري متكرر.\n3️⃣ تحويل البيانات إلى نمو: إخراج النتائج على شكل مؤشرات أداء واضحة ورسوم بيانية صاعدة تدعم اتخاذ القرار.\n\nالأنظمة الذكية هي التي تبتلع الفوضى وتخرج لك نمواً صافياً.\n\nسؤالي لكم: ما هي أكثر نقطة تشعرون أنها تسبب \"فوضى\" يومية في عمليات شركتكم؟ شاركونا في التعليقات. 👈",
+      en: "Many companies burn their team's energy \"managing chaos\" instead of building processes. The secret isn't solving the problem when it happens, but building the infrastructure that reorders randomness automatically.\n\nHow does daily chaos, with all its tangled files and emails, turn into an organized digital flow that ensures sustainable growth? Real transformation relies on 3 pivotal steps:\n1️⃣ Absorbing the chaos: gathering all scattered inputs (spreadsheets, emails, messages) into one central connection point.\n2️⃣ Automated processing: passing tasks through digital systems and gears that ensure they're completed accurately without repeated human intervention.\n3️⃣ Turning data into growth: outputting results as clear KPIs and rising charts that support decision-making.\n\nSmart systems are the ones that swallow the chaos and hand you back pure growth.\n\nMy question to you: what's the point you feel causes the most daily \"chaos\" in your company's operations? Share with us in the comments. 👉",
+      tr: "Birçok şirket, ekibinin enerjisini süreçler inşa etmek yerine \"kaosu yönetmekte\" tüketiyor. Sır, sorun ortaya çıktığında çözmekte değil, rastgeleliği otomatik olarak yeniden düzenleyen altyapıyı inşa etmekte yatıyor.\n\nGünlük kaos, iç içe geçmiş dosyalar ve e-postalarla birlikte, sürdürülebilir büyümeyi sağlayan düzenli bir dijital akışa nasıl dönüşür? Gerçek dönüşüm 3 temel adıma dayanır:\n1️⃣ Kaosu emmek: dağınık tüm girdileri (tablolar, e-postalar, mesajlar) tek bir merkezi bağlantı noktasında toplamak.\n2️⃣ Otomatik işleme: görevleri, tekrarlanan insan müdahalesi olmadan doğru şekilde tamamlanmasını sağlayan dijital sistemler ve dişliler üzerinden geçirmek.\n3️⃣ Veriyi büyümeye dönüştürmek: sonuçları, karar almayı destekleyen net KPI'lar ve yükselen grafikler şeklinde ortaya koymak.\n\nAkıllı sistemler, kaosu yutup size saf büyüme olarak geri verenlerdir.\n\nSize sorum şu: şirketinizin operasyonlarında en çok günlük \"kaosa\" sebep olduğunu hissettiğiniz nokta nedir? Yorumlarda bizimle paylaşın. 👉"
+    },
+    question: {
+      ar: "سؤالي لكم: ما هي أكثر نقطة تشعرون أنها تسبب \"فوضى\" يومية في عمليات شركتكم؟ شاركونا في التعليقات. 👈",
+      en: "My question to you: what's the point you feel causes the most daily \"chaos\" in your company's operations? Share with us in the comments. 👉",
+      tr: "Size sorum şu: şirketinizin operasyonlarında en çok günlük \"kaosa\" sebep olduğunu hissettiğiniz nokta nedir? Yorumlarda bizimle paylaşın. 👉"
+    }
+  },
   {
     image: "images/260914.jpg",
     date: "260914",
@@ -466,6 +519,7 @@ const translations = {
     "page.title": "خواطر وتجارب",
     "empty": "لسا ما في خواطر منشورة — تابعني عالينكدإن.",
     "footer.copy": "© 2026 أحمد صالح تفاحة — جميع الحقوق محفوظة",
+    "item.cta": "شاركني رأيك على LinkedIn",
   },
   en: {
     "nav.name": "Ahmad Saleh Tuffaha",
@@ -474,6 +528,7 @@ const translations = {
     "page.title": "Thoughts & Experiences",
     "empty": "No thoughts published yet — follow along on LinkedIn.",
     "footer.copy": "© 2026 Ahmad Saleh Tuffaha — All rights reserved",
+    "item.cta": "Join the conversation on LinkedIn",
   },
   tr: {
     "nav.name": "Ahmad Saleh Tuffaha",
@@ -482,6 +537,7 @@ const translations = {
     "page.title": "Düşünceler ve Deneyimler",
     "empty": "Henüz paylaşılmış bir düşünce yok — LinkedIn'den takip edebilirsin.",
     "footer.copy": "© 2026 Ahmad Saleh Tuffaha — Tüm hakları saklıdır",
+    "item.cta": "LinkedIn'de görüşünü paylaş",
   }
 };
 
@@ -524,9 +580,10 @@ function renderItems(lang){
     return;
   }
   ITEMS.forEach(item=>{
-    const a = document.createElement("a");
-    a.href = item.url; a.target = "_blank"; a.rel = "noopener";
+    const a = document.createElement("div");
     a.className = "item-card";
+    a.setAttribute("role", "button");
+    a.setAttribute("tabindex", "0");
     const cover = item.image
       ? `<div class="item-cover"><img src="${item.image}" alt="" loading="lazy"></div>`
       : "";
@@ -535,7 +592,6 @@ function renderItems(lang){
       <div class="item-body">
         <div class="item-top">
           <span class="item-title">${item.title[lang] || item.title.ar}</span>
-          <svg class="item-ext" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>
         </div>
         <p class="item-blurb">${(item.blurb && (item.blurb[lang] || item.blurb.ar)) || ""}</p>
         <span class="item-date">${formatDate(item.date, lang)}</span>
@@ -545,9 +601,59 @@ function renderItems(lang){
       a.style.setProperty("--mx", (e.clientX - r.left) + "px");
       a.style.setProperty("--my", (e.clientY - r.top) + "px");
     });
+    a.addEventListener("click", ()=> openItemModal(item, lang));
+    a.addEventListener("keydown", e=>{
+      if(e.key === "Enter" || e.key === " "){ e.preventDefault(); openItemModal(item, lang); }
+    });
     grid.appendChild(a);
   });
 }
+
+function openItemModal(item, lang){
+  const overlay = document.getElementById("item-modal-overlay");
+  const cover = document.getElementById("item-modal-cover");
+  const title = document.getElementById("item-modal-title");
+  const body = document.getElementById("item-modal-body");
+  const link = document.getElementById("item-modal-link");
+
+  cover.innerHTML = item.image ? `<img src="${item.image}" alt="">` : "";
+  title.textContent = item.title[lang] || item.title.ar;
+
+  const full = (item.fullText && (item.fullText[lang] || item.fullText.ar))
+    || (item.blurb && (item.blurb[lang] || item.blurb.ar)) || "";
+  const highlight = item.blurb && (item.blurb[lang] || item.blurb.ar);
+  const question = item.question && (item.question[lang] || item.question.ar);
+
+  body.innerHTML = "";
+  full.split(/\n\n+/).forEach(para=>{
+    const p = document.createElement("p");
+    if(question && para.trim() === question.trim()){
+      p.classList.add("modal-question");
+      p.append(para + " ", link);
+    } else if(highlight && para.trim() === highlight.trim()){
+      p.classList.add("modal-highlight");
+      p.textContent = para;
+    } else {
+      p.textContent = para;
+    }
+    body.appendChild(p);
+  });
+
+  link.href = item.url;
+
+  overlay.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeItemModal(){
+  document.getElementById("item-modal-overlay").classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+document.getElementById("item-modal-close").addEventListener("click", closeItemModal);
+document.getElementById("item-modal-overlay").addEventListener("click", e=>{
+  if(e.target.id === "item-modal-overlay") closeItemModal();
+});
 
 function setLanguage(lang){
   localStorage.setItem("site-lang", lang);
