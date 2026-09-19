@@ -124,7 +124,7 @@ footer{border-top:1px solid var(--ink-light);padding:34px 24px;max-width:var(--m
 }
 .footer-logo{display:block;justify-self:center;}
 .footer-logo img{height:72px;width:auto;display:block;}
-.foot-copy{font-size:13px;color:var(--ink-soft);justify-self:start;text-align:start;}
+.foot-copy{font-size:13px;color:var(--ink-soft);justify-self:start;text-align:start;display:flex;flex-direction:column;gap:2px;}
 .foot-socials{display:flex;gap:10px;justify-self:end;}
 .social-btn{
   width:44px;height:44px;border-radius:10px;background:var(--ink-light);border:1px solid var(--ink-light);
@@ -174,7 +174,7 @@ footer{border-top:1px solid var(--ink-light);padding:34px 24px;max-width:var(--m
 </main>
 
 <footer>
-  <span class="foot-copy" data-i18n="footer.copy">© 2026 أحمد صالح تفاحة — جميع الحقوق محفوظة</span>
+  <span class="foot-copy"><span data-i18n="footer.copy1">© 2026 أحمد صالح تفاحة</span><span data-i18n="footer.copy2">جميع الحقوق محفوظة</span></span>
   <a href="index.html" class="footer-logo"><img src="images/Logo.png" alt="Ahmad Saleh Tuffaha — Business Development"></a>
   <div class="foot-socials">
     <a class="social-btn social-linkedin" href="https://www.linkedin.com/in/ahmad-saleh-tuffaha/" target="_blank" rel="noopener" aria-label="LinkedIn">
@@ -303,7 +303,8 @@ const translations = {
     "page.title": "مشاريع عملت عليها",
     caseLabels: { challenge: "التحدي", solution: "الحل", impact: "الأثر", tools: "الأدوات" },
     "ai_disclaimer": "صورة مولّدة بالذكاء الاصطناعي لحماية خصوصية الشركات",
-    "footer.copy": "© 2026 أحمد صالح تفاحة — جميع الحقوق محفوظة",
+    "footer.copy1": "© 2026 أحمد صالح تفاحة",
+    "footer.copy2": "جميع الحقوق محفوظة",
   },
   en: {
     "nav.name": "Ahmad Saleh Tuffaha",
@@ -312,7 +313,8 @@ const translations = {
     "page.title": "Projects I've Worked On",
     caseLabels: { challenge: "Challenge", solution: "Solution", impact: "Impact", tools: "Tools" },
     "ai_disclaimer": "AI-generated image to protect company privacy",
-    "footer.copy": "© 2026 Ahmad Saleh Tuffaha — All rights reserved",
+    "footer.copy1": "© 2026 Ahmad Saleh Tuffaha",
+    "footer.copy2": "All rights reserved",
   },
   tr: {
     "nav.name": "Ahmad Saleh Tuffaha",
@@ -321,7 +323,8 @@ const translations = {
     "page.title": "Üzerinde Çalıştığım Projeler",
     caseLabels: { challenge: "Zorluk", solution: "Çözüm", impact: "Etki", tools: "Araçlar" },
     "ai_disclaimer": "Şirket gizliliğini korumak için yapay zeka ile oluşturulmuş görsel",
-    "footer.copy": "© 2026 Ahmad Saleh Tuffaha — Tüm hakları saklıdır",
+    "footer.copy1": "© 2026 Ahmad Saleh Tuffaha",
+    "footer.copy2": "Tüm hakları saklıdır",
   }
 };
 

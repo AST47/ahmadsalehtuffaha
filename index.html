@@ -360,8 +360,8 @@ footer{
   .foot-socials{justify-self:center !important;}
 }
 .footer-logo{display:block;justify-self:center;}
-.footer-logo img{height:72px;width:auto;display:block;}
-.foot-copy{font-size:13px;color:var(--ink-soft);justify-self:start;text-align:start;}
+.footer-logo img{height:72px;width:auto;display:block;font-size:10px;}
+.foot-copy{font-size:13px;color:var(--ink-soft);justify-self:start;text-align:start;display:flex;flex-direction:column;gap:2px;}
 .foot-socials{display:flex;gap:10px;justify-self:end;}
 .social-btn{
   width:44px;height:44px;border-radius:10px;background:var(--ink-light);border:1px solid var(--ink-light);
@@ -586,7 +586,7 @@ footer{
 </main>
 
 <footer>
-  <span class="foot-copy" data-i18n="footer.copy">© 2026 أحمد صالح تفاحة — جميع الحقوق محفوظة</span>
+  <span class="foot-copy"><span data-i18n="footer.copy1">© 2026 أحمد صالح تفاحة</span><span data-i18n="footer.copy2">جميع الحقوق محفوظة</span></span>
   <a href="index.html" class="footer-logo"><img src="images/Logo.png" alt="Ahmad Saleh Tuffaha — Business Development"></a>
   <div class="foot-socials">
     <a class="social-btn social-linkedin" href="https://www.linkedin.com/in/ahmad-saleh-tuffaha/" target="_blank" rel="noopener" aria-label="LinkedIn">
@@ -704,7 +704,8 @@ const translations = {
     "service.cta": "تواصل عبر واتساب",
     "contact.q1": "عندك <span class=\"hl hand\" style=\"color:#7d0102\">مشكلة</span> وعم تدور على <span class=\"hl hand\" style=\"color:#1f7a4a\">الحل</span>؟",
     "contact.whatsapp": "راسلني على واتساب",
-    "footer.copy": "© 2026 أحمد صالح تفاحة — جميع الحقوق محفوظة",
+    "footer.copy1": "© 2026 أحمد صالح تفاحة",
+    "footer.copy2": "جميع الحقوق محفوظة",
   },
   en: {
     "nav.name": "Ahmad Saleh Tuffaha",
@@ -748,7 +749,8 @@ const translations = {
     "service.cta": "Message on WhatsApp",
     "contact.q1": "Have a <span class=\"hl hand\" style=\"color:#7d0102\">problem</span> and looking for the <span class=\"hl hand\" style=\"color:#1f7a4a\">solution</span>?",
     "contact.whatsapp": "Message me on WhatsApp",
-    "footer.copy": "© 2026 Ahmad Saleh Tuffaha — All rights reserved",
+    "footer.copy1": "© 2026 Ahmad Saleh Tuffaha",
+    "footer.copy2": "All rights reserved",
   },
   tr: {
     "nav.name": "Ahmad Saleh Tuffaha",
@@ -792,7 +794,8 @@ const translations = {
     "service.cta": "WhatsApp'tan yaz",
     "contact.q1": "Bir <span class=\"hl hand\" style=\"color:#7d0102\">sorununuz</span> var ve <span class=\"hl hand\" style=\"color:#1f7a4a\">çözümü</span> mü arıyorsunuz?",
     "contact.whatsapp": "WhatsApp'tan yaz",
-    "footer.copy": "© 2026 Ahmad Saleh Tuffaha — Tüm hakları saklıdır",
+    "footer.copy1": "© 2026 Ahmad Saleh Tuffaha",
+    "footer.copy2": "Tüm hakları saklıdır",
   }
 };
 
