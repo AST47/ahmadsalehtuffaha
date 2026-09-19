@@ -641,6 +641,10 @@ function openItemModal(item, lang){
   const body = document.getElementById("item-modal-body");
   const link = document.getElementById("item-modal-link");
 
+  // detach the link BEFORE clearing body, so it's never destroyed along with old content
+  if(link.parentNode) link.parentNode.removeChild(link);
+  link.style.display = "none";
+
   cover.innerHTML = item.image ? `<img src="${item.image}" alt="">` : "";
   title.textContent = item.title[lang] || item.title.ar;
 
@@ -654,6 +658,7 @@ function openItemModal(item, lang){
     const p = document.createElement("p");
     if(question && para.trim() === question.trim()){
       p.classList.add("modal-question");
+      link.style.display = "";
       p.append(para + " ", link);
     } else if(highlight && para.trim() === highlight.trim()){
       p.classList.add("modal-highlight");
@@ -663,6 +668,9 @@ function openItemModal(item, lang){
     }
     body.appendChild(p);
   });
+
+  // if no paragraph needed the link this time, keep it safely attached (hidden) so it's still findable next time
+  if(!link.isConnected) overlay.appendChild(link);
 
   link.href = item.url;
 
