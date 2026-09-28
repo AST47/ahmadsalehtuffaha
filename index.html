@@ -109,7 +109,7 @@ html[lang="en"] .nav-name, html[lang="tr"] .nav-name{font-weight:700;}
    ============================================================ */
 .hero{
   max-width:var(--maxw);margin:0 auto;
-  padding:min(14vh,110px) 24px 70px;
+  padding:min(14vh,110px) 24px 40px;
   text-align:center;
 }
 .eyebrow{
@@ -223,6 +223,8 @@ html[lang="ar"] .marquee-item{font-weight:800;}
    ============================================================ */
 
 section{max-width:var(--maxw);margin:0 auto;padding:60px 24px;}
+/* the destinations block sits right under the hero text — the hero's own bottom padding is its only spacing */
+section.dest-section{padding-top:0;}
 .section-label{
   font-size:13px;font-weight:700;color:var(--accent);
   letter-spacing:.06em;margin-bottom:10px;display:block;
@@ -238,7 +240,7 @@ html[lang="en"] .section-title, html[lang="tr"] .section-title{font-weight:700;}
 
 /* ============================================================
    DESTINATIONS — vertical stack (accordion), scroll-driven.
-   Four full-width rows form one 4:5 block. The section pins
+   Four full-width rows form one block whose open row is 4:5. The section pins
    (position:sticky) for an extra stretch of scroll while the rows
    open one after another — the open row grows, its neighbours
    collapse to a title strip — tied continuously to scroll progress
@@ -248,7 +250,11 @@ html[lang="en"] .section-title, html[lang="tr"] .section-title{font-weight:700;}
    --bento-big/--bento-small control how pronounced the difference is.
    ============================================================ */
 :root{
-  --bento-big:4;
+  /* An open row is exactly 4:5 (portrait, like the prepared images) so
+     the whole image shows uncropped; a closed row is a strip 0.15 of the
+     block's width tall. big = open height / strip height = 1.25 / 0.15,
+     and the block's total height = 1.25 + 3 x 0.15 = 1.7 x its width. */
+  --bento-big:8.333;
   --bento-small:1;
 }
 .bento-scroll-wrap{position:relative;}
@@ -257,9 +263,11 @@ html[lang="en"] .section-title, html[lang="tr"] .section-title{font-weight:700;}
   display:grid;
   grid-template-columns:1fr;
   grid-template-rows:var(--r1,1fr) var(--r2,1fr) var(--r3,1fr) var(--r4,1fr);
-  gap:8px;width:min(100%, calc((100vh - 160px) * 0.8));aspect-ratio:4/5;
+  gap:0;width:min(100%, calc((100vh - 120px) / 1.7));aspect-ratio:1 / 1.7;
   border-radius:var(--radius);overflow:hidden;margin:0 auto;
 }
+/* thin cream divider between rows (drawn over the image so row heights stay exact) */
+.bento-cell:not(:last-child)::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:var(--cream);z-index:3;pointer-events:none;}
 .bento-cell{position:relative;overflow:hidden;display:flex;align-items:flex-end;cursor:pointer;min-height:0;}
 .bento-cell img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
 .bento-content{position:relative;z-index:2;width:100%;padding:14px 22px;display:flex;flex-direction:column;gap:6px;}
@@ -423,7 +431,7 @@ footer{
   </div>
 
   <!-- ============== DESTINATIONS ============== -->
-  <section>
+  <section class="dest-section">
     <div class="bento-scroll-wrap" id="bento-scroll-wrap">
     <div class="bento-sticky">
     <div class="bento-dest reveal" id="bento-dest">
