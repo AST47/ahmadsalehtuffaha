@@ -240,7 +240,7 @@ html[lang="en"] .section-title, html[lang="tr"] .section-title{font-weight:700;}
 
 /* ============================================================
    DESTINATIONS — vertical stack (accordion), scroll-driven.
-   Four full-width rows form one block whose open row is 1:1. The section pins
+   Four full-width rows form one block whose open row is landscape 5:4. The section pins
    (position:sticky) for an extra stretch of scroll while the rows
    open one after another — the open row grows, its neighbours
    collapse to a title strip — tied continuously to scroll progress
@@ -250,14 +250,14 @@ html[lang="en"] .section-title, html[lang="tr"] .section-title{font-weight:700;}
    --bento-big/--bento-small control how pronounced the difference is.
    ============================================================ */
 :root{
-  /* An open row is exactly square (1:1) so the whole image shows; a
-     closed row is a strip 0.15 of the block's width tall.
-     big = open height / strip height = 1 / 0.15, and the block's total
-     height = 1 + 3 x 0.15 = 1.45 x its width. */
-  --bento-big:6.667;
+  /* An open row is landscape 5:4 (height = 0.8 x width); a closed row
+     is a strip 0.15 of the block's width tall.
+     big = open height / strip height = 0.8 / 0.15, and the block's
+     total height = 0.8 + 3 x 0.15 = 1.25 x its width. */
+  --bento-big:5.333;
   --bento-small:1;
   /* thin cream outline so ink/maroon text stays readable over dark parts of an image */
-  --halo:0 0 1px var(--cream), 1px 0 0 var(--cream), -1px 0 0 var(--cream), 0 1px 0 var(--cream), 0 -1px 0 var(--cream), 0.7px 0.7px 0 var(--cream), -0.7px -0.7px 0 var(--cream), 0.7px -0.7px 0 var(--cream), -0.7px 0.7px 0 var(--cream);
+  --halo:0 0 0.5px var(--cream), 0.5px 0 0 var(--cream), -0.5px 0 0 var(--cream), 0 0.5px 0 var(--cream), 0 -0.5px 0 var(--cream), 0.35px 0.35px 0 var(--cream), -0.35px -0.35px 0 var(--cream), 0.35px -0.35px 0 var(--cream), -0.35px 0.35px 0 var(--cream);
 }
 .bento-scroll-wrap{position:relative;}
 .bento-sticky{position:sticky;top:0;}
@@ -265,7 +265,7 @@ html[lang="en"] .section-title, html[lang="tr"] .section-title{font-weight:700;}
   display:grid;
   grid-template-columns:1fr;
   grid-template-rows:var(--r1,1fr) var(--r2,1fr) var(--r3,1fr) var(--r4,1fr);
-  gap:0;width:min(100%, calc((100vh - 120px) / 1.45));aspect-ratio:1 / 1.45;
+  gap:0;width:min(100%, calc((100vh - 120px) / 1.25));aspect-ratio:1 / 1.25;
   border-radius:var(--radius);overflow:hidden;margin:0 auto;
 }
 /* thin cream divider between rows (drawn over the image so row heights stay exact) */
@@ -275,14 +275,13 @@ html[lang="en"] .section-title, html[lang="tr"] .section-title{font-weight:700;}
 .bento-content{position:relative;z-index:2;width:100%;padding:14px 22px;display:flex;flex-direction:column;gap:6px;}
 .bento-title{color:var(--ink);font-weight:800;font-size:17px;line-height:1.3;text-align:start;text-shadow:var(--halo);}
 html[lang="en"] .bento-title, html[lang="tr"] .bento-title{font-weight:700;}
-.bento-desc{color:var(--accent);font-size:12.5px;line-height:1.6;}
+.bento-desc{color:var(--accent);font-size:15.5px;line-height:1.6;}
 .bento-desc-row{display:flex;align-items:center;gap:6px;text-align:start;max-height:0;opacity:0;overflow:hidden;transition:max-height .4s ease, opacity .3s ease, margin-top .4s ease;}
 .bento-desc-row svg{width:13px;height:13px;stroke:var(--accent);flex-shrink:0;}
 .bento-cell.is-open .bento-desc-row{max-height:120px;opacity:1;margin-top:2px;}
 @media(max-width:480px){
   .bento-content{padding:10px 16px;}
   .bento-title{font-size:14px;}
-  .bento-desc{font-size:11px;}
 }
 
 /* sub-grid used inside the side-projects card */
