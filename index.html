@@ -237,32 +237,32 @@ html[lang="en"] .section-title, html[lang="tr"] .section-title{font-weight:700;}
 .reveal.active{opacity:1;transform:translateY(0);}
 
 /* ============================================================
-   DESTINATIONS — 2×2 bento grid, scroll-driven.
-   The section pins in place (position:sticky) for an extra
-   stretch of scroll while one card at a time grows at the
-   expense of the other three, tied continuously to scroll
-   progress — no hover/click involved (see initBentoScroll in
-   the script). Clicking a card always navigates, whatever its
-   current size. EXTRA_SCROLL in the script controls how long
-   the pin lasts; --bento-big/--bento-small below control how
-   pronounced the size difference is.
+   DESTINATIONS — vertical stack (accordion), scroll-driven.
+   Four full-width rows form one 4:5 block. The section pins
+   (position:sticky) for an extra stretch of scroll while the rows
+   open one after another — the open row grows, its neighbours
+   collapse to a title strip — tied continuously to scroll progress
+   (see initBentoScroll in the script). No hover/click involved;
+   clicking a row always navigates, whatever its current size.
+   EXTRA_SCROLL in the script controls how long the pin lasts;
+   --bento-big/--bento-small control how pronounced the difference is.
    ============================================================ */
 :root{
-  --bento-big:2.4;
+  --bento-big:4;
   --bento-small:1;
 }
 .bento-scroll-wrap{position:relative;}
 .bento-sticky{position:sticky;top:0;}
 .bento-dest{
   display:grid;
-  grid-template-columns:var(--c1,1fr) var(--c2,1fr);
-  grid-template-rows:var(--r1,1fr) var(--r2,1fr);
-  gap:8px;width:min(100%, calc(100vh - 160px));aspect-ratio:1;
+  grid-template-columns:1fr;
+  grid-template-rows:var(--r1,1fr) var(--r2,1fr) var(--r3,1fr) var(--r4,1fr);
+  gap:8px;width:min(100%, calc((100vh - 160px) * 0.8));aspect-ratio:4/5;
   border-radius:var(--radius);overflow:hidden;margin:0 auto;
 }
-.bento-cell{position:relative;overflow:hidden;display:flex;align-items:flex-end;cursor:pointer;}
-.bento-cell img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s;}
-.bento-content{position:relative;z-index:2;width:100%;padding:20px 22px;display:flex;flex-direction:column;gap:6px;}
+.bento-cell{position:relative;overflow:hidden;display:flex;align-items:flex-end;cursor:pointer;min-height:0;}
+.bento-cell img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
+.bento-content{position:relative;z-index:2;width:100%;padding:14px 22px;display:flex;flex-direction:column;gap:6px;}
 .bento-title{color:var(--ink);font-weight:800;font-size:17px;line-height:1.3;text-align:start;}
 html[lang="en"] .bento-title, html[lang="tr"] .bento-title{font-weight:700;}
 .bento-desc{color:var(--accent);font-size:12.5px;line-height:1.6;}
@@ -270,7 +270,7 @@ html[lang="en"] .bento-title, html[lang="tr"] .bento-title{font-weight:700;}
 .bento-desc-row svg{width:13px;height:13px;stroke:var(--accent);flex-shrink:0;}
 .bento-cell.is-open .bento-desc-row{max-height:120px;opacity:1;margin-top:2px;}
 @media(max-width:480px){
-  .bento-content{padding:14px 16px;}
+  .bento-content{padding:10px 16px;}
   .bento-title{font-size:14px;}
   .bento-desc{font-size:11px;}
 }
@@ -1006,13 +1006,13 @@ function detectLang(){
 setLanguage(detectLang());
 revealOnScroll();
 
-/* 2x2 bento — scroll-driven. The wrap (#bento-scroll-wrap) is given
-   extra height (EXTRA_SCROLL px beyond one viewport) and the bento
+/* Vertical-stack bento — scroll-driven. The wrap (#bento-scroll-wrap) is
+   given extra height (EXTRA_SCROLL px beyond the block's own height) and the bento
    itself sits in a position:sticky child, so it pins on screen for
    that stretch of scroll. Progress through that stretch (0 to 1)
    drives a continuous interpolation across 6 keyframe states —
-   equal sizes, then each card in turn taking the extra space at
-   the other three's expense, back to equal — so scrolling down
+   equal rows, then each row in turn opening at the other
+   three's expense, back to equal — so scrolling down
    plays it forward and scrolling up reverses it, with no snapping
    between states. The description under a card's title only shows
    while that card is the current largest one.
@@ -1023,21 +1023,20 @@ revealOnScroll();
   const bento = document.getElementById("bento-dest");
   if(!wrap || !bento) return;
   const cells = [...bento.querySelectorAll(".bento-cell")];
-  // DOM order: 0 portfolio (r1c1), 1 projects (r1c2), 2 articles (r2c1), 3 apps (r2c2)
-  const BIG = getComputedStyle(document.documentElement).getPropertyValue("--bento-big").trim() || "2.4";
+  // DOM order = row order: 0 portfolio, 1 projects, 2 articles, 3 apps
+  const BIG = getComputedStyle(document.documentElement).getPropertyValue("--bento-big").trim() || "4";
   const SMALL = getComputedStyle(document.documentElement).getPropertyValue("--bento-small").trim() || "1";
   const big = parseFloat(BIG), small = parseFloat(SMALL);
-  // Growth order goes around the four corners (portfolio -> projects ->
-  // apps -> articles) rather than DOM order, so every step only flips
-  // one axis (row or column) at a time — jumping between diagonally
-  // opposite corners made the in-between shape distort.
+  // Six keyframes: all rows equal, each row opening in turn (the
+  // previous one closing as the next opens), back to all equal.
+  const rowsState = (open)=> [0,1,2,3].map(i=> i === open ? big : small);
   const states = [
-    {c1:small, c2:small, r1:small, r2:small, active:null},
-    {c1:big,   c2:small, r1:big,   r2:small, active:0}, // portfolio
-    {c1:small, c2:big,   r1:big,   r2:small, active:1}, // projects
-    {c1:small, c2:big,   r1:small, r2:big,   active:3}, // apps
-    {c1:big,   c2:small, r1:small, r2:big,   active:2}, // articles
-    {c1:small, c2:small, r1:small, r2:small, active:null}
+    {r:[small,small,small,small], active:null},
+    {r:rowsState(0), active:0}, // portfolio
+    {r:rowsState(1), active:1}, // projects
+    {r:rowsState(2), active:2}, // articles
+    {r:rowsState(3), active:3}, // apps
+    {r:[small,small,small,small], active:null}
   ];
   const lerp = (a,b,f)=> a + (b - a) * f;
   // How much extra scroll distance (beyond one viewport) the pin
@@ -1081,10 +1080,9 @@ revealOnScroll();
     const idx = Math.min(Math.floor(seg), states.length - 2);
     const frac = seg - idx;
     const a = states[idx], b = states[idx + 1];
-    bento.style.setProperty("--c1", lerp(a.c1, b.c1, frac).toFixed(3) + "fr");
-    bento.style.setProperty("--c2", lerp(a.c2, b.c2, frac).toFixed(3) + "fr");
-    bento.style.setProperty("--r1", lerp(a.r1, b.r1, frac).toFixed(3) + "fr");
-    bento.style.setProperty("--r2", lerp(a.r2, b.r2, frac).toFixed(3) + "fr");
+    for(let k = 0; k < 4; k++){
+      bento.style.setProperty("--r" + (k + 1), lerp(a.r[k], b.r[k], frac).toFixed(3) + "fr");
+    }
     const activeIdx = states[Math.round(seg)].active;
     cells.forEach((cell, i)=> cell.classList.toggle("is-open", i === activeIdx));
   }
