@@ -252,7 +252,7 @@ html[lang="en"] .section-title, html[lang="tr"] .section-title{font-weight:700;}
   --bento-small:1;
 }
 .bento-scroll-wrap{position:relative;}
-.bento-sticky{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;}
+.bento-sticky{position:sticky;top:0;}
 .bento-dest{
   display:grid;
   grid-template-columns:var(--c1,1fr) var(--c2,1fr);
@@ -386,7 +386,7 @@ footer{
   .reveal{transition:none;opacity:1;transform:none;}
   *{scroll-behavior:auto;}
   .bento-scroll-wrap{height:auto !important;}
-  .bento-sticky{position:static;height:auto;padding:24px 0;}
+  .bento-sticky{position:static !important;}
 }
 </style>
 </head>
@@ -1053,20 +1053,27 @@ revealOnScroll();
   // EXTRA_SCROLL - TRAIL_PX + LEAD_PX constant to keep the same
   // per-card pace. smoothstep eases the whole thing so it
   // accelerates into and decelerates out of the motion.
-  const LEAD_PX = 500;
+  const LEAD_PX = 250;
   const TRAIL_PX = -300;
   const smoothstep = (t)=> t * t * (3 - 2 * t);
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  // The sticky child is exactly as tall as the 2x2 (no extra blank
+  // space above/below it), pinned so the 2x2 sits vertically centred
+  // on screen. The wrap is that height plus EXTRA_SCROLL, so the
+  // page only grows by EXTRA_SCROLL overall.
+  const sticky = wrap.querySelector(".bento-sticky");
+  let pinTop = 0;
   function setHeight(){
-    wrap.style.height = (window.innerHeight + EXTRA_SCROLL) + "px";
+    pinTop = Math.max((window.innerHeight - sticky.offsetHeight) / 2, 0);
+    sticky.style.top = pinTop + "px";
+    wrap.style.height = (sticky.offsetHeight + EXTRA_SCROLL) + "px";
   }
   function progress(){
-    const rect = wrap.getBoundingClientRect();
-    const scrollable = wrap.offsetHeight - window.innerHeight;
-    if(scrollable <= 0) return rect.top <= 0 ? 1 : 0;
-    const denom = Math.max(scrollable - TRAIL_PX + LEAD_PX, 1);
-    const raw = Math.min(Math.max((LEAD_PX - rect.top) / denom, 0), 1);
+    // distance of the wrap's top from the point where the pin engages
+    const relTop = wrap.getBoundingClientRect().top - pinTop;
+    const denom = Math.max(EXTRA_SCROLL - TRAIL_PX + LEAD_PX, 1);
+    const raw = Math.min(Math.max((LEAD_PX - relTop) / denom, 0), 1);
     return smoothstep(raw);
   }
   function update(t){
