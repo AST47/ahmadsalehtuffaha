@@ -108,6 +108,7 @@ html[lang="en"] .nav-name, html[lang="tr"] .nav-name{font-weight:700;}
    HERO
    ============================================================ */
 .hero{
+  overflow-anchor:none; /* never let the browser re-adjust scroll when the typed line changes */
   max-width:var(--maxw);margin:0 auto;
   padding:min(10vh,88px) 24px 40px;
   text-align:center;
@@ -855,6 +856,7 @@ function lockHeroHeight(lang){
 
   // reset so the measurement isn't biased by a previously locked height
   titleEl.style.minHeight = "";
+  titleEl.style.height = "";
 
   const probe = titleEl.cloneNode(true);
   probe.removeAttribute("id");
@@ -887,7 +889,13 @@ function lockHeroHeight(lang){
   });
 
   heroEl.removeChild(probe);
-  if(max > 0) titleEl.style.minHeight = max + "px";
+  // a fixed height (not just min-height): even if the measurement is a
+  // pixel or two short, the line can never grow and push the page down
+  if(max > 0){
+    const h = Math.ceil(max) + 2;
+    titleEl.style.minHeight = h + "px";
+    titleEl.style.height = h + "px";
+  }
 }
 
 let heroResizeTimer = null;
