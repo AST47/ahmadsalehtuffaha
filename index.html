@@ -121,13 +121,15 @@ html[lang="ar"] .eyebrow{letter-spacing:0;}
 .tw-line{
   font-size:clamp(2.1rem,6vw,3.6rem);
   font-weight:800;line-height:1.28;
-  min-height:2.6em;
+  /* exactly two lines, always — every phrase in every language is written
+     to fit in two, so nothing below ever moves while the text types */
+  height:2.6em;
   max-width:720px;margin-inline:auto;
 }
 html[lang="en"] .tw-line, html[lang="tr"] .tw-line{font-weight:600;}
 .tw-line .prefix{color:var(--ink);}
 .tw-line .suffix-main{color:var(--ink);}
-.tw-line .suffix-key{color:var(--accent);font-size:1.1em;}
+.tw-line .suffix-key{color:var(--accent);font-size:1.1em;line-height:0;}
 html[lang="ar"] .tw-line .suffix-key{font-size:1.45em;}
 .cursor{display:inline-block;width:3px;height:.9em;background:var(--accent);margin-inline-start:3px;vertical-align:-2px;animation:blink .8s steps(1) infinite;}
 @keyframes blink{50%{opacity:0;}}
@@ -842,81 +844,9 @@ function applyTranslations(lang){
   });
 }
 
-/* Reserve a fixed height on .tw-line equal to the tallest possible
-   rendering among this language's phrases at the current viewport
-   width, so switching between a 1-line and a 2/3-line phrase never
-   shifts the content below it. Recomputed on language change and
-   on resize (debounced). */
-function lockHeroHeight(lang){
-  const titleEl = document.querySelector(".tw-line");
-  const heroEl = document.querySelector(".hero");
-  if(!titleEl || !heroEl) return;
-  const phrases = translations[lang]["hero.phrases"];
-  const prefixText = translations[lang]["hero.prefix"] + " ";
-
-  // reset so the measurement isn't biased by a previously locked height
-  titleEl.style.minHeight = "";
-  titleEl.style.height = "";
-
-  const probe = titleEl.cloneNode(true);
-  probe.removeAttribute("id");
-  probe.querySelectorAll("[id]").forEach(el=> el.removeAttribute("id"));
-  probe.style.position = "absolute";
-  probe.style.visibility = "hidden";
-  probe.style.pointerEvents = "none";
-  probe.style.minHeight = "0";
-  // same width as the real line, otherwise the probe wraps differently
-  // (an absolutely positioned box shrink-wraps) and the measured
-  // height can come out smaller than the real one
-  probe.style.width = titleEl.getBoundingClientRect().width + "px";
-  probe.style.maxWidth = "none";
-  probe.style.margin = "0";
-  heroEl.appendChild(probe);
-
-  const pPrefix = probe.querySelector(".prefix");
-  const pMainEls = probe.querySelectorAll(".suffix-main");
-  const pMain = pMainEls[0];
-  const pAfter = pMainEls[1];
-  const pKey = probe.querySelector(".suffix-key");
-
-  let max = 0;
-  phrases.forEach(ph=>{
-    pPrefix.textContent = prefixText;
-    pMain.textContent = ph.main;
-    pKey.textContent = ph.key;
-    pAfter.textContent = ph.after || "";
-    max = Math.max(max, probe.getBoundingClientRect().height);
-  });
-
-  heroEl.removeChild(probe);
-  // a fixed height (not just min-height): even if the measurement is a
-  // pixel or two short, the line can never grow and push the page down
-  if(max > 0){
-    const h = Math.ceil(max) + 2;
-    titleEl.style.minHeight = h + "px";
-    titleEl.style.height = h + "px";
-  }
-}
-
-let heroResizeTimer = null;
-window.addEventListener("resize", ()=>{
-  clearTimeout(heroResizeTimer);
-  heroResizeTimer = setTimeout(()=> lockHeroHeight(currentLang), 150);
-});
-/* The first measurement can run before the web fonts (Cairo / Lora)
-   have loaded, with a fallback font whose lines break differently —
-   so re-measure once the real fonts are in. Otherwise the locked
-   height is too small and the hero grows/shrinks while typing,
-   pushing everything below it (including the scroll-driven cards). */
-if(document.fonts){
-  if(document.fonts.ready) document.fonts.ready.then(()=> lockHeroHeight(currentLang));
-  if(document.fonts.addEventListener) document.fonts.addEventListener("loadingdone", ()=> lockHeroHeight(currentLang));
-}
-
 /* typewriter: static prefix + bold main text + handwritten key word */
 function startTypewriter(lang){
   clearTimeout(twTimer);
-  lockHeroHeight(lang);
   const prefixEl = document.getElementById("tw-prefix");
   const mainEl = document.getElementById("tw-main");
   const keyEl = document.getElementById("tw-key");
