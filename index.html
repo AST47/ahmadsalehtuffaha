@@ -237,20 +237,30 @@ html[lang="en"] .section-title, html[lang="tr"] .section-title{font-weight:700;}
 .reveal.active{opacity:1;transform:translateY(0);}
 
 /* ============================================================
-   DESTINATIONS — 2×2 bento hover-expand grid.
-   Identical on every device: hovering (desktop) or tapping (touch)
-   a cell grows it at the expense of the other three, and reveals
-   its description. Driven by JS (mouseenter + click both trigger
-   the same state), no separate touch fallback.
+   DESTINATIONS — 2×2 bento grid, scroll-driven.
+   The section pins in place (position:sticky) for an extra
+   stretch of scroll while one card at a time grows at the
+   expense of the other three, tied continuously to scroll
+   progress — no hover/click involved (see initBentoScroll in
+   the script). Clicking a card always navigates, whatever its
+   current size. EXTRA_SCROLL in the script controls how long
+   the pin lasts; --bento-big/--bento-small below control how
+   pronounced the size difference is.
    ============================================================ */
+:root{
+  --bento-big:2.4;
+  --bento-small:1;
+}
+.bento-scroll-wrap{position:relative;}
+.bento-sticky{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;}
 .bento-dest{
   display:grid;
   grid-template-columns:var(--c1,1fr) var(--c2,1fr);
   grid-template-rows:var(--r1,1fr) var(--r2,1fr);
-  gap:8px;aspect-ratio:1;border-radius:var(--radius);overflow:hidden;
-  transition:grid-template-columns .45s cubic-bezier(.4,0,.2,1), grid-template-rows .45s cubic-bezier(.4,0,.2,1);
+  gap:8px;width:min(100%, calc(100vh - 160px));aspect-ratio:1;
+  border-radius:var(--radius);overflow:hidden;margin:0 auto;
 }
-.bento-cell{position:relative;overflow:hidden;display:flex;align-items:flex-end;}
+.bento-cell{position:relative;overflow:hidden;display:flex;align-items:flex-end;cursor:pointer;}
 .bento-cell img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s;}
 .bento-content{position:relative;z-index:2;width:100%;padding:20px 22px;display:flex;flex-direction:column;gap:6px;}
 .bento-title{color:var(--ink);font-weight:800;font-size:17px;line-height:1.3;text-align:start;}
@@ -259,9 +269,6 @@ html[lang="en"] .bento-title, html[lang="tr"] .bento-title{font-weight:700;}
 .bento-desc-row{display:flex;align-items:center;gap:6px;text-align:start;max-height:0;opacity:0;overflow:hidden;transition:max-height .4s ease, opacity .3s ease, margin-top .4s ease;}
 .bento-desc-row svg{width:13px;height:13px;stroke:var(--accent);flex-shrink:0;}
 .bento-cell.is-open .bento-desc-row{max-height:120px;opacity:1;margin-top:2px;}
-@media(hover:hover) and (pointer:fine){
-  .bento-cell:hover .bento-desc-row{max-height:120px;opacity:1;margin-top:2px;}
-}
 @media(max-width:480px){
   .bento-content{padding:14px 16px;}
   .bento-title{font-size:14px;}
@@ -378,6 +385,8 @@ footer{
   .cursor{animation:none;}
   .reveal{transition:none;opacity:1;transform:none;}
   *{scroll-behavior:auto;}
+  .bento-scroll-wrap{height:auto !important;}
+  .bento-sticky{position:static;height:auto;padding:24px 0;}
 }
 </style>
 </head>
@@ -415,6 +424,8 @@ footer{
 
   <!-- ============== DESTINATIONS ============== -->
   <section>
+    <div class="bento-scroll-wrap" id="bento-scroll-wrap">
+    <div class="bento-sticky">
     <div class="bento-dest reveal" id="bento-dest">
 
       <!-- Portfolio -->
@@ -465,6 +476,8 @@ footer{
         </div>
       </div>
 
+    </div>
+    </div>
     </div>
   </section>
 
@@ -993,56 +1006,106 @@ function detectLang(){
 setLanguage(detectLang());
 revealOnScroll();
 
-/* 2x2 bento — identical on every device. mouseenter (desktop) opens
-   a cell immediately, so a single click while hovering navigates
-   straight to it. On touch, the whole card is the tap target: first
-   tap opens (grows it + reveals the description), a second tap on
-   the same already-open card navigates. The small arrow next to the
-   description is purely decorative (matches the original CTA look). */
-(function initBentoDest(){
+/* 2x2 bento — scroll-driven. The wrap (#bento-scroll-wrap) is given
+   extra height (EXTRA_SCROLL px beyond one viewport) and the bento
+   itself sits in a position:sticky child, so it pins on screen for
+   that stretch of scroll. Progress through that stretch (0 to 1)
+   drives a continuous interpolation across 6 keyframe states —
+   equal sizes, then each card in turn taking the extra space at
+   the other three's expense, back to equal — so scrolling down
+   plays it forward and scrolling up reverses it, with no snapping
+   between states. The description under a card's title only shows
+   while that card is the current largest one.
+   Cards are always clickable/tappable regardless of current size —
+   there's no separate "open" tap step anymore. */
+(function initBentoScroll(){
+  const wrap = document.getElementById("bento-scroll-wrap");
   const bento = document.getElementById("bento-dest");
-  if(!bento) return;
-  const cells = bento.querySelectorAll(".bento-cell");
-  const BIG = 3, SMALL = 1;
-  function openCell(cell){
-    const r = cell.dataset.r, c = cell.dataset.c;
-    bento.style.setProperty("--c1", c === "1" ? `${BIG}fr` : `${SMALL}fr`);
-    bento.style.setProperty("--c2", c === "2" ? `${BIG}fr` : `${SMALL}fr`);
-    bento.style.setProperty("--r1", r === "1" ? `${BIG}fr` : `${SMALL}fr`);
-    bento.style.setProperty("--r2", r === "2" ? `${BIG}fr` : `${SMALL}fr`);
-    cells.forEach(x=> x.classList.toggle("is-open", x === cell));
+  if(!wrap || !bento) return;
+  const cells = [...bento.querySelectorAll(".bento-cell")];
+  // DOM order: 0 portfolio (r1c1), 1 projects (r1c2), 2 articles (r2c1), 3 apps (r2c2)
+  const BIG = getComputedStyle(document.documentElement).getPropertyValue("--bento-big").trim() || "2.4";
+  const SMALL = getComputedStyle(document.documentElement).getPropertyValue("--bento-small").trim() || "1";
+  const big = parseFloat(BIG), small = parseFloat(SMALL);
+  // Growth order goes around the four corners (portfolio -> projects ->
+  // apps -> articles) rather than DOM order, so every step only flips
+  // one axis (row or column) at a time — jumping between diagonally
+  // opposite corners made the in-between shape distort.
+  const states = [
+    {c1:small, c2:small, r1:small, r2:small, active:null},
+    {c1:big,   c2:small, r1:big,   r2:small, active:0}, // portfolio
+    {c1:small, c2:big,   r1:big,   r2:small, active:1}, // projects
+    {c1:small, c2:big,   r1:small, r2:big,   active:3}, // apps
+    {c1:big,   c2:small, r1:small, r2:big,   active:2}, // articles
+    {c1:small, c2:small, r1:small, r2:small, active:null}
+  ];
+  const lerp = (a,b,f)=> a + (b - a) * f;
+  // How much extra scroll distance (beyond one viewport) the pin
+  // lasts for — raise/lower this to make the sequence feel slower/faster.
+  const EXTRA_SCROLL = 300;
+  // The motion starts LEAD_PX of scroll before the section actually
+  // locks (so it's already gently moving by the time the lock kicks
+  // in). TRAIL_PX is how far BEFORE the unlock the motion finishes:
+  // positive = it finishes early and then sits pinned doing nothing,
+  // 0 = finishes exactly at unlock, negative = the unlock happens
+  // first and the last part of the motion plays while the section
+  // is already scrolling away (current setting). Keep
+  // EXTRA_SCROLL - TRAIL_PX + LEAD_PX constant to keep the same
+  // per-card pace. smoothstep eases the whole thing so it
+  // accelerates into and decelerates out of the motion.
+  const LEAD_PX = 500;
+  const TRAIL_PX = -300;
+  const smoothstep = (t)=> t * t * (3 - 2 * t);
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function setHeight(){
+    wrap.style.height = (window.innerHeight + EXTRA_SCROLL) + "px";
   }
-  function closeAll(){
-    bento.style.setProperty("--c1", "1fr");
-    bento.style.setProperty("--c2", "1fr");
-    bento.style.setProperty("--r1", "1fr");
-    bento.style.setProperty("--r2", "1fr");
-    cells.forEach(x=> x.classList.remove("is-open"));
+  function progress(){
+    const rect = wrap.getBoundingClientRect();
+    const scrollable = wrap.offsetHeight - window.innerHeight;
+    if(scrollable <= 0) return rect.top <= 0 ? 1 : 0;
+    const denom = Math.max(scrollable - TRAIL_PX + LEAD_PX, 1);
+    const raw = Math.min(Math.max((LEAD_PX - rect.top) / denom, 0), 1);
+    return smoothstep(raw);
   }
-  const hasRealHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  function update(t){
+    const seg = t * (states.length - 1);
+    const idx = Math.min(Math.floor(seg), states.length - 2);
+    const frac = seg - idx;
+    const a = states[idx], b = states[idx + 1];
+    bento.style.setProperty("--c1", lerp(a.c1, b.c1, frac).toFixed(3) + "fr");
+    bento.style.setProperty("--c2", lerp(a.c2, b.c2, frac).toFixed(3) + "fr");
+    bento.style.setProperty("--r1", lerp(a.r1, b.r1, frac).toFixed(3) + "fr");
+    bento.style.setProperty("--r2", lerp(a.r2, b.r2, frac).toFixed(3) + "fr");
+    const activeIdx = states[Math.round(seg)].active;
+    cells.forEach((cell, i)=> cell.classList.toggle("is-open", i === activeIdx));
+  }
   cells.forEach(cell=>{
     const href = cell.dataset.href || null;
     const target = cell.dataset.target || null;
-    if(hasRealHover){
-      cell.addEventListener("mouseenter", ()=> openCell(cell));
-    }
     cell.addEventListener("click", ()=>{
-      if(cell.classList.contains("is-open")){
-        if(href){
-          if(target === "_blank") window.open(href, "_blank", "noopener");
-          else window.location.href = href;
-        }
-      } else {
-        openCell(cell);
-      }
+      if(!href) return;
+      if(target === "_blank") window.open(href, "_blank", "noopener");
+      else window.location.href = href;
     });
   });
-  if(hasRealHover){
-    bento.addEventListener("mouseleave", closeAll);
+
+  if(reduceMotion){
+    update(0);
+    return;
   }
-  document.addEventListener("click", (e)=>{
-    if(!e.target.closest("#bento-dest")) closeAll();
-  });
+
+  let ticking = false;
+  function onScroll(){
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(()=>{ update(progress()); ticking = false; });
+  }
+  setHeight();
+  update(progress());
+  window.addEventListener("scroll", onScroll, {passive:true});
+  window.addEventListener("resize", ()=>{ setHeight(); update(progress()); });
 })();
 
 /* Services carousel: one slide visible at a time, auto-advances,
