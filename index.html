@@ -149,10 +149,25 @@ html[lang="ar"] .tw-line .suffix-key{font-size:1.45em;}
 /* --- shared quarter-grid mechanics --- */
 .define-shape,.about-shape{position:relative;padding:52px 40px;min-height:300px;height:100%;display:flex;align-items:center;}
 .define-bg-svg,.about-bg-svg{position:absolute;inset:0;width:100%;height:100%;z-index:0;}
+/* draw-on-scroll: the rough rect traces its outline and its fill washes
+   in, tied continuously to scroll position (set every frame by JS in
+   initDrawShape — no CSS transition here, that would run on its own
+   timer once triggered instead of tracking further scrolling). */
+.define-bg-svg rect,.about-bg-svg rect{
+  fill-opacity:0;
+  stroke-width:2.5;
+  vector-effect:non-scaling-stroke;
+}
+.define-bg-svg rect{stroke:var(--ink);}
+.about-bg-svg rect{stroke:var(--accent);}
 .define-inner,.about-inner{
   position:relative;z-index:2;width:100%;
   display:grid;grid-template-columns:repeat(4,1fr);gap:28px;align-items:stretch;
 }
+/* paragraph cells still fade+slide in (set every frame by initDrawShape);
+   the title/quote cells are typed character-by-character instead, so
+   they stay at full opacity and their emptiness-until-typed is reveal enough */
+.define-text-cell,.about-text-cell{opacity:0;transform:translateY(16px);}
 
 /* --- EXPLAINER: heading in quarter 1 (right) --- */
 .define-title-cell{
@@ -396,6 +411,7 @@ footer{
 @media (prefers-reduced-motion: reduce){
   .cursor{animation:none;}
   .reveal{transition:none;opacity:1;transform:none;}
+  .define-text-cell,.about-text-cell{opacity:1 !important;transform:none !important;}
   *{scroll-behavior:auto;}
   .bento-scroll-wrap{height:auto !important;}
   .bento-sticky{position:static !important;}
@@ -693,7 +709,7 @@ const translations = {
     "hero.prefix": "أبني",
     "hero.phrases": [
       {main:"أنظمة تعمل ", key:"بذكاء."},
-      {main:"مسارات عمل بلا ", key:"هدر."},
+      {main:"مسارات عمل ", key:"بلا هدر."},
       {main:"عمليات واضحة و", key:"مُقاسة."}
     ],
     "explain.label": "تعريف",
@@ -956,6 +972,85 @@ function revealOnScroll(){
 window.addEventListener("scroll", revealOnScroll);
 window.addEventListener("resize", revealOnScroll);
 
+/* HTML-aware "substring": keeps only the first n visible (text) characters
+   of an HTML string, preserving any tags (like the <span class="hl">
+   highlights) around them. Never splits a run of text into separate
+   per-character elements — same trick startTypewriter uses above, just
+   generalised to markup — so Arabic letters keep reshaping/joining
+   correctly as more of them appear (splitting into per-character spans
+   would break that joining). */
+function htmlSubstring(html, n){
+  const wrapper = document.createElement("div");
+  wrapper.innerHTML = html;
+  let remaining = n;
+  (function walk(node){
+    [...node.childNodes].forEach(child=>{
+      if(remaining <= 0){ child.remove(); return; }
+      if(child.nodeType === Node.TEXT_NODE){
+        if(child.textContent.length <= remaining) remaining -= child.textContent.length;
+        else { child.textContent = child.textContent.slice(0, remaining); remaining = 0; }
+      } else {
+        walk(child);
+      }
+    });
+  })(wrapper);
+  return wrapper.innerHTML;
+}
+
+const drawShapes = [];
+
+/* Explainer + About background shapes: the outline traces itself in and
+   the fill washes in, both tied continuously to scroll position. The
+   title/quote (typeSel) types itself in character-by-character along
+   the same progress; the paragraph cell (fadeSel) still just fades +
+   slides in, unconverted for now. Scrolling back up reverses all of it,
+   same as the destination cards above. */
+function initDrawShape(shapeSel, rectSel, fadeSel, typeSel){
+  const shape = document.querySelector(shapeSel);
+  const rect = shape ? shape.querySelector(rectSel) : null;
+  const fadeEl = shape ? shape.querySelector(fadeSel) : null;
+  const typeEl = shape ? shape.querySelector(typeSel) : null;
+  if(!shape || !rect || !fadeEl || !typeEl || !rect.getTotalLength) return;
+  const len = rect.getTotalLength();
+  rect.style.strokeDasharray = len;
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let sourceHtml = typeEl.innerHTML;
+  let total = typeEl.textContent.length;
+  function resync(){
+    sourceHtml = typeEl.innerHTML;
+    total = typeEl.textContent.length;
+  }
+  if(reduceMotion){
+    rect.style.strokeDashoffset = "0";
+    rect.style.fillOpacity = "1";
+    fadeEl.style.opacity = "1";
+    fadeEl.style.transform = "none";
+    return { resync: ()=>{}, update: ()=>{} };
+  }
+  function update(){
+    const vh = window.innerHeight;
+    const start = vh * 0.85; // shape's top this far down = not started yet
+    const end = vh * 0.35;   // shape's top this far down = fully drawn
+    const top = shape.getBoundingClientRect().top;
+    const t = Math.min(Math.max((start - top) / (start - end), 0), 1);
+    rect.style.strokeDashoffset = (len * (1 - t)).toFixed(1);
+    rect.style.fillOpacity = Math.min(Math.max((t - 0.55) / 0.45, 0), 1).toFixed(3);
+    fadeEl.style.opacity = t.toFixed(3);
+    fadeEl.style.transform = "translateY(" + (16 * (1 - t)).toFixed(1) + "px)";
+    typeEl.innerHTML = htmlSubstring(sourceHtml, Math.round(t * total));
+  }
+  let ticking = false;
+  function onScroll(){
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(()=>{ update(); ticking = false; });
+  }
+  update();
+  window.addEventListener("scroll", onScroll, {passive:true});
+  window.addEventListener("resize", update);
+  return { resync: ()=>{ resync(); update(); }, update };
+}
+
 function detectLang(){
   const saved = localStorage.getItem("site-lang");
   if(translations[saved]) return saved;
@@ -967,6 +1062,15 @@ function detectLang(){
 }
 setLanguage(detectLang());
 revealOnScroll();
+
+drawShapes.push(initDrawShape(".define-shape", ".define-bg-svg rect", ".define-text-cell", ".explainer-title"));
+drawShapes.push(initDrawShape(".about-shape", ".about-bg-svg rect", ".about-text-cell", ".about-quote"));
+// re-capture the title/quote text and replay it whenever the language switches
+document.querySelectorAll(".lang-switch button").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    requestAnimationFrame(()=> drawShapes.forEach(d=> d && d.resync()));
+  });
+});
 
 /* Vertical-stack bento — scroll-driven. The wrap (#bento-scroll-wrap) is
    given extra height (EXTRA_SCROLL px beyond the block's own height) and the bento
