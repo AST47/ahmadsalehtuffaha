@@ -149,14 +149,20 @@ html[lang="ar"] .tw-line .suffix-key{font-size:1.45em;}
 /* --- shared quarter-grid mechanics --- */
 .define-shape,.about-shape{position:relative;padding:52px 40px;min-height:300px;height:100%;display:flex;align-items:center;}
 .define-bg-svg,.about-bg-svg{position:absolute;inset:0;width:100%;height:100%;z-index:0;}
-/* draw-on-scroll: the rough rect traces its outline and its fill washes
-   in, tied continuously to scroll position (set every frame by JS in
-   initDrawShape — no CSS transition here, that would run on its own
-   timer once triggered instead of tracking further scrolling). */
+/* draw-on-scroll: one rough/filtered rect does both the outline trace
+   (stroke-dasharray) and the fill, tied continuously to scroll position
+   — no separate elements, no fading one out once the other's in (that
+   was never asked for and just caused problems). The rough filter
+   applies to the stroke too, so the drawn line itself has the same
+   feathered/jagged look as the fill, matching the original design.
+   Root cause of the corner gap that took forever to track down:
+   vector-effect: non-scaling-stroke, combined with this SVG's
+   non-uniform scaling (preserveAspectRatio="none" stretching an 800x300
+   viewBox into a differently-proportioned box), breaks the dash
+   pattern's geometry — so it's deliberately left off below. */
 .define-bg-svg rect,.about-bg-svg rect{
   fill-opacity:0;
   stroke-width:2.5;
-  vector-effect:non-scaling-stroke;
 }
 .define-bg-svg rect{stroke:var(--ink);}
 .about-bg-svg rect{stroke:var(--accent);}
@@ -994,8 +1000,10 @@ function htmlSubstring(html, n){
 
 const drawShapes = [];
 
-/* Explainer + About background shapes: the outline traces itself in and
-   the fill washes in, tied continuously to scroll position. Every
+/* Explainer + About background shapes: one rough/filtered rect's
+   outline traces itself in via stroke-dasharray while its fill washes
+   in alongside it, both tied continuously to scroll position — no
+   separate elements, no fading one out once the other's done. Every
    element in typeSels (title, paragraph, quote...) types itself in
    character-by-character in parallel, along that same progress.
    Scrolling back up reverses all of it, same as the destination cards
