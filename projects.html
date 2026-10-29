@@ -9,7 +9,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&family=Lora:wght@400;600;700&display=swap" rel="stylesheet">
-<script defer src="https://cloud.umami.is/script.js" data-website-id="0804ad51-e4be-4ce8-9f95-4191800fd2d9"></script>
 <style>
 
 /* ============================================================
@@ -96,6 +95,8 @@ section{max-width:var(--maxw);margin:0 auto;padding:26px 24px 70px;}
 .case-block{border-top:3px solid var(--accent);padding-top:26px;}
 .case-image{margin-bottom:26px;border-radius:14px;overflow:hidden;border:1px solid var(--ink-light);box-shadow:0 8px 24px rgba(0,0,0,.07);background:var(--accent-light);}
 .case-image img{width:100%;display:block;}
+a.case-image{display:block;}
+a.case-image:hover .case-image-caption{text-decoration:underline;}
 .case-image-caption{padding:7px 14px;font-size:clamp(8.5px,2.6vw,11px);line-height:1.5;color:var(--accent);text-align:center;background:var(--accent-light);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .case-top{display:flex;flex-direction:column;gap:20px;margin-bottom:26px;}
 @media(min-width:480px){.case-top{flex-direction:row;align-items:center;gap:24px;}}
@@ -294,6 +295,38 @@ const CASES = [
       tr: "Excel, PivotTables"
     }
   },
+  {
+    badgeNum: "99+",
+    image: "images/Project99.webp",
+    url: "https://prof-dr-m-amr-sadik.github.io/Personal-Library/",
+    badgeLabel: { ar: "ملفات مبعثرة", en: "scattered files", tr: "dağınık dosya" },
+    category: { ar: "مكتبة رقمية وتصميم محتوى", en: "Digital Library & Content Design", tr: "Dijital Kütüphane ve İçerik Tasarımı" },
+    title: {
+      ar: "تحويل أعمال أكاديمي على مدى 14 سنة إلى مكتبة رقمية واحدة",
+      en: "Turning 14 years of an academic's work into one digital library",
+      tr: "Bir akademisyenin 14 yıllık çalışmalarını tek bir dijital kütüphaneye dönüştürmek"
+    },
+    challenge: {
+      ar: "أعمال البروفيسور عمرو صادق منذ 2012 موزعة بين أعداد مجلة ومقالات وكتب وأوراق بحثية وإنفوغرافيك يُتداول على واتساب، من دون مكان واحد يجمعها ويعكس قيمتها.",
+      en: "Prof. Amr Sadik's work since 2012 was scattered across magazine issues, articles, books, research papers, and infographics shared over WhatsApp, with no single place to bring it together and reflect its value.",
+      tr: "Prof. Amr Sadik'in 2012'den bu yana işleri dergi sayıları, makaleler, kitaplar, araştırma makaleleri ve WhatsApp'ta dolaşan infografikler arasında dağınıktı; hepsini bir araya getirip değerini yansıtacak tek bir yer yoktu."
+    },
+    solution: {
+      ar: "صممت وبنيت مكتبة على شكل رف كتب: لكل عمل كعب بسماكة حسب عدد صفحاته ولون حسب نوعه، مع فلاتر، وتفاصيل تنفتح تحت صف العمل، ونسخ PDF نظيفة من الإعلانات.",
+      en: "I designed and built a library in the form of a bookshelf: each work is a spine whose thickness follows its page count and whose color follows its type, with filters, details that open beneath the work's row, and clean, ad-free PDF copies.",
+      tr: "Kitaplık biçiminde bir kütüphane tasarlayıp geliştirdim: her eser, kalınlığı sayfa sayısına, rengi türüne göre belirlenen bir sırt; ayrıca filtreler, eserin sırasının altında açılan ayrıntılar ve reklamsız, temiz PDF kopyaları var."
+    },
+    impact: {
+      ar: "كل الأعمال صارت بمكان واحد وبرابط واحد، تُقرأ مباشرة من الجوال، وإضافة أي عمل جديد تتم بسجل في ملف بيانات دون لمس التصميم.",
+      en: "All the work now lives in one place under a single link, readable straight from a phone, and adding a new work takes just one record in a data file, without touching the design.",
+      tr: "Tüm eserler artık tek bir yerde ve tek bir bağlantıda; doğrudan telefondan okunabiliyor ve yeni bir eser eklemek, tasarıma dokunmadan veri dosyasına tek bir kayıt eklemekle yapılıyor."
+    },
+    tools: {
+      ar: "HTML، CSS، JavaScript، GitHub Pages",
+      en: "HTML, CSS, JavaScript, GitHub Pages",
+      tr: "HTML, CSS, JavaScript, GitHub Pages"
+    }
+  },
 ];
 
 const translations = {
@@ -304,6 +337,7 @@ const translations = {
     "page.title": "مشاريع عملت عليها",
     caseLabels: { challenge: "التحدي", solution: "الحل", impact: "الأثر", tools: "الأدوات" },
     "ai_disclaimer": "صورة مولّدة بالذكاء الاصطناعي لحماية خصوصية الشركات",
+    "view_project": "اضغط لمشاهدة المشروع كاملاً",
     "footer.copy1": "© 2026 أحمد صالح تفاحة",
     "footer.copy2": "جميع الحقوق محفوظة",
   },
@@ -314,6 +348,7 @@ const translations = {
     "page.title": "Projects I've Worked On",
     caseLabels: { challenge: "Challenge", solution: "Solution", impact: "Impact", tools: "Tools" },
     "ai_disclaimer": "AI-generated image to protect company privacy",
+    "view_project": "Click to view the full project",
     "footer.copy1": "© 2026 Ahmad Saleh Tuffaha",
     "footer.copy2": "All rights reserved",
   },
@@ -324,6 +359,7 @@ const translations = {
     "page.title": "Üzerinde Çalıştığım Projeler",
     caseLabels: { challenge: "Zorluk", solution: "Çözüm", impact: "Etki", tools: "Araçlar" },
     "ai_disclaimer": "Şirket gizliliğini korumak için yapay zeka ile oluşturulmuş görsel",
+    "view_project": "Projenin tamamını görmek için tıklayın",
     "footer.copy1": "© 2026 Ahmad Saleh Tuffaha",
     "footer.copy2": "Tüm hakları saklıdır",
   }
@@ -375,7 +411,7 @@ function renderCases(lang){
           <p class="case-title">${c.title[lang] || c.title.ar}</p>
         </div>
       </div>
-      ${c.image ? `<div class="case-image"><img src="${c.image}" alt="${c.title[lang] || c.title.ar}" loading="lazy" onerror="this.closest('.case-image').style.display='none'"><p class="case-image-caption">${translations[lang]["ai_disclaimer"]}</p></div>` : ""}
+      ${c.image ? `<${c.url ? `a href="${c.url}" target="_blank" rel="noopener"` : "div"} class="case-image"><img src="${c.image}" alt="${c.title[lang] || c.title.ar}" loading="lazy" onerror="this.closest('.case-image').style.display='none'"><p class="case-image-caption">${translations[lang][c.url ? "view_project" : "ai_disclaimer"]}</p></${c.url ? "a" : "div"}>` : ""}
       <div class="case-grid">
         <div><h4>${labels.challenge}</h4><p>${c.challenge[lang] || c.challenge.ar}</p></div>
         <div><h4>${labels.solution}</h4><p>${c.solution[lang] || c.solution.ar}</p></div>
